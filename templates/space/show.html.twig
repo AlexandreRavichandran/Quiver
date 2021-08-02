@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nom de l'espace - Quiver{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto">
+        <div class="grid grid-cols-10">
+            <div class="col-span-2">
+                {% include 'partials/_leftSideBar.html.twig' %}
+            </div>
+            <div class="col-span-6">
+                <div class="bg-white flex flex-col items-center p-3">
+                    <h1 class="font-black text-xl">Informatique</h1>
+                    <a href="#" class="block hover:bg-gray-100 text-center border border-indigo-400 text-indigo-200 p-2 rounded w-28 text-xl"><i class="bi bi-plus text-2xl"></i> Suivre</a>
+                </div>
+                <nav class="border-b-4 mb-4">
+                    <ul class="flex">
+                        <li class="item-list p-3 active">Lire</li>
+                        <li class="item-list p-3">Repondre</li>
+                    </ul>
+                </nav>
+                <div class="questionList">
+                    {% include 'space/partials/_topQuestions.html.twig' %}
+                </div>
+            </div>
+            <div class="col-span-2">
+                {% include 'partials/_rightSideBar.html.twig' %}
+            </div>            
+        </div>
+    </div>
+
+{% endblock %}

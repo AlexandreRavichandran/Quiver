@@ -26,4 +26,14 @@ class SpaceController extends AbstractController
     {
         return $this->render('space/following.html.twig');
     }
+
+    /**
+     * Show one space and its related questions
+     * @Route("/spaces/3")
+     * @return Response
+     */
+    public function show(): Response
+    {
+        return $this->render('space/show.html.twig');
+    }
 }
