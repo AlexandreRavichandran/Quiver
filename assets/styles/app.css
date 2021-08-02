@@ -7,4 +7,8 @@
     .active{
         @apply border-b-4 border-indigo-500
     }
+
+    .profileActive{
+        @apply border-b-4 text-indigo-500 border-indigo-500 
+    }
 }
