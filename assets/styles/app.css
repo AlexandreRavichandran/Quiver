@@ -5,7 +5,7 @@
 
 @layer components {
     .active{
-        @apply border-b-4 border-indigo-500
+        @apply border-b-4 border-indigo-500 text-indigo-500
     }
 
     .profileActive{
