@@ -14,7 +14,10 @@ class SpaceController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('space/index.html.twig');
+        return $this->render(
+            'space/index.html.twig',
+            ['page' => 'space']
+        );
     }
 
     /**
@@ -24,7 +27,10 @@ class SpaceController extends AbstractController
      */
     public function following(): Response
     {
-        return $this->render('space/following.html.twig');
+        return $this->render(
+            'space/following.html.twig',
+            ['page' => 'following']
+        );
     }
 
     /**
