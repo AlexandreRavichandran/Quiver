@@ -40,6 +40,22 @@ class SpaceController extends AbstractController
      */
     public function show(): Response
     {
-        return $this->render('space/show.html.twig');
+        return $this->render(
+            'space/show.html.twig',
+            ['partial' => 'index']
+        );
+    }
+
+    /**
+     * Show one space and its related questions
+     * @Route("/spaces/3/top_questions",name="app_space_show_top_question")
+     * @return Response
+     */
+    public function showTopQuestions(): Response
+    {
+        return $this->render(
+            'space/show.html.twig',
+            ['partial' => 'topQuestions']
+        );
     }
 }

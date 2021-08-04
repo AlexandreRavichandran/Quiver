@@ -15,12 +15,12 @@
                 </div>
                 <nav class="border-b-4 mb-4">
                     <ul class="flex">
-                        <li class="item-list p-3 active">Lire</li>
-                        <li class="item-list p-3">Repondre</li>
+                        <li class="item-list p-3 {% if partial is defined and partial is same as 'index' %}active{% endif %}"><a href="{{path('app_space_show')}}">Lire</a></li>
+                        <li class="item-list p-3 {% if partial is defined and partial is same as 'topQuestions' %}active{% endif %}"><a href="{{path('app_space_show_top_question')}}">Repondre</a></li>
                     </ul>
                 </nav>
                 <div class="questionList">
-                    {% include 'space/partials/_topQuestions.html.twig' %}
+                    {% include 'space/partials/_' ~ partial ~'.html.twig' %}
                 </div>
             </div>
             <div class="col-span-2">
