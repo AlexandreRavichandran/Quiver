@@ -35,7 +35,7 @@ class SpaceController extends AbstractController
 
     /**
      * Show one space and its related questions
-     * @Route("/spaces/3")
+     * @Route("/spaces/3",name="app_space_show")
      * @return Response
      */
     public function show(): Response
