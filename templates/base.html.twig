@@ -14,7 +14,9 @@
         {% endblock %}
     </head>
     <body class="bg-gray-100">
-    {% include 'partials/_header.html.twig' %}
-    {% block body %}{% endblock %}  
+        <div class="sticky top-0">
+            {% include 'partials/_header.html.twig' %}
+        </div>
+        {% block body %}{% endblock %}  
     </body>
 </html>
