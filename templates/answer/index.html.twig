@@ -4,8 +4,8 @@
 
 {% block body %}
     <div class="container mx-auto">
-        <div class="grid grid-cols-10 gap-4">
-            <div class="col-span-3">
+        <div class="grid grid-cols-12 gap-4">
+            <div class="col-span-12 xl:col-span-3">
                 <h2 class="text-center font-semibold text-gray-400 border-b-2 p-1">Questions</h2>
                 <ul class="text-center">
                     <li class="list-item pb-2 p-1 hover:bg-gray-200"><a href="#">Questions pour vous</a></li>
@@ -13,7 +13,7 @@
                     <li class="list-item p-1 text-indigo-400 bg-indigo-100 font-bold"><a href="#">Brouillons de réponses</a></li>
                 </ul>
             </div>
-            <div class="col-span-5">
+            <div class="col-span-12 xl:col-span-6">
                 <div class="bg-white border border-gray-300">
                     <h2 class="text-gray-400 p-2 border-b-2">Questions pour vous</h2>
                     <div class="questions p-2">
@@ -68,7 +68,7 @@
                     <a href="#" class="hover:bg-blue-200 self-center block text-indigo-600 bg-blue-100 p-2 rounded-xl w-40 text-center font-semibold">Ajouter des sujets</a>
                 </div>
             </div>
-            <div class="col-span-2">
+            <div class="hidden col-span-3 lg:block xl:col-span-3">
                 <div class="bg-white flex flex-col p-4 border border-gray-300">
                     <h3 class="text-xl"> Ajouter des sujets que vous connaissez</h3>
                     <p class="my-2">L'ajout de sujets nous permettra de trouver des questions auxquelles vous pouvez répondre</p>
