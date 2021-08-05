@@ -4,12 +4,14 @@
 
 {% block body %}
     <div class="container mx-auto">
-        <div class="grid grid-cols-7 gap-4 flex justify-between">
-            <div class="col-span-1">
+        <div class="grid grid-cols-12 gap-4 flex justify-between">
+            <div class="col-span-12 sm:col-span-12 md:col-span-12 xl:col-span-2">
                 {% include 'partials/_leftSideBar.html.twig' %}
-                {% include 'partials/_footer.html.twig' %}
+                <div class="hidden xl:block">
+                    {% include 'partials/_footer.html.twig' %}
+                </div>
             </div>
-            <div class="col-span-5">
+            <div class="col-span-12 xl:col-span-10">
                 <div class="container mx-auto">
                     <div class="bg-white p-4 mb-4 border border-gray-300">
                         <p class="text"> Alexandre RAVICHANDRAN</p>
@@ -86,6 +88,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="block xl:hidden">
+            {% include 'partials/_footer.html.twig' %}
         </div>
     </div>
 

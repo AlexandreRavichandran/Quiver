@@ -4,8 +4,8 @@
 
 {% block body %}
     <div class="container mx-auto bg-white rounded">
-        <div class="grid grid-cols-10">
-            <div class="col-span-7  p-4">
+        <div class="grid grid-cols-12">
+            <div class="col-span-12 lg:col-span-8 p-4">
                 <div class="header">
                     <h1 class="text-center text-3xl font-black">Alexandre RAVICHANDRAN</h1>
                     <a href="#" class="block text-center font-semibold text-gray-400">Ajouter une qualification de profil</a>
@@ -28,7 +28,7 @@
                     {% include 'user/partials/_' ~ partial ~ '.html.twig' %}
                 </div>
             </div>
-            <div class="col-span-3 bg-white p-4">
+            <div class="col-span-12 lg:col-span-4 bg-white p-4">
                 <div class="flex justify-between p-4 border-b-2">
                     <h2 class="color-gray-400 font-semibold">Qualifications et faits marquants </h2>
                     <p class="rounded-full p-2 border flex items-center justify-center"><a href=""><i class="bi bi-pencil-fill"></i></a></p>
