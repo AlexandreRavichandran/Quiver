@@ -5,21 +5,46 @@
         <p class="text-sm text-gray-400">Lorem ipsum dolor sit amet consectetur adipisicing elit. A eveniet consequatur suscipit neque temporibus delectus laudantium debitis hic alias sed ab maxime dolores repudiandae, ullam unde laborum, pariatur, cupiditate deserunt sequi recusandae. Ipsum molestias magni, error dicta enim autem sint aliquam, culpa qui debitis, fuga nam maiores modi recusandae tenetur.</p>
         <a href="{{path('app_question_show',{'id':question.id})}}" class="block text-xl font-black">{{question.question}}</a>
     </div>
-    <div class="postBody">
-        <p>{{question.answers[0].answer}}</p>
-        <p>{{question.answers[0].viewsNumber}} vues</p>
-    </div>
+    <a href="#">
+        <div class="postBody">
+            <p class="" style="height:95px;overflow:hidden">{{question.answers[0].answer}}</p>
+            <a class="moreLink" href="#">(more)</a>
+            <p>{{question.answers[0].viewsNumber}} vues</p>
+        </div>
+    </a>
     <div class="postFooter">
         <div class="grid grid-cols-7">
             <div class="col-span-4 flex justify-start">
                 <a class="block p-2 rounded hover:bg-gray-200 mr-6" href="#"><i class="bi text-xl bi-arrow-up-square mr-1"></i><span>14</span></a>
                 <a class="block p-2 rounded hover:bg-gray-200 mr-6" href="#"><i class="bi text-xl bi-arrow-down-square mr-1"></i><span>14</span></a>
-                <a class="block p-2 rounded hover:bg-gray-200 mr-6" href="#"><i class="bi text-xl bi-chat mr-1"></i><span>{{question.answers[0].comments|length}}</span></a>
+                <a class="block p-2 rounded hover:bg-gray-200 mr-6 commentButton" href="#"><i class="bi text-xl bi-chat mr-1"></i><span>{{question.answers[0].comments|length}}</span></a>
             </div>
             <div class="col-span-3 flex justify-end">
                 <a class="block p-2 rounded hover:bg-gray-200 mr-6" href="#"><i class="bi p-2 text-xl bi-three-dots"></i></a>
             </div>
         </div>
+        <a style="display:block" href="#" class="numberOfComments block p-3 mt-2 bg-gray-200 text-gray-400">{{question.answers[0].comments|length}} commentaires</a>
+        <div style="display:none" class="comments"> 
+            <div class="commentForm">
+
+            </div>
+            <div class="commentList">         
+                {% for comments in question.answers[0].comments %}
+                    <img class="block" src="placehold.it/60x60" alt="">
+                    <p class="font-bold">{{comments.author.pseudonym}}</p>
+                    <p class="text-gray-300">{{comments.createdAt|date('d/m/Y')}}</p>
+                    <p>{{comments.comment}}</p>
+                    <div class=" ml-3 pl-3 border-l-4 sub_comments">
+                        {% for subComments in comments.subComments %}
+                            <img class="block" src="placehold.it/60x60" alt="">
+                            <p class="font-bold">{{subComments.author.pseudonym}}</p>
+                            <p class="text-gray-300">{{subComments.createdAt|date('d/m/Y')}}</p>
+                            <p>{{subComments.subComment}}</p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
-{% endfor%}
+{% endfor %}

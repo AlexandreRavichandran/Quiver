@@ -16,7 +16,7 @@ class HomeController extends AbstractController
      */
     public function index(SpaceRepository $spaceRepository, QuestionRepository $questionRepository): Response
     {
-        $questions = $questionRepository->findAll();
+        $questions = $questionRepository->findBy([], null, 4);
         $spaces = $spaceRepository->findBy([], null, 8);
         return $this->render(
             'home/index.html.twig',
