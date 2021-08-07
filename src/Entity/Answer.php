@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AnswerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +38,28 @@ class Answer
      * @ORM\Column(type="datetime_immutable")
      */
     private $updatedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="answers")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="answers")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $question;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="answer", orphanRemoval=true)
+     */
+    private $comments;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -86,6 +110,60 @@ class Answer
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getQuestion(): ?Question
+    {
+        return $this->question;
+    }
+
+    public function setQuestion(?Question $question): self
+    {
+        $this->question = $question;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setAnswer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getAnswer() === $this) {
+                $comment->setAnswer(null);
+            }
+        }
 
         return $this;
     }

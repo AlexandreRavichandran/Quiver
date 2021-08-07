@@ -32,6 +32,18 @@ class SubComment
      */
     private $updatedAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="subComments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $comment;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="subComments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +81,30 @@ class SubComment
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getComment(): ?Comment
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?Comment $comment): self
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }
