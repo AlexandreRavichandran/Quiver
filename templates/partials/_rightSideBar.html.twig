@@ -5,8 +5,14 @@
         {% for space in spaces %}
             <li class="list-item p-3 flex justify-center">
                 <a class="block" href="{{path('app_space_show',{'id':space.id})}}">
-                    <img class="inline" src="https://placehold.it/25x25" alt="">
-                    {{space.name}}
+                <div class="grid grid-cols-12 pt-3">
+                    <div class="col-span-6 flex justify-end">
+                        <img class="inline" src="https://placehold.it/25x25" alt="">
+                    </div>
+                    <div class="col-span-6 ml-2 flex justify-start">
+                        {{space.name}}
+                    </div>
+                </div>
                 </a>
             </li>
         {% endfor %}
