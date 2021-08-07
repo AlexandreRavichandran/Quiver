@@ -35,8 +35,8 @@ class AppFixtures extends Fixture
 
             $space = new Space;
             $space->setName($faker->word);
-            $spaceList[] = $space;
             $manager->persist($space);
+            $spaceList[] = $space;
         }
 
         //create fake users
@@ -50,15 +50,15 @@ class AppFixtures extends Fixture
                 ->setPassword('demo')
                 ->setPseudonym($faker->userName)
                 ->setRoles([]);
-            $userList[] = $user;
             $manager->persist($user);
+            $userList[] = $user;
         }
         //create fake questions
         for ($a = 0; $a < 21; $a++) {
             $question = new Question;
             $question
                 ->setQuestion($faker->sentence . '?')
-                ->setAuthor($userList[mt_rand(0, 19)])
+                ->setAuthor($userList[mt_rand(0, 15)])
                 ->setCreatedAt(new DateTimeImmutable())
                 ->setUpdatedAt(new DateTimeImmutable());
             for ($b = 0; $b < mt_rand(1, 4); $b++) {
@@ -73,8 +73,8 @@ class AppFixtures extends Fixture
                     ->setUpdatedAt(new DateTimeImmutable())
                     ->setViewsNumber(mt_rand(1000, 200000))
                     ->setQuestion($question)
-                    ->setAuthor($userList[mt_rand(0, 19)])
-                    ->setAnswer(implode('', $faker->sentences));
+                    ->setAuthor($userList[mt_rand(0, 15)])
+                    ->setAnswer(implode('', $faker->paragraphs(30)));
                 $manager->persist($answer);
 
                 //create fake Comments
@@ -82,7 +82,7 @@ class AppFixtures extends Fixture
                     $comment = new Comment;
                     $comment->setAnswer($answer)
                         ->setComment($faker->sentence)
-                        ->setAuthor($userList[mt_rand(0, 19)])
+                        ->setAuthor($userList[mt_rand(0, 15)])
                         ->setCreatedAt(new DateTimeImmutable())
                         ->setUpdatedAt(new DateTimeImmutable());
                     $manager->persist($comment);
@@ -90,7 +90,7 @@ class AppFixtures extends Fixture
                     //create fake sub_comments
                     for ($d = 0; $d < mt_rand(1, 2); $d++) {
                         $subComment = new SubComment;
-                        $subComment->setAuthor($userList[mt_rand(0, 19)])
+                        $subComment->setAuthor($userList[mt_rand(0, 15)])
                             ->setComment($comment)
                             ->setSubComment($faker->sentence)
                             ->setCreatedAt(new DateTimeImmutable())

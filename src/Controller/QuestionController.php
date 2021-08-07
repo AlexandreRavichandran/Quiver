@@ -2,17 +2,23 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Question;
+use App\Repository\QuestionRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class QuestionController extends AbstractController
 {
     /**
-     * @Route("/questions", name="app_question_show")
+     * @Route("/questions/{id}", name="app_question_show")
      */
-    public function index(): Response
+    public function index(Question $question, QuestionRepository $questionRepository): Response
     {
-        return $this->render('question/show.html.twig');
+        $alternativeQuestions = $questionRepository->findBy([], null, 5);
+        return $this->render('question/show.html.twig', [
+            'question' => $question,
+            'alternativeQuestions' => $alternativeQuestions
+        ]);
     }
 }
