@@ -15,7 +15,7 @@
                             <li class="bg-gray-200 p-2 m-1"><a href="#"><i class="bi text-xl bi-pencil"></i></a></li>
                         </ul>
                     </div>
-                    <h1 class="text-2xl font-black">{{question.question}}</h1>
+                    <h1 class="text-2xl font-black p-3">{{question.question}}</h1>
                     <div class="actions flex">
                         <a class="block mr-2" href="#"><i class="bi text-xl bi-pencil"></i> Répondre</a>
                         <a class="block mr-2 likeButton" href="#"><i class="bi text-xl bi-arrow-up-square"></i> Vote positif</a>
@@ -42,14 +42,14 @@
                         </div>
                     </div>
                     <a style="display:block" href="#" class="numberOfComments block p-3 mt-2 bg-gray-200 text-gray-400">{{answer.comments|length}} commentaires</a>
-                    <div style="display:none" class="comments"> 
+                    <div style="display:none" class="comments mt-3"> 
                         <div class="commentForm">
 
                         </div>
                         <div class="commentList">         
                         {% for comments in answer.comments %}
                             <div class="commentheader flex ">
-                                <img class="block" src="https://placehold.it/45x45" alt="">
+                                <img class="block rounded-full" src="https://placehold.it/45x45" alt="">
                                 <div class="ml-2">
                                     <p class="font-semibold text-xl">{{comments.author.pseudonym}}</p>
                                     <p class="text-gray-300">{{comments.createdAt|date('d/m/Y')}}</p>
@@ -59,7 +59,7 @@
                             <div class=" ml-3 pl-3 border-l-4 sub_comments">
                                 {% for subComments in comments.subComments %}
                                 <div class="commentheader flex ">
-                                    <img class="block" src="https://placehold.it/45x45" alt="">
+                                    <img class="block rounded-full" src="https://placehold.it/45x45" alt="">
                                     <div class="ml-2">
                                         <p class="font-semibold">{{subComments.author.pseudonym}}</p>
                                         <p class="text-gray-300">{{subComments.createdAt|date('d/m/Y')}}</p>

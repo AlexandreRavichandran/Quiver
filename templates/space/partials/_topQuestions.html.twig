@@ -1,7 +1,7 @@
 <div>
     {% for question in questions %}
     <div class="questions p-2 mb-4 bg-white border border-gray-300">
-        <a href="{{path('app_question_show',{'id':question.id})}}" class="font-black">{{question.question}}</a>
+        <a href="{{path('app_question_show',{'id':question.id})}}" class="font-black p-2">{{question.question}}</a>
         <p class="font-semibold text-gray-400"><a href="{{path('app_question_show',{'id':question.id})}}">{{question.answers|length}} réponses</a> - Question posée le {{question.createdAt|date('d/m/Y')}}</p>
         <div class="links flex ">
             <a class="block p-2 rounded hover:bg-gray-200 mr-6" href="#"><i class="bi text-2xl bi-pencil-square"></i></a>
