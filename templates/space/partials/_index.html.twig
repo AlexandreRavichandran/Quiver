@@ -10,7 +10,7 @@
             <img class="block" src="https://picsum.photos/900/320" alt="">
             <p class="" style="height:95px;overflow:hidden">{{question.answers[0].answer}}</p>
             <a class="moreLink" href="#">(more)</a>
-            <p>{{question.answers[0].viewsNumber}} vues</p>
+            <p>{{formatViewsNumber(question.answers[0].viewsNumber)}} vues</p>
         </div>
     </a>
     <div class="postFooter">
