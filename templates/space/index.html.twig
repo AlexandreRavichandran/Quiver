@@ -3,7 +3,7 @@
 {% block title %}Espaces{% endblock %}
 
 {% block body %}
-    <div class="container mx-auto">
+    <div class="container mx-auto p-4">
         <div class="grid grid-cols-10 gap-4 flex justify-between">
             <div class="col-span-12 sm:col-span-12 lg:col-span-8 xl:col-span-6 p-4 bg-white border border-gray-300">
                 <div class="spaceHeader flex justify-between">
@@ -39,10 +39,12 @@
                 <h2 class="font-black text-2xl"> Découvrir des espaces </h2>
                 <div class="grid grid-cols-12 gap-4 mt-4 spaceList flex flex-wrap">
                 {% for space in spaces %}
-                    <div class="col-span-12 md:col-span-6 lg:col-span-4 spaceCard bg-white rounded-xl p-2 border border-gray-300">
-                        <img class="block ml-auto mr-auto" src="https://placehold.it/150x150" alt="">
-                        <h3 class="text-center font-black text-xl">{{space.name}}</h3>
-                        <p class="text-center">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Libero veritatis, tempore quasi expedita earum deserunt a fugiat minima ratione error? </p>
+                    <div class="col-span-12 md:col-span-6 lg:col-span-4 spaceCard bg-white rounded-xl p-2 border border-gray-300 hover:bg-gray-200">
+                        <a href="{{path('app_space_show',{'id':space.id})}}">
+                            <img class="block ml-auto mr-auto" src="https://placehold.it/150x150" alt="">
+                            <h3 class="text-center font-black text-xl">{{space.name}}</h3>
+                            <p class="text-center">{{space.description}}</p>
+                        </a>
                     </div>
                 {% endfor %}
                 </div>

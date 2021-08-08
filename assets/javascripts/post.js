@@ -34,8 +34,9 @@ post = {
         const postToDisplay = e.target.closest('.postBody');
         const moreLink = postToDisplay.querySelector('.moreLink');
 
+        console.log(postToDisplay);
         moreLink.style.display = 'none';
-        postToDisplay.querySelector('p').removeAttribute('style');
+        postToDisplay.querySelector('.answer').removeAttribute('style');
 
     },
     handleCommentDisplay: function (e) {

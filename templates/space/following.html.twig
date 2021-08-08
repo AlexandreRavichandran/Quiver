@@ -3,7 +3,7 @@
 {% block title %} Suivi {% endblock %}
 
 {% block body %}
-    <div class="container mx-auto">
+    <div class="container mx-auto p-4">
         <div class="grid grid-cols-12 gap-4 flex justify-between">
             <div class="col-span-12 sm:col-span-12 md:col-span-12 xl:col-span-2">
                 {% include 'partials/_leftSideBar.html.twig' %}
@@ -14,7 +14,10 @@
             <div class="col-span-12 xl:col-span-10">
                 <div class="container mx-auto">
                     <div class="bg-white p-4 mb-4 border border-gray-300">
-                        <p class="text"> Alexandre RAVICHANDRAN</p>
+                        <div class="flex">
+                            <img class="block rounded-full" src="https://placehold.it/40x40" alt="">
+                            <p class="text self-center pl-3">Alexandre RAVICHANDRAN</p>
+                        </div>
                         <p class="text-2xl font-semibold">Quel est votre question ou quel est votre lien ?</p>
                     </div>
                 {% for question in questions %}
@@ -27,7 +30,7 @@
                         <a href="#">
                             <div class="postBody">
                                 <img class="block" src="https://picsum.photos/900/320" alt="" width="100%">
-                                <p class="mt-2" style="height:95px;overflow:hidden">{{question.answers[0].answer}}</p>
+                                <p class="mt-2 answer" style="height:95px;overflow:hidden">{{question.answers[0].answer}}</p>
                                 <a class="moreLink" href="#">(more)</a>
                                 <p>{{formatViewsNumber(question.answers[0].viewsNumber)}} vues</p>
                             </div>
