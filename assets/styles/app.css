@@ -11,4 +11,12 @@
     .profileActive{
         @apply border-b-4 text-indigo-500 border-indigo-500 
     }
+
+    .liked{
+        @apply text-white bg-indigo-500 border-indigo-500
+    }
+
+    .disliked{
+        @apply text-white bg-red-500 border-red-500
+    }
 }
