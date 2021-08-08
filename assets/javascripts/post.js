@@ -1,4 +1,4 @@
-post = {
+const post = {
 
     init: function () {
 
