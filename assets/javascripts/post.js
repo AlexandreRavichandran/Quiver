@@ -2,24 +2,19 @@ post = {
 
     init: function () {
 
-        const posts = document.querySelectorAll('.postBody');
-
-        document.querySelector('.commentButton').addEventListener('click', app.handleCommentDisplay);
-        document.querySelector('.numberOfComments').addEventListener('click', app.handleCommentDisplay);
-
         const commentButtons = document.querySelectorAll('.commentButton');
         const commentSection = document.querySelectorAll('.numberOfComments');
 
         for (let index = 0; index < posts.length; index++) {
-            posts[index].addEventListener('click', app.handlePostDisplay);
+            posts[index].addEventListener('click', post.handlePostDisplay);
         }
 
-        for (let index = 0; index < posts.length; index++) {
-            commentButtons[index].addEventListener('click', app.handleCommentDisplay);
+        for (let index = 0; index < commentButtons.length; index++) {
+            commentButtons[index].addEventListener('click', post.handleCommentDisplay);
         }
 
-        for (let index = 0; index < posts.length; index++) {
-            commentSection[index].addEventListener('click', app.handleCommentDisplay);
+        for (let index = 0; index < commentSection.length; index++) {
+            commentSection[index].addEventListener('click', post.handleCommentDisplay);
         }
     },
     handlePostDisplay: function (e) {
@@ -48,4 +43,4 @@ post = {
 }
 
 
-document.addEventListener('DOMContentLoaded', app.init)
+document.addEventListener('DOMContentLoaded', post.init)
