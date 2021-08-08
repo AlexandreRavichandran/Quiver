@@ -29,6 +29,11 @@ class Space
      */
     private $questions;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $description;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -74,6 +79,18 @@ class Space
         if ($this->questions->removeElement($question)) {
             $question->removeSpace($this);
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

@@ -2,6 +2,7 @@ post = {
 
     init: function () {
 
+        const posts = document.querySelectorAll('.postBody');
         const commentButtons = document.querySelectorAll('.commentButton');
         const commentSection = document.querySelectorAll('.numberOfComments');
 
@@ -19,11 +20,11 @@ post = {
     },
     handlePostDisplay: function (e) {
         e.preventDefault();
-        const postToDisplay = e.target;
-        const moreLink = postToDisplay.parentNode.nextSibling;
+        const postToDisplay = e.target.closest('.postBody');
+        const moreLink = postToDisplay.querySelector('.moreLink');
+       
         moreLink.style.display = 'none';
-
-        postToDisplay.removeAttribute('style');
+        postToDisplay.querySelector('p').removeAttribute('style');
 
     },
     handleCommentDisplay: function (e) {
@@ -31,6 +32,7 @@ post = {
         const postToDisplay = e.target;
         const comments = postToDisplay.closest('.postFooter').querySelector('.numberOfComments');
         const commentList = postToDisplay.closest('.postFooter').querySelector('.comments');
+
         if (comments.style.display == 'block') {
             comments.style.display = 'none';
             commentList.style.display = 'block';

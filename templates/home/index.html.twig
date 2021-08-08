@@ -19,14 +19,15 @@
                     </div>
                     {% for question in questions %}
                     <div class="bg-white p-4 mb-3 border border-gray-300">
-                        <div class="postHeader">
+                        <div class="postHeader mb-3">
                             <p class="text-xl"><img class="inline mr-2" src="https://placehold.it/40x40" alt="">{{question.author.pseudonym}} {{question.author.lastName|upper}}<a href="#" class="text-indigo-500 text-base ml-2">Suivre</a></p>
                             <p class="text-sm text-gray-400">Lorem ipsum dolor sit amet consectetur adipisicing elit. A eveniet consequatur suscipit neque temporibus delectus laudantium debitis hic alias sed ab maxime dolores repudiandae, ullam unde laborum, pariatur, cupiditate deserunt sequi recusandae. Ipsum molestias magni, error dicta enim autem sint aliquam, culpa qui debitis, fuga nam maiores modi recusandae tenetur.</p>
                             <a href="{{path('app_question_show',{'id':question.id})}}" class="block text-xl font-black">{{question.question}}</a>
                         </div>
                         <a href="#">
                             <div class="postBody">
-                                <p class="" style="height:95px;overflow:hidden">{{question.answers[0].answer}}</p>
+                                <img class="block" src="https://picsum.photos/900/320" alt="" width="100%">
+                                <p class="mt-2" style="height:95px;overflow:hidden">{{question.answers[0].answer}}</p>
                                 <a class="moreLink" href="#">(more)</a>
                                 <p>{{question.answers[0].viewsNumber}} vues</p>
                             </div>
