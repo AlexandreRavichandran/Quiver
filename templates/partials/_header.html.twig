@@ -19,7 +19,8 @@
                 <a class="hidden sm:block" href="#"><i class="text-3xl bi bi-globe"></i></a>
             </div>
             <div class="hidden xl:col-span-2 xl:block">
-                <a href="#" class="block text-center text-white bg-indigo-500 rounded-full py-1 px-5">Ajouter une question</a>
+                <a href="#" class="block text-center text-white bg-indigo-500 rounded-full py-1 px-5 modal-open">Ajouter une question</a>
+                {% include 'partials/modals/_question_create_modal.html.twig' %}
             </div>
         </div>
     </header>

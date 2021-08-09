@@ -13,13 +13,15 @@
             </div>
             <div class="col-span-12 sm:col-span-12 md:col-span-12 xl:col-span-7">
                 <div class="container mx-auto">
-                    <div class="bg-white p-4 mb-4 border border-gray-300 modal-open">
-                        <div class="flex">
-                            <img class="block rounded-full" src="https://placehold.it/40x40" alt="">
-                            <p class="text self-center pl-3">Alexandre RAVICHANDRAN</p>
+                    <a class="modal-open" href="#">
+                        <div class="bg-white p-4 mb-4 border border-gray-300">
+                            <div class="flex">
+                                <img class="block rounded-full" src="https://placehold.it/40x40" alt="">
+                                <p class="text self-center pl-3">Alexandre RAVICHANDRAN</p>
+                            </div>
+                            <p class="text-2xl font-semibold">Quel est votre question ou quel est votre lien ?</p>
                         </div>
-                        <p class="text-2xl font-semibold">Quel est votre question ou quel est votre lien ?</p>
-                    </div>
+                    </a>
                     {% include 'partials/modals/_question_create_modal.html.twig' %}
                     {% for question in questions %}
                     <div class="bg-white p-4 mb-3 border border-gray-300">

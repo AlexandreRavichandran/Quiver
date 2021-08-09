@@ -1,31 +1,40 @@
 <div class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center">
     <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
-        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto"> 
+        <div class="modal-container bg-white w-11/12 md:w-8/12 lg:w-8/12 xl:w-5/12 mx-auto rounded shadow-lg z-50 overflow-y-auto"> 
             <div class="modal-close absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
                 <i class="bi bi-x-lg"></i>
             </div>
 
-            <!-- Add margin if you want to see some of the overlay behind the modal-->
+           
             <div class="modal-content py-4 text-left px-6">
-            <!--Title-->
-            <div class="flex justify-between items-center pb-3">
-                <p class="text-2xl font-bold">Simple Modal 2!</p>
+          
+            <div class="flex justify-start items-center pb-3">
                 <div class="modal-close cursor-pointer z-50">
-                    <i class="bi bi-x-lg"></i>
+                    <i class="bi text-xl bi-x-lg"></i>
                 </div>
             </div>
 
             <!--Body-->
-            <p>Modal content can go here</p>
-            <p>...</p>
-            <p>...</p>
-            <p>...</p>
-            <p>...</p>
+            <div class="advices p-4 rounded bg-red-100 text-red-400 ">
+                <p class="font-bold">Conseils pour obtenir des réponses intéressantes rapidement</p>
+                <ul class="list-disc list-inside">
+                    <li class="list-item">Vérifiez que votre question n'a pas encore été posée </li>
+                    <li class="list-item">Pour votre question, privilégiez une forme courte et précise</li>
+                    <li class="list-item">Vérifiez que vous n'avez pas pas laissé es fautes de grammaire et d'orthographe</li>
+                </ul>
+            </div>
+            <div class="flex mt-3">
+                <img class="block rounded-full" src="https://placehold.it/45x45" alt="">
+                <p class="p-2 self-center text-gray-500 ">Alexandre RAVICHANDRAN a demandé </p>
+            </div>
+
+            {# Inserer ici le formulaire pour poser une question #}
+
 
             <!--Footer-->
             <div class="flex justify-end pt-2">
-                <button class="px-4 bg-transparent p-3 rounded-lg text-indigo-500 hover:bg-gray-100 hover:text-indigo-400 mr-2">Action</button>
-                <button class="modal-close px-4 bg-indigo-500 p-3 rounded-lg text-white hover:bg-indigo-400">Close</button>
+                <button class="modal-close px-4 bg-transparent p-3 rounded-lg text-indigo-500 hover:bg-gray-100 hover:text-indigo-400 mr-2">Annuler</button>
+                <button class="px-4 bg-indigo-500 p-3 rounded-lg text-white hover:bg-indigo-400">Ajouter une question</button>
             </div>
         </div>
     </div>

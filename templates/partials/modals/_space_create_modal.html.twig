@@ -1,31 +1,29 @@
 <div class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center">
     <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
-        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto"> 
+        <div class="modal-container bg-white w-11/12 md:w-8/12 lg:w-8/12 xl:w-5/12 mx-auto rounded shadow-lg z-50 overflow-y-auto"> 
             <div class="modal-close absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
                 <i class="bi bi-x-lg"></i>
             </div>
 
-            <!-- Add margin if you want to see some of the overlay behind the modal-->
+           
             <div class="modal-content py-4 text-left px-6">
-            <!--Title-->
-            <div class="flex justify-between items-center pb-3">
-                <p class="text-2xl font-bold">Simple Modal1!</p>
-                <div class="modal-close cursor-pointer z-50">
-                    <i class="bi bi-x-lg"></i>
+           
+            <div class="flex justify-start items-center pb-3">
+                <div class="modal-close cursor-pointer z-50 p-2 hover:bg-gray-200">
+                    <i class="bi text-xl bi-x-lg"></i>
                 </div>
             </div>
 
             <!--Body-->
-            <p>Modal content can go here</p>
-            <p>...</p>
-            <p>...</p>
-            <p>...</p>
-            <p>...</p>
+            <h1 class="text-xl">Créer un espace</h1>
+            <p class="p-2">Partagez vos interêts, organisez du contenu, proposez des discussions, et plus encore.</p>
+            
+            {# Inserer ici le formaulaire de creation d'espace #}
+           
 
             <!--Footer-->
             <div class="flex justify-end pt-2">
-                <button class="px-4 bg-transparent p-3 rounded-lg text-indigo-500 hover:bg-gray-100 hover:text-indigo-400 mr-2">Action</button>
-                <button class="modal-close px-4 bg-indigo-500 p-3 rounded-lg text-white hover:bg-indigo-400">Close</button>
+                <button class="px-5 bg-indigo-400 p-3 rounded-lg text-white hover:bg-indigo-600">Créer</button>
             </div>
         </div>
     </div>
