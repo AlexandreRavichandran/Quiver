@@ -19,12 +19,15 @@
             <p class="p-2">Partagez vos interêts, organisez du contenu, proposez des discussions, et plus encore.</p>
             
             {# Inserer ici le formaulaire de creation d'espace #}
-           
-
+            {{form_start(spaceForm)}}
+            {{form_row(spaceForm.name)}}
+            {{form_row(spaceForm.description)}}
             <!--Footer-->
             <div class="flex justify-end pt-2">
                 <button class="px-5 bg-indigo-400 p-3 rounded-lg text-white hover:bg-indigo-600">Créer</button>
             </div>
+            {{form_end(spaceForm)}} 
+
         </div>
     </div>
 </div>

@@ -15,7 +15,8 @@
                     </select>
                 </div>
                 <span class="flex justify-start mt-2">
-                    <a href="#" class=" block p-2 rounded border mr-4"><i class="bi bi-plus-circle mr-1"></i>Créer un espace</a>
+                    <a href="#" class="modal-open block p-2 rounded border mr-4"><i class="bi bi-plus-circle mr-1"></i>Créer un espace</a>
+                    {% include 'partials/modals/_space_create_modal.html.twig' %}
                     <a href="#" class="block p-2 rounded border"><i class="bi bi-compass mr-1"></i>Découvrir des espaces</a>
                 </span>
                 <div class="userSpaceList">
