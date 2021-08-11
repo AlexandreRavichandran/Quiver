@@ -19,5 +19,8 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "cross-env NODE_ENV=production encore production --progress"
+    },
+    "dependencies": {
+        "@tailwindcss/forms": "^0.3.3"
     }
 }
