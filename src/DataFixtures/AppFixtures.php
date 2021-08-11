@@ -46,8 +46,6 @@ class AppFixtures extends Fixture
 
             $user = new User;
             $user
-                ->setCreatedAt(new DateTimeImmutable())
-                ->setUpdatedAt(new DateTimeImmutable())
                 ->setEmail($faker->email())
                 ->setPassword('demo')
                 ->setPseudonym($faker->userName)
@@ -60,9 +58,7 @@ class AppFixtures extends Fixture
             $question = new Question;
             $question
                 ->setQuestion($faker->sentence . '?')
-                ->setAuthor($userList[mt_rand(0, 15)])
-                ->setCreatedAt(new DateTimeImmutable())
-                ->setUpdatedAt(new DateTimeImmutable());
+                ->setAuthor($userList[mt_rand(0, 15)]);
             for ($b = 0; $b < mt_rand(1, 4); $b++) {
                 $question->addSpace($spaceList[mt_rand(0, 10)]);
             }
@@ -72,8 +68,6 @@ class AppFixtures extends Fixture
             for ($b = 0; $b < mt_rand(2, 3); $b++) {
                 $answer = new Answer;
                 $answer
-                    ->setCreatedAt(new DateTimeImmutable())
-                    ->setUpdatedAt(new DateTimeImmutable())
                     ->setViewsNumber(mt_rand(1000, 200000))
                     ->setQuestion($question)
                     ->setAuthor($userList[mt_rand(0, 15)])
@@ -86,9 +80,7 @@ class AppFixtures extends Fixture
                     $comment
                         ->setAnswer($answer)
                         ->setComment(implode('', $faker->paragraphs(mt_rand(4, 15))))
-                        ->setAuthor($userList[mt_rand(0, 15)])
-                        ->setCreatedAt(new DateTimeImmutable())
-                        ->setUpdatedAt(new DateTimeImmutable());
+                        ->setAuthor($userList[mt_rand(0, 15)]);
                     $manager->persist($comment);
 
                     //create fake sub_comments
@@ -97,9 +89,7 @@ class AppFixtures extends Fixture
                         $subComment
                             ->setAuthor($userList[mt_rand(0, 15)])
                             ->setComment($comment)
-                            ->setSubComment(implode('', $faker->paragraphs(mt_rand(4, 15))))
-                            ->setCreatedAt(new DateTimeImmutable())
-                            ->setUpdatedAt(new DateTimeImmutable());
+                            ->setSubComment(implode('', $faker->paragraphs(mt_rand(4, 15))));
                         $manager->persist($subComment);
                     }
                 }
