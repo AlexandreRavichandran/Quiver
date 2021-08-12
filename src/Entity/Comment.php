@@ -24,6 +24,7 @@ class Comment
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank
      */
     private $comment;
 

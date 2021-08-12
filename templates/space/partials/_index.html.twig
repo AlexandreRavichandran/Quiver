@@ -27,7 +27,21 @@
         <a style="display:block" href="#" class="numberOfComments block p-3 mt-2 bg-gray-200 text-gray-400">{{question.answers[0].comments|length}} commentaires</a>
         <div style="display:none" class="comments mt-3"> 
             <div class="commentForm">
-
+                <form class="flex w-full" action="{{path('app_comment_create')}}" method="post">
+                    <div class="grid grid-cols-12">
+                        <div class="col-span-1">
+                            <img class="block rounded-full" src="https://placehold.it/50x50" alt="">
+                        </div>
+                        <div class="col-span-9">
+                            <textarea required="required"name="comment" id="comment" class="w-full"></textarea>
+                        </div>
+                        <input type="hidden" name="answerId" value="{{question.answers[0].id}}">
+                        <input type="hidden" name="referer" value="{{app.request.attributes.get('_route')}}">
+                        <div class="col-span-2 ml-3 flex justify-end self-center">
+                            <button type="submit" class="p-2 bg-indigo-400 text-white rounded">Commenter ce contenu</button>
+                        </div>   
+                    </div>
+                </form>
             </div>
             <div class="commentList">         
                 {% for comments in question.answers[0].comments %}

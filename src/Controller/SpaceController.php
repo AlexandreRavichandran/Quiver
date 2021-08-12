@@ -23,36 +23,36 @@ class SpaceController extends AbstractController
      */
     public function create(Request $request, ValidatorInterface $validator, EntityManagerInterface $em): Response
     {
-       
-        $spaceName = $request->request->get('space_name');
-        $spaceDescription = $request->request->get('space_description');
-        $space = new Space;
-        $space->setName(htmlspecialchars($spaceName));
-        $space->setDescription(htmlspecialchars($spaceDescription));
+        if ($request->isMethod('POST')) {
+            $spaceName = $request->request->get('space_name');
+            $spaceDescription = $request->request->get('space_description');
+            $space = new Space;
+            $space->setName(htmlspecialchars($spaceName));
+            $space->setDescription(htmlspecialchars($spaceDescription));
 
-        //Check if created question objet is valid following the entity's contraint
-        $errors = $validator->validate($space);
-        if (count($errors) === 0) {
-            $em->persist($space);
-            $em->flush();
-            return $this->redirectToRoute('app_space_show', [
-                'id' => $space->getId()
-            ]);
+            //Check if created question objet is valid following the entity's contraint
+            $errors = $validator->validate($space);
+            if (count($errors) === 0) {
+                $em->persist($space);
+                $em->flush();
+                return $this->redirectToRoute('app_space_show', [
+                    'id' => $space->getId()
+                ]);
+            }
+
+            //Check if the referer route is valid
+            try {
+                $redirectRoute =  $this->generateUrl($request->request->get('referer'));
+                $redirectRoute = $request->request->get('referer');
+            } catch (RouteNotFoundException $e) {
+                $redirectRoute = 'app_home';
+            }
+
+            //Display error messages
+            foreach ($errors as $error) {
+                $this->addFlash('yellow', $error->getMessage());
+            }
         }
-
-        //Check if the referer route is valid
-        try {
-            $redirectRoute =  $this->generateUrl($request->request->get('referer'));
-            $redirectRoute = $request->request->get('referer');
-        } catch (RouteNotFoundException $e) {
-            $redirectRoute = 'app_home';
-        }
-
-        //Display error messages
-        foreach ($errors as $error) {
-            $this->addFlash('yellow', $error->getMessage());
-        }
-
         return $this->redirectToRoute($redirectRoute);
     }
 
