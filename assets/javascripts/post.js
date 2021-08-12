@@ -7,6 +7,8 @@ const post = {
         const commentSection = document.querySelectorAll('.numberOfComments');
         const likeButtons = document.querySelectorAll('.likeButton');
         const dislikeButtons = document.querySelectorAll('.dislikeButton');
+        const flashMessageButtons = document.querySelectorAll('.flashMessageCloseButton');
+
 
         for (let index = 0; index < posts.length; index++) {
             posts[index].addEventListener('click', post.handlePostDisplay);
@@ -26,6 +28,10 @@ const post = {
 
         for (let index = 0; index < dislikeButtons.length; index++) {
             dislikeButtons[index].addEventListener('click', post.handleDislikeButton);
+        }
+
+        for (let index = 0; index < flashMessageButtons.length; index++) {
+            flashMessageButtons[index].addEventListener('click', post.handleFlashMessageButton);
         }
 
     },
@@ -76,7 +82,14 @@ const post = {
         }
         likeButton.classList.remove('liked');
 
+    },
+    handleFlashMessageButton: function (e) {
+        e.preventDefault();
+        console.log(e.currentTarget);
+        const flashMessage = e.currentTarget.closest('.flashMessage');
+        flashMessage.style.display = 'none';
     }
+
 }
 
 

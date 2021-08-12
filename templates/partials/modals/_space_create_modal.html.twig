@@ -19,15 +19,21 @@
             <p class="p-2">Partagez vos interêts, organisez du contenu, proposez des discussions, et plus encore.</p>
             
             {# Inserer ici le formaulaire de creation d'espace #}
-            {{form_start(spaceForm)}}
-            {{form_row(spaceForm.name)}}
-            {{form_row(spaceForm.description)}}
-            <!--Footer-->
-            <div class="flex justify-end pt-2">
-                <button class="px-5 bg-indigo-400 p-3 rounded-lg text-white hover:bg-indigo-600">Créer</button>
-            </div>
-            {{form_end(spaceForm)}} 
-
+            <form action="{{path('app_space_create')}}" method="post">
+                <div class="mb-6">
+                    <label class="block text-gray-800 required" for="space_name">Nom</label>
+                    <input type="text" id="space_name" name="space_name" required="required" class="mt-1 w-full">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-800" for="space_description">Description brève</label>
+                    <textarea id="space_description" name="space_description" class="mt-1 w-full"></textarea>
+                </div>
+                <!--Footer-->
+                <div class="flex justify-end pt-2">
+                    <button class="px-5 bg-indigo-400 p-3 rounded-lg text-white hover:bg-indigo-600">Créer</button>
+                </div>
+                <input type="hidden" name="referer" value="{{app.request.attributes.get('_route')}}">
+            </form>
         </div>
     </div>
 </div>

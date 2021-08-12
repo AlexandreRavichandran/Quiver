@@ -23,24 +23,12 @@ class HomeController extends AbstractController
         $questions = $questionRepository->findBy([], null, 4);
         $spaces = $spaceRepository->findBy([], null, 8);
 
-        $spaceForm = $this->createForm(SpaceType::class);
-        $spaceForm->handleRequest($request);
-        if ($spaceForm->isSubmitted() && $spaceForm->isValid()) {
-            $space = new Space;
-            $space = $spaceForm->getData();
-            $em->persist($space);
-            $em->flush();
-            return $this->redirectToRoute('app_space_show', [
-                'id' => $space->getId()
-            ]);
-        }
         return $this->render(
             'home/index.html.twig',
             [
                 'page' => 'home',
                 'questions' => $questions,
                 'spaces' => $spaces,
-                'spaceForm' => $spaceForm->createView()
             ]
         );
     }
