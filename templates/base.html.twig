@@ -15,9 +15,18 @@
              {{ encore_entry_script_tags('modal') }}
         {% endblock %}
     </head>
+
     <body class="bg-gray-100">
         <div class="sticky top-0">
             {% include 'partials/_header.html.twig' %}
+            {% for label,messages in app.flashes %}
+                {% for message in messages %}
+                <div class="block p-2 bg-{{label}}-400 text-center flashMessage">
+                    <button class="flashMessageCloseButton" type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{message}}
+                </div>
+                {% endfor %}
+            {% endfor %}
         </div>
         {% block body %}{% endblock %}  
     </body>
