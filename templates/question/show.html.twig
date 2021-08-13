@@ -52,14 +52,14 @@
                     </div>
                     <a style="display:block" href="#" class="numberOfComments block p-3 mt-2 bg-gray-200 text-gray-400">{{answer.comments|length}} commentaires</a>
                     <div style="display:none" class="comments mt-3"> 
-                        <div class="commentForm">
+                        <div class="commentForm mb-4">
                             <form class="flex w-full" action="{{path('app_comment_create')}}" method="post">
                                 <div class="grid grid-cols-12">
                                     <div class="col-span-1">
                                         <img class="block rounded-full" src="https://placehold.it/50x50" alt="">
                                     </div>
                                     <div class="col-span-9">
-                                        <textarea required="required" required="required" name="comment" id="comment" class="w-full"></textarea>
+                                        <textarea required="required" required="required" name="comment" id="comment_answer_{{answer.id}}" class="w-full"></textarea>
                                     </div>
                                     <input type="hidden" name="answerId" value="{{answer.id}}">
                                     <input type="hidden" name="referer" value="{{app.request.attributes.get('_route')}}">

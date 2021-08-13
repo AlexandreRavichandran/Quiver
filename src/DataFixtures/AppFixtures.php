@@ -36,7 +36,7 @@ class AppFixtures extends Fixture
             $space = new Space;
             $space
                 ->setName($faker->word)
-                ->setDescription(implode('', $faker->paragraphs(4)));
+                ->setDescription($faker->paragraph(4));
             $manager->persist($space);
             $spaceList[] = $space;
         }
