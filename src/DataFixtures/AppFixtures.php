@@ -12,7 +12,6 @@ use App\Entity\Question;
 use App\Entity\SubComment;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
@@ -47,7 +46,10 @@ class AppFixtures extends Fixture
             $user = new User;
             $user
                 ->setEmail($faker->email())
-                ->setPassword('demo')
+                ->setPassword($this->passwordEncoder->hashPassword($user, 'demo'))
+                ->setDescription($faker->paragraph(3))
+                ->setFirstName($faker->firstName())
+                ->setLastName($faker->lastName())
                 ->setPseudonym($faker->userName)
                 ->setRoles([]);
             $manager->persist($user);

@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quiver{% endblock %}
+
+{% block body %}
+<div class="h-screen pt-6 loginBackground">
+    <div class="container mx-auto bg-white pt-6 sm:w-full lg:w-9/12 xl:w-6/12 p-6 rounded">
+        <div class="mb-10">
+            <h1 class="text-7xl text-indigo-400 font-bold pt-6 text-center">Quiver</h1>
+            <p class="font-bold mt-3 mb-3 text-xl text-center">Un lieu pour partager le savoir et mieux comprendre le monde</p>
+        </div>
+        
+
+
+        <div class="grid grid-cols-12 ">
+            <div class="sm:col-span-12 md:col-span-6 border-r-4 pr-3">
+                <h2 class="border-b-4 text-xl font-bold"> S'inscrire </h2>
+                <p class="text-4xl">TODO//FORM FOR REGISTRATION</p>
+            </div>
+
+            <div class="sm:col-span-12 md:col-span-6 ml-2 pl-3">
+                <h2 class="border-b-4 text-xl font-bold"> Se connecter</h2>
+                <form method="post" class="mt-4">
+                    <div class="flex flex-col">
+                        <div class="mb-6 flex flex-col">
+                            <label for="inputEmail" class="font-bold mb-3">Email: </label>
+                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                        </div>
+                        <div class="mb-6 flex flex-col mt-4">
+                            <label for="inputPassword" class="font-bold mb-3">Mot de passe: </label>
+                            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                        </div>
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <div class="flex justify-between">
+                        <a href="#" class="text-gray-400">Mot de passe oublié</a>
+                        <button class="p-2 bg-indigo-400 text-white font-semibold rounded" type="submit">Se connecter</button>
+                    </div>
+                    {% if error %}
+                    <div class="mt-4 bg-orange-100 border-r-4 border-orange-500 text-orange-700 p-4 text-center" role="alert">
+                        <p class="font-bold">Authentification échouée</p>
+                        <p>{{ error.messageKey|trans(error.messageData, 'security','fr_FR') }}</p>
+                    </div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+        <div class="mt-10 bg-color-50 flex justify-center">
+            {% include 'partials/_footer.html.twig' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -20,3 +20,8 @@
         @apply text-white bg-red-500 border-red-500
     }
 }
+
+.loginBackground{
+    background-image: url('../../public/images/login-background.jpg');
+    background-repeat: repeat;
+}

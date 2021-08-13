@@ -18,7 +18,10 @@
 
     <body class="bg-gray-100">
         <div class="sticky top-0">
+        
+        {% if app.request.attributes.get('_route') is not same as 'app_login' %}
             {% include 'partials/_header.html.twig' %}
+        {% endif %}
             {% for label,messages in app.flashes %}
                 {% for message in messages %}
                 <div class="block p-2 bg-{{label}}-400 text-center flashMessage">
