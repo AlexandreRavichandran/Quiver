@@ -73,7 +73,7 @@ class AppFixtures extends Fixture
                     ->setViewsNumber(mt_rand(1000, 200000))
                     ->setQuestion($question)
                     ->setAuthor($userList[mt_rand(0, 15)])
-                    ->setAnswer(implode('', $faker->paragraphs(30)));
+                    ->setAnswer('<p>' . implode('</p><p>', $faker->paragraphs(30)));
                 $manager->persist($answer);
 
                 //create fake Comments
