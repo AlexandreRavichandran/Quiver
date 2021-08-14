@@ -35,6 +35,7 @@ const post = {
         }
 
     },
+    
     handlePostDisplay: function (e) {
         e.preventDefault();
         const postToDisplay = e.target.closest('.postBody');
@@ -45,6 +46,7 @@ const post = {
         postToDisplay.querySelector('.answer').removeAttribute('style');
 
     },
+
     handleCommentDisplay: function (e) {
         e.preventDefault();
         const postToDisplay = e.target;
@@ -60,29 +62,56 @@ const post = {
         };
 
     },
+
     handleLikeButton: function (e) {
         e.preventDefault();
-        const dislikeButton = e.currentTarget.closest('.postFooter').querySelector('.dislikeButton');
+        const dislikeButton = e.currentTarget.closest('.questionAnswer').querySelector('.dislikeButton');
         const likeButton = e.currentTarget;
+        const answerId = e.currentTarget.closest('.questionAnswer').dataset.answerId;
+        post.handleLikeAction(answerId, 'liked');
         if (likeButton.classList.contains('liked')) {
             likeButton.classList.remove('liked');
         } else {
+            dislikeButton.classList.remove('disliked');
             likeButton.classList.add('liked');
         }
-        dislikeButton.classList.remove('disliked');
     },
+
     handleDislikeButton: function (e) {
         e.preventDefault();
-        const likeButton = e.currentTarget.closest('.postFooter').querySelector('.likeButton');
+        const likeButton = e.currentTarget.closest('.questionAnswer').querySelector('.likeButton');
         const dislikeButton = e.currentTarget;
+
+        const answerId = e.currentTarget.closest('.questionAnswer').dataset.answerId;
+        post.handleLikeAction(answerId, 'disliked');
+
         if (dislikeButton.classList.contains('disliked')) {
             dislikeButton.classList.remove('disliked');
         } else {
             dislikeButton.classList.add('disliked');
+            likeButton.classList.remove('liked');
+
         }
-        likeButton.classList.remove('liked');
 
     },
+
+    handleLikeAction: function (answerId, action) {
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                const datas = JSON.parse(this.responseText);
+                const likeNumber = document.querySelector('#answer_' + datas.answerId + '_likeNumber');
+                const dislikeNumber = document.querySelector('#answer_' + datas.answerId + '_dislikeNumber');
+                likeNumber.textContent = datas.likeNumber;
+                dislikeNumber.textContent = datas.dislikeNumber;
+            }
+        };
+
+        xhttp.open('GET', '/answers/' + answerId + '/' + action, true);
+        xhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        xhttp.send();
+    },
+
     handleFlashMessageButton: function (e) {
         e.preventDefault();
         console.log(e.currentTarget);

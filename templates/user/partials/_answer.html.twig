@@ -3,7 +3,7 @@
 </div>
 <div class="answers"> 
 {% for answer in user.answers %}
-    <div class="bg-white border border-gray-300 p-4 mb-3">
+    <div class="bg-white border border-gray-300 p-4 mb-3 questionAnswer" data-answer-id ="{{answer.id}}">
         <div class="postHeader mb-3">
             <a href="{{path('app_question_show',{'id':answer.question.id})}}" class="block text-xl font-black p-2">{{answer.question.question}}</a>
         </div>

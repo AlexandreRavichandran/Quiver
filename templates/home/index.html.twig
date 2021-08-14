@@ -26,7 +26,7 @@
                     {% include 'partials/modals/_question_create_modal.html.twig' %}
                     {% endif %}
                     {% for question in questions %}
-                    <div class="bg-white p-4 mb-3 border border-gray-300">
+                    <div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-answer-id ="{{question.answers[0].id}}">
                         <div class="postHeader mb-3">
                             <a href="{{path('app_user_profile',{'pseudonym':question.answers[0].author.pseudonym})}}">
                                 <p class="text-xl"><img class="inline mr-2 rounded-full" src="https://placehold.it/40x40" alt="">{{question.answers[0].author.pseudonym}}

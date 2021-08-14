@@ -10,8 +10,8 @@
     <div class="postFooter">
         <div class="grid grid-cols-7">
             <div class="col-span-4 flex justify-start">
-                <p class="text-xl"><a class="block p-2 rounded hover:bg-gray-200 mr-1 {% if app.user in answer.likedUsers %} liked {% endif %} likeButton" href="#"><i class="bi text-2xl bi-arrow-up-square mr-2"></i>{{answer.likedUsers|length}}</a></p>
-                <p class="text-xl"><a class="block p-2 rounded hover:bg-gray-200 mr-1 {% if app.user in answer.dislikedUsers %} disliked {% endif %} dislikeButton" href="#"><i class="bi text-2xl bi-arrow-down-square mr-2"></i>{{answer.dislikedUsers|length}}</a></p>
+                <p class="text-xl"><a class="block p-2 rounded hover:bg-gray-200 mr-1 {% if app.user in answer.likedUsers %} liked {% endif %} likeButton" href="#"><i class="bi text-2xl bi-arrow-up-square mr-2"></i><span id="answer_{{answer.id}}_likeNumber">{{answer.likedUsers|length}}</span></a></p>
+                <p class="text-xl"><a class="block p-2 rounded hover:bg-gray-200 mr-1 {% if app.user in answer.dislikedUsers %} disliked {% endif %} dislikeButton" href="#"><i class="bi text-2xl bi-arrow-down-square mr-2"></i><span id="answer_{{answer.id}}_dislikeNumber">{{answer.dislikedUsers|length}}</span></a></p>
                 <p class="text-xl"><a class="block p-2 rounded hover:bg-gray-200 mr-1 commentButton" href="#"><i class="bi text-2xl bi-chat mr-2"></i><span>{{answer.comments|length}}</span></a></p>
             </div>
             <div class="col-span-3 flex justify-end">
