@@ -27,7 +27,7 @@ class QuestionController extends AbstractController
             $questionSentence = $request->request->get('question');
             $question = new Question;
             $question->setQuestion(htmlspecialchars($questionSentence));
-            $question->setAuthor($user->findOneBy([]));
+            $question->setAuthor($this->getUser());
 
             //Check if created question objet is valid following the entity's contraint
             $errors = $validator->validate($question);

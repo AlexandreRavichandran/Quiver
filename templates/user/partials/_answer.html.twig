@@ -1,105 +1,82 @@
-<div class="header border-b-2">
-    <h3 class="font-semibold"> 0 réponses </h3>
+<div class="header border-b-2 py-2">
+    <h3 class="font-semibold text-xl"> {{user.answers|length}} réponses </h3>
 </div>
-<div class="answers mt-3"> 
-    <div class="postHeader">
-        <a href="#" class="block text-xl font-black">Quel est votre question ou quel est votre lien ?</a>
-    </div>
-    <div class="postBody">
-        <img class="block" src="https://picsum.photos/900/320" alt="">
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique, odio beatae, in, laborum animi nulla omnis eius inventore illo molestias voluptatum et est repellat recusandae neque! At ab vitae fugit pariatur voluptates delectus esse, quae provident non repellendus, corrupti eos ea nihil dignissimos soluta, quidem vel culpa itaque assumenda minima consequuntur dolores! Dicta recusandae provident fugit voluptatum architecto numquam, dolor eos expedita accusamus quos fuga culpa ipsa, dolorem totam nulla incidunt voluptas nam odio dignissimos neque quasi quaerat explicabo! Repudiandae placeat, architecto doloribus sit cupiditate labore. Reiciendis illo ipsam libero! Temporibus perferendis tenetur quia eos rerum asperiores accusamus quidem, quo inventore aut cumque veritatis deserunt excepturi fugit reprehenderit iste velit adipisci cum soluta minima totam, modi voluptate voluptatem odit! Odit voluptatibus itaque repellat! Consectetur amet laudantium adipisci sed, veniam ipsum quae rem reiciendis, odio asperiores possimus est quidem obcaecati eos non quisquam aliquam corrupti. Deserunt incidunt enim porro minima eos.</p>
-        <p> 23.6 k vues</p>
-    </div>
+<div class="answers"> 
+{% for answer in user.answers %}
+    <div class="bg-white p-4 mb-3">
+        <div class="postHeader mb-3">
+            <a href="{{path('app_question_show',{'id':answer.question.id})}}" class="block text-xl font-black p-2">{{answer.question.question}}</a>
+        </div>
+    <a href="#">
+        <div class="postBody">
+            <img class="block" src="https://picsum.photos/900/320" alt="" width="100%">
+            <p class="mt-2 answer" style="height:95px;overflow:hidden">{{answer.answer}}</p>
+            <a class="moreLink" href="#">(more)</a>
+            <p>{{formatViewsNumber(answer.viewsNumber)}} vues</p>
+        </div>
+    </a>
     <div class="postFooter">
         <div class="grid grid-cols-7">
             <div class="col-span-4 flex justify-start">
                 <a class="block p-2 rounded hover:bg-gray-200 mr-1 likeButton" href="#"><i class="bi text-xl bi-arrow-up-square mr-1"></i><span>14</span></a>
                 <a class="block p-2 rounded hover:bg-gray-200 mr-1 dislikeButton" href="#"><i class="bi text-xl bi-arrow-down-square mr-1"></i><span>14</span></a>
-                <a class="block p-2 rounded hover:bg-gray-200 mr-1" href="#"><i class="bi text-xl bi-chat mr-1"></i><span>14</span></a>
+                <a class="block p-2 rounded hover:bg-gray-200 mr-1 commentButton" href="#"><i class="bi text-xl bi-chat mr-1"></i><span>{{answer.comments|length}}</span></a>
             </div>
             <div class="col-span-3 flex justify-end">
                 <a class="block p-2 rounded hover:bg-gray-200 mr-6" href="#"><i class="bi p-2 text-xl bi-three-dots"></i></a>
             </div>
         </div>
-    </div>
-    <div class="postHeader">
-        <a href="#" class="block text-xl font-black">Quel est votre question ou quel est votre lien ?</a>
-    </div>
-    <div class="postBody">
-        <img class="block" src="https://picsum.photos/900/320" alt="">
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique, odio beatae, in, laborum animi nulla omnis eius inventore illo molestias voluptatum et est repellat recusandae neque! At ab vitae fugit pariatur voluptates delectus esse, quae provident non repellendus, corrupti eos ea nihil dignissimos soluta, quidem vel culpa itaque assumenda minima consequuntur dolores! Dicta recusandae provident fugit voluptatum architecto numquam, dolor eos expedita accusamus quos fuga culpa ipsa, dolorem totam nulla incidunt voluptas nam odio dignissimos neque quasi quaerat explicabo! Repudiandae placeat, architecto doloribus sit cupiditate labore. Reiciendis illo ipsam libero! Temporibus perferendis tenetur quia eos rerum asperiores accusamus quidem, quo inventore aut cumque veritatis deserunt excepturi fugit reprehenderit iste velit adipisci cum soluta minima totam, modi voluptate voluptatem odit! Odit voluptatibus itaque repellat! Consectetur amet laudantium adipisci sed, veniam ipsum quae rem reiciendis, odio asperiores possimus est quidem obcaecati eos non quisquam aliquam corrupti. Deserunt incidunt enim porro minima eos.</p>
-        <p> 23.6 k vues</p>
-    </div>
-    <div class="postFooter">
-        <div class="grid grid-cols-7">
-            <div class="col-span-4 flex justify-start">
-                <a class="block p-2 rounded hover:bg-gray-200 mr-1 likeButton" href="#"><i class="bi text-xl bi-arrow-up-square mr-1"></i><span>14</span></a>
-                <a class="block p-2 rounded hover:bg-gray-200 mr-1 dislikeButton" href="#"><i class="bi text-xl bi-arrow-down-square mr-1"></i><span>14</span></a>
-                <a class="block p-2 rounded hover:bg-gray-200 mr-1" href="#"><i class="bi text-xl bi-chat mr-1"></i><span>14</span></a>
+        <a style="display:block" href="#" class="numberOfComments block p-3 mt-2 bg-gray-200 text-gray-400">{{answer.comments|length}} commentaires</a>
+        <div style="display:none" class="comments mt-3"> 
+            <div class="commentForm mb-4">
+                <form class="flex w-full" action="{{path('app_comment_create')}}" method="post">
+                    <div class="grid grid-cols-12">
+                        <div class="col-span-1 flex self-center">
+                            <img class="block rounded-full" src="https://placehold.it/50x50" alt="">
+                        </div>
+                        <div class="col-span-9">
+                            <textarea required="required" name="comment" id="comment_answer_{{answer.id}}" class="w-full"></textarea>
+                        </div>
+                        <input type="hidden" name="answerId" value="{{answer.id}}">
+                        <input type="hidden" name="referer" value="{{app.request.attributes.get('_route')}}">
+                        <div class="col-span-2 ml-3 flex justify-end self-center">
+                            <button type="submit" class="p-2 bg-indigo-400 text-white rounded">Commenter ce contenu</button>
+                        </div>   
+                    </div>
+                </form>
             </div>
-            <div class="col-span-3 flex justify-end">
-                <a class="block p-2 rounded hover:bg-gray-200 mr-6" href="#"><i class="bi p-2 text-xl bi-three-dots"></i></a>
+            <div class="commentList">         
+            {% for comments in answer.comments %}
+                <div class="commentheader flex ">
+                    <img class="block rounded-full" src="https://placehold.it/45x45" alt="">
+                    <div class="ml-2">
+                        <p class="font-semibold text-xl">{{comments.author.pseudonym}}</p>
+                        <p class="text-gray-300">{{comments.createdAt|date('d/m/Y')}}</p>
+                    </div>
+                </div>
+                <p class="p-4">{{comments.comment}}</p>
+                <div class=" ml-3 pl-3 border-l-4 sub_comments">
+                    {% for subComments in comments.subComments %}
+                    <div class="commentheader flex ">
+                        <img class="block rounded-full" src="https://placehold.it/45x45" alt="">
+                        <div class="ml-2">
+                            <p class="font-semibold">{{subComments.author.pseudonym}}</p>
+                            <p class="text-gray-300">{{subComments.createdAt|date('d/m/Y')}}</p>
+                        </div>
+                    </div>
+                    <p class="p-4">{{subComments.subComment}}</p>
+                    {% endfor %}
+                </div>
+                <div class="bg-gray-200 rounded-full mt-2 mb-2">
+                    <a href="#" class="p-2 block font-semibold text-center rounded w-50">Voir plus de commentaires</a>
+                </div>
+            {% endfor %}
             </div>
-        </div>
-    </div>
-    <div class="postHeader">
-        <a href="#" class="block text-xl font-black">Quel est votre question ou quel est votre lien ?</a>
-    </div>
-    <div class="postBody">
-        <img class="block" src="https://picsum.photos/900/320" alt="">
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique, odio beatae, in, laborum animi nulla omnis eius inventore illo molestias voluptatum et est repellat recusandae neque! At ab vitae fugit pariatur voluptates delectus esse, quae provident non repellendus, corrupti eos ea nihil dignissimos soluta, quidem vel culpa itaque assumenda minima consequuntur dolores! Dicta recusandae provident fugit voluptatum architecto numquam, dolor eos expedita accusamus quos fuga culpa ipsa, dolorem totam nulla incidunt voluptas nam odio dignissimos neque quasi quaerat explicabo! Repudiandae placeat, architecto doloribus sit cupiditate labore. Reiciendis illo ipsam libero! Temporibus perferendis tenetur quia eos rerum asperiores accusamus quidem, quo inventore aut cumque veritatis deserunt excepturi fugit reprehenderit iste velit adipisci cum soluta minima totam, modi voluptate voluptatem odit! Odit voluptatibus itaque repellat! Consectetur amet laudantium adipisci sed, veniam ipsum quae rem reiciendis, odio asperiores possimus est quidem obcaecati eos non quisquam aliquam corrupti. Deserunt incidunt enim porro minima eos.</p>
-        <p> 23.6 k vues</p>
-    </div>
-    <div class="postFooter">
-        <div class="grid grid-cols-7">
-            <div class="col-span-4 flex justify-start">
-                <a class="block p-2 rounded hover:bg-gray-200 mr-1 likeButton" href="#"><i class="bi text-xl bi-arrow-up-square mr-1"></i><span>14</span></a>
-                <a class="block p-2 rounded hover:bg-gray-200 mr-1 dislikeButton" href="#"><i class="bi text-xl bi-arrow-down-square mr-1"></i><span>14</span></a>
-                <a class="block p-2 rounded hover:bg-gray-200 mr-1" href="#"><i class="bi text-xl bi-chat mr-1"></i><span>14</span></a>
-            </div>
-            <div class="col-span-3 flex justify-end">
-                <a class="block p-2 rounded hover:bg-gray-200 mr-6" href="#"><i class="bi p-2 text-xl bi-three-dots"></i></a>
-            </div>
-        </div>
-    </div>
-    <div class="postHeader">
-        <a href="#" class="block text-xl font-black">Quel est votre question ou quel est votre lien ?</a>
-    </div>
-    <div class="postBody">
-        <img class="block" src="https://picsum.photos/900/320" alt="">
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique, odio beatae, in, laborum animi nulla omnis eius inventore illo molestias voluptatum et est repellat recusandae neque! At ab vitae fugit pariatur voluptates delectus esse, quae provident non repellendus, corrupti eos ea nihil dignissimos soluta, quidem vel culpa itaque assumenda minima consequuntur dolores! Dicta recusandae provident fugit voluptatum architecto numquam, dolor eos expedita accusamus quos fuga culpa ipsa, dolorem totam nulla incidunt voluptas nam odio dignissimos neque quasi quaerat explicabo! Repudiandae placeat, architecto doloribus sit cupiditate labore. Reiciendis illo ipsam libero! Temporibus perferendis tenetur quia eos rerum asperiores accusamus quidem, quo inventore aut cumque veritatis deserunt excepturi fugit reprehenderit iste velit adipisci cum soluta minima totam, modi voluptate voluptatem odit! Odit voluptatibus itaque repellat! Consectetur amet laudantium adipisci sed, veniam ipsum quae rem reiciendis, odio asperiores possimus est quidem obcaecati eos non quisquam aliquam corrupti. Deserunt incidunt enim porro minima eos.</p>
-        <p> 23.6 k vues</p>
-    </div>
-    <div class="postFooter">
-        <div class="grid grid-cols-7">
-            <div class="col-span-4 flex justify-start">
-                <a class="block p-2 rounded hover:bg-gray-200 mr-1 likeButton" href="#"><i class="bi text-xl bi-arrow-up-square mr-1"></i><span>14</span></a>
-                <a class="block p-2 rounded hover:bg-gray-200 mr-1 dislikeButton" href="#"><i class="bi text-xl bi-arrow-down-square mr-1"></i><span>14</span></a>
-                <a class="block p-2 rounded hover:bg-gray-200 mr-1" href="#"><i class="bi text-xl bi-chat mr-1"></i><span>14</span></a>
-            </div>
-            <div class="col-span-3 flex justify-end">
-                <a class="block p-2 rounded hover:bg-gray-200 mr-6" href="#"><i class="bi p-2 text-xl bi-three-dots"></i></a>
+            <div class="bg-gray-200 rounded-full mt-2 mb-2">
+                <a href="#" class="p-2 block font-semibold text-center rounded w-50">Voir plus de commentaires</a>
             </div>
         </div>
     </div>
-    <div class="postHeader">
-        <a href="#" class="block text-xl font-black">Quel est votre question ou quel est votre lien ?</a>
-    </div>
-    <div class="postBody">
-        <img class="block" src="https://picsum.photos/900/320" alt="">
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique, odio beatae, in, laborum animi nulla omnis eius inventore illo molestias voluptatum et est repellat recusandae neque! At ab vitae fugit pariatur voluptates delectus esse, quae provident non repellendus, corrupti eos ea nihil dignissimos soluta, quidem vel culpa itaque assumenda minima consequuntur dolores! Dicta recusandae provident fugit voluptatum architecto numquam, dolor eos expedita accusamus quos fuga culpa ipsa, dolorem totam nulla incidunt voluptas nam odio dignissimos neque quasi quaerat explicabo! Repudiandae placeat, architecto doloribus sit cupiditate labore. Reiciendis illo ipsam libero! Temporibus perferendis tenetur quia eos rerum asperiores accusamus quidem, quo inventore aut cumque veritatis deserunt excepturi fugit reprehenderit iste velit adipisci cum soluta minima totam, modi voluptate voluptatem odit! Odit voluptatibus itaque repellat! Consectetur amet laudantium adipisci sed, veniam ipsum quae rem reiciendis, odio asperiores possimus est quidem obcaecati eos non quisquam aliquam corrupti. Deserunt incidunt enim porro minima eos.</p>
-        <p> 23.6 k vues</p>
-    </div>
-    <div class="postFooter">
-        <div class="grid grid-cols-7">
-            <div class="col-span-4 flex justify-start">
-                <a class="block p-2 rounded hover:bg-gray-200 mr-1 likeButton" href="#"><i class="bi text-xl bi-arrow-up-square mr-1"></i><span>14</span></a>
-                <a class="block p-2 rounded hover:bg-gray-200 mr-1 dislikeButton" href="#"><i class="bi text-xl bi-arrow-down-square mr-1"></i><span>14</span></a>
-                <a class="block p-2 rounded hover:bg-gray-200 mr-1" href="#"><i class="bi text-xl bi-chat mr-1"></i><span>14</span></a>
-            </div>
-            <div class="col-span-3 flex justify-end">
-                <a class="block p-2 rounded hover:bg-gray-200 mr-6" href="#"><i class="bi p-2 text-xl bi-three-dots"></i></a>
-            </div>
-        </div>
-    </div>
+</div>
+{% endfor %}
 </div>

@@ -25,7 +25,7 @@
             </div>
             <div class="flex mt-3">
                 <img class="block rounded-full" src="https://placehold.it/45x45" alt="">
-                <p class="p-2 self-center text-gray-500 ">Alexandre RAVICHANDRAN a demandé </p>
+                <p class="p-2 self-center text-gray-500">{{app.user.firstName}} {{app.user.lastName|upper}} a demandé </p>
             </div>
             {# Inserer ici le formulaire pour poser une question #}
             <form action="{{path('app_question_create')}}" method="post">

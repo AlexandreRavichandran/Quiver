@@ -38,7 +38,7 @@ class CommentController extends AbstractController
             $comment
                 ->setAnswer($answerRepository->find($answerId))
                 ->setComment($commentSentence)
-                ->setAuthor($user->findOneBy([]));
+                ->setAuthor($this->getUser());
             $errors = $validator->validate($comment);
             if (count($errors) === 0) {
                 $em->persist($comment);

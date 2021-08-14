@@ -2,59 +2,66 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\User;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UserController extends AbstractController
 {
     /**
-     * @Route("/profile", name="app_user_profile")
+     * @Route("/profile/{pseudonym}", name="app_user_profile")
      */
-    public function index(): Response
+    public function index(User $user): Response
     {
+
         return $this->render('user/index.html.twig', [
-            'partial' => 'profile'
+            'partial' => 'profile',
+            'user' => $user
         ]);
     }
 
     /**
-     * @Route("/profile/answers", name="app_user_profile_answer")
+     * @Route("/profile/{pseudonym}/answers", name="app_user_profile_answer")
      */
-    public function answers(): Response
+    public function answers(User $user): Response
     {
         return $this->render('user/index.html.twig', [
-            'partial' => 'answer'
+            'partial' => 'answer',
+            'user' => $user
         ]);
     }
 
     /**
-     * @Route("/profile/questions", name="app_user_profile_question")
+     * @Route("/profile/{pseudonym}/questions", name="app_user_profile_question")
      */
-    public function questions(): Response
+    public function questions(User $user): Response
     {
         return $this->render('user/index.html.twig', [
-            'partial' => 'question'
+            'partial' => 'question',
+            'user' => $user
         ]);
     }
 
     /**
-     * @Route("/profile/subscribers", name="app_user_profile_subscriber")
+     * @Route("/profile/{pseudonym}/subscribers", name="app_user_profile_subscriber")
      */
-    public function subscribers(): Response
+    public function subscribers(User $user): Response
     {
         return $this->render('user/index.html.twig', [
-            'partial' => 'subscriber'
+            'partial' => 'subscriber',
+            'user' => $user
         ]);
     }
 
     /**
-     * @Route("/profile/subscriptions", name="app_user_profile_subscription")
+     * @Route("/profile/{pseudonym}/subscriptions", name="app_user_profile_subscription")
      */
-    public function subscriptions(): Response
+    public function subscriptions(User $user): Response
     {
         return $this->render('user/index.html.twig', [
-            'partial' => 'subscription'
+            'partial' => 'subscription',
+            'user' => $user
         ]);
     }
 }

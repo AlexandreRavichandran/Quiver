@@ -16,7 +16,7 @@
                 <input type="text" class="p-2" name="search" id="search" placeholder="Rechercher des questions, personnes et sujets" size="45">
             </div>
             <div class="text-center flex col-span-1 sm:col-span-2 md:col-span-2 lg:col-span-1 xl:col-span-1">
-                <a class="block pr-6" href="{{path('app_user_profile')}}"> <i class="bi text-3xl bi-person-circle"></i></a>
+                <a class="block pr-6" href="{{path('app_user_profile',{'pseudonym':app.user.pseudonym})}}"> <i class="bi text-3xl bi-person-circle"></i></a>
                 <a class="hidden sm:block" href="#"><i class="text-3xl bi bi-globe"></i></a>
             </div>
             <div class="hidden xl:col-span-2 xl:block">
