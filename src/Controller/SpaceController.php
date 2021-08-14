@@ -80,7 +80,7 @@ class SpaceController extends AbstractController
      */
     public function following(SpaceRepository $spaceRepository, QuestionRepository $questionRepository): Response
     {
-        $questions = $questionRepository->findAll();
+        $questions = $questionRepository->findBy([], ['createdAt' => 'DESC'], 4);
         $spaces = $spaceRepository->findBy([], null, 8);
 
         return $this->render(

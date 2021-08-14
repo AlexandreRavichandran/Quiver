@@ -20,7 +20,7 @@ class HomeController extends AbstractController
      */
     public function index(SpaceRepository $spaceRepository, QuestionRepository $questionRepository, Request $request, EntityManagerInterface $em): Response
     {
-        $questions = $questionRepository->findBy([], null, 4);
+        $questions = $questionRepository->findBy([], ['createdAt' => 'DESC'], 4);
         $spaces = $spaceRepository->findBy([], null, 8);
 
         return $this->render(
