@@ -19,6 +19,16 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
+    public function findAllQuestionsWithAnswers($limit = null)
+    {
+        return $this->createQueryBuilder('q')
+            ->innerJoin('q.answers', 'a')
+            ->andWhere('a.answer IS NOT NULL')
+            ->orderBy('q.createdAt', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return Question[] Returns an array of Question objects
     //  */
