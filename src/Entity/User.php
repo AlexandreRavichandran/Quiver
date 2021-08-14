@@ -5,6 +5,7 @@ namespace App\Entity;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -90,12 +91,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $subComments;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Answer::class, mappedBy="likedUsers")
+     * @JoinTable(name="answers_liked")
+     */
+    private $likedAnswers;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Answer::class, mappedBy="dislikedUsers")
+     * @JoinTable(name="answers_disliked")
+     */
+    private $dislikedAnswers;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
         $this->answers = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->subComments = new ArrayCollection();
+        $this->likedAnswers = new ArrayCollection();
+        $this->dislikedAnswers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -261,7 +276,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function setUpdatedAt(): self
     {
-        $this->updatedAt =new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
 
         return $this;
     }
@@ -381,6 +396,60 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($subComment->getAuthor() === $this) {
                 $subComment->setAuthor(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Answer[]
+     */
+    public function getLikedAnswers(): Collection
+    {
+        return $this->likedAnswers;
+    }
+
+    public function addLikedAnswers(Answer $likedAnswers): self
+    {
+        if (!$this->likedAnswers->contains($likedAnswers)) {
+            $this->likedAnswers[] = $likedAnswers;
+            $likedAnswers->addLikedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLikedAnswers(Answer $likedAnswers): self
+    {
+        if ($this->likedAnswers->removeElement($likedAnswers)) {
+            $likedAnswers->removeLikedUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Answer[]
+     */
+    public function getDislikedAnswers(): Collection
+    {
+        return $this->dislikedAnswers;
+    }
+
+    public function addDislikedUser(Answer $dislikedAnswers): self
+    {
+        if (!$this->dislikedAnswers->contains($dislikedAnswers)) {
+            $this->dislikedAnswers[] = $dislikedAnswers;
+            $dislikedAnswers->addDislikedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDislikedAnswer(Answer $dislikedAnswers): self
+    {
+        if ($this->dislikedAnswers->removeElement($dislikedAnswers)) {
+            $dislikedAnswers->removeDislikedUser($this);
         }
 
         return $this;

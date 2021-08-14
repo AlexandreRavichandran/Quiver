@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\AnswerRepository;
 use DateTimeImmutable;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
+use App\Repository\AnswerRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -59,9 +60,23 @@ class Answer
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="likedAnswers")
+     * @JoinTable(name="answers_liked")
+     */
+    private $likedUsers;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="dislikedAnswers")
+     * @JoinTable(name="answers_disliked")
+     */
+    private $dislikedUsers;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->likedUsers = new ArrayCollection();
+        $this->dislikedUsers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -174,6 +189,54 @@ class Answer
                 $comment->setAnswer(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getLikedUsers(): Collection
+    {
+        return $this->likedUsers;
+    }
+
+    public function addLikedUser(User $likedUser): self
+    {
+        if (!$this->likedUsers->contains($likedUser)) {
+            $this->likedUsers[] = $likedUser;
+        }
+
+        return $this;
+    }
+
+    public function removeLikedUser(User $likedUser): self
+    {
+        $this->likedUsers->removeElement($likedUser);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getDislikedUsers(): Collection
+    {
+        return $this->dislikedUsers;
+    }
+
+    public function addDislikedUser(User $dislikedUser): self
+    {
+        if (!$this->dislikedUsers->contains($dislikedUser)) {
+            $this->dislikedUsers[] = $dislikedUser;
+        }
+
+        return $this;
+    }
+
+    public function removeDislikedUser(User $dislikedUser): self
+    {
+        $this->dislikedUsers->removeElement($dislikedUser);
 
         return $this;
     }

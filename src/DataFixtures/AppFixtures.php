@@ -74,6 +74,14 @@ class AppFixtures extends Fixture
                     ->setQuestion($question)
                     ->setAuthor($userList[mt_rand(0, 15)])
                     ->setAnswer('<p>' . implode('</p><p>', $faker->paragraphs(30)));
+
+                for ($c = 0; $c < mt_rand(0, 15); $c++) {
+                    if (mt_rand(0, 1)) {
+                        $answer->addLikedUser($userList[mt_rand(0, 15)]);
+                    } else {
+                        $answer->addDislikedUser($userList[mt_rand(0, 15)]);
+                    }
+                }
                 $manager->persist($answer);
 
                 //create fake Comments
