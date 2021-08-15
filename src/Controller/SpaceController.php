@@ -62,7 +62,7 @@ class SpaceController extends AbstractController
      */
     public function index(SpaceRepository $spaceRepository): Response
     {
-        $spaces = $spaceRepository->findAll();
+        $spaces = $spaceRepository->findBy([], null, 6);
 
         return $this->render(
             'space/index.html.twig',

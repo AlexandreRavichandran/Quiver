@@ -2,8 +2,10 @@
     <a href="#">
         <div class="postBody">
             <img class="block" src="https://picsum.photos/900/320" alt="" width="100%">
-            <p class="mt-2 answer" style="height:95px;overflow:hidden">{{answer.answer}}</p>
-            <a class="moreLink" href="#">(more)</a>
+            <div class="mt-2 answer" style="height:95px;overflow:hidden">
+                {{answer.answer}}
+                <a class="moreLink" href="#">(more)</a>
+            </div>
             <p>{{formatViewsNumber(answer.viewsNumber)}} vues</p>
         </div>
     </a>
@@ -27,7 +29,7 @@
                             <img class="block rounded-full" src="https://placehold.it/50x50" alt="">
                         </div>
                         <div class="col-span-9">
-                            <textarea required="required" name="comment" id="comment_answer_{{answer.id}}" class="w-full"></textarea>
+                            <textarea required="required" class="commentSpace" name="comment" id="comment_answer_{{answer.id}}" class="w-full"></textarea>
                         </div>
                         <input type="hidden" name="answerId" value="{{answer.id}}">
                         <input type="hidden" name="referer" value="{{app.request.attributes.get('_route')}}">
@@ -39,14 +41,14 @@
             </div>
             <div class="commentList">         
             {% for comments in answer.comments %}
-                <div class="commentheader flex ">
+                <div class="commentheader flex mt-3">
                     <img class="block rounded-full" src="https://placehold.it/45x45" alt="">
                     <div class="ml-2">
                         <p class="font-semibold text-xl">{{comments.author.pseudonym}}</p>
                         <p class="text-gray-300">{{comments.createdAt|date('d/m/Y')}}</p>
                     </div>
                 </div>
-                <p class="p-4">{{comments.comment}}</p>
+                <p class="p-4 pt-0">{{comments.comment}}</p>
                 <div class=" ml-3 pl-3 border-l-4 sub_comments">
                     {% for subComments in comments.subComments %}
                     <div class="commentheader flex ">
@@ -56,7 +58,9 @@
                             <p class="text-gray-300">{{subComments.createdAt|date('d/m/Y')}}</p>
                         </div>
                     </div>
-                    <p class="p-4">{{subComments.subComment}}</p>
+                    <div class="p-4 pt-1 mb-3">
+                        {{subComments.subComment}}
+                    </div>
                     {% endfor %}
                 </div>
                 <div class="bg-gray-200 rounded-full mt-2 mb-2">

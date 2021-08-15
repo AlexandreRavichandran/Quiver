@@ -89,17 +89,17 @@ class AppFixtures extends Fixture
                     $comment = new Comment;
                     $comment
                         ->setAnswer($answer)
-                        ->setComment(implode('', $faker->paragraphs(mt_rand(4, 15))))
+                        ->setComment('<p>' . implode('</p><p>', $faker->paragraphs(mt_rand(1, 8))))
                         ->setAuthor($userList[mt_rand(0, 15)]);
                     $manager->persist($comment);
 
                     //create fake sub_comments
-                    for ($d = 0; $d < mt_rand(0, 13); $d++) {
+                    for ($d = 0; $d < mt_rand(0, 4); $d++) {
                         $subComment = new SubComment;
                         $subComment
                             ->setAuthor($userList[mt_rand(0, 15)])
                             ->setComment($comment)
-                            ->setSubComment(implode('', $faker->paragraphs(mt_rand(4, 15))));
+                            ->setSubComment('<p>' . implode('</p><p>', $faker->paragraphs(mt_rand(1, 8))));
                         $manager->persist($subComment);
                     }
                 }

@@ -38,7 +38,7 @@
         <div class="grid grid-cols-12 gap-4 flex justify-between">
             <div class="col-span-12 lg:col-span-10 xl:col-span-10 p-4 ">
                 <h2 class="font-black text-2xl"> Découvrir des espaces </h2>
-                <div class="grid grid-cols-12 gap-4 mt-4 spaceList flex flex-wrap">
+                <div class="grid grid-cols-12 gap-4 mt-4 spaceList flex flex-wrap mb-3">
                 {% for space in spaces %}
                     <div class="col-span-12 md:col-span-6 lg:col-span-4 spaceCard bg-white rounded-xl p-2 border border-gray-300 hover:bg-gray-200">
                         <a href="{{path('app_space_show',{'id':space.id})}}">
@@ -48,9 +48,9 @@
                         </a>
                     </div>
                 {% endfor %}
-                    <div class="flex justify-center">
-                        <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
-                        </div>
+                </div>
+                <div class="flex justify-center">
+                    <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
                     </div>
                 </div>
             </div>      
