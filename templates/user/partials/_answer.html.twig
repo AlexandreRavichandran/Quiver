@@ -8,6 +8,10 @@
             <a href="{{path('app_question_show',{'id':answer.question.id})}}" class="block text-xl font-black p-2">{{answer.question.question}}</a>
         </div>
     {% include 'partials/_answer_comment_subcomment.html.twig' %}
-</div>
+    </div>
 {% endfor %}
+    <div class="flex justify-center">
+        <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
+        </div>
+    </div>
 </div>

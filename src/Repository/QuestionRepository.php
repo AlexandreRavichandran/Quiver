@@ -22,8 +22,9 @@ class QuestionRepository extends ServiceEntityRepository
     public function findAllQuestionsWithAnswers($limit = null)
     {
         return $this->createQueryBuilder('q')
-            ->innerJoin('q.answers', 'a')
-            ->andWhere('a.answer IS NOT NULL')
+            ->join('q.answers', 'a')
+            ->groupBy('a.question')
+            ->andHaving('COUNT(a.answer) > 0')
             ->orderBy('q.createdAt', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()

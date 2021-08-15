@@ -21,8 +21,10 @@ class HomeController extends AbstractController
     public function index(SpaceRepository $spaceRepository, QuestionRepository $questionRepository, Request $request, EntityManagerInterface $em): Response
     {
 
-        $questions = $questionRepository->findAllQuestionsWithAnswers(4);
+        //dd($questionRepository->findAllQuestionsWithAnswers(4));
+        $questions = $questionRepository->findAllQuestionsWithAnswers(3);
         $spaces = $spaceRepository->findBy([], null, 8);
+
 
         return $this->render(
             'home/index.html.twig',

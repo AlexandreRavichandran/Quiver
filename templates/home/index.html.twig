@@ -5,7 +5,7 @@
 {% block body %}
 <div class="container mx-auto p-4">
         <div class="grid grid-cols-12 gap-4">
-            <div class="col-span-12 sm:col-span-12 md:col-span-12 xl:col-span-2 ">
+            <div class="hidden col-span-12 sm:col-span-12 md:col-span-12 md:block xl:col-span-2 ">
                 {% include 'partials/_leftSideBar.html.twig' %}
                 <div class="hidden xl:block">
                     {% include 'partials/_footer.html.twig' %}
@@ -26,6 +26,7 @@
                     {% include 'partials/modals/_question_create_modal.html.twig' %}
                     {% endif %}
                     {% for question in questions %}
+
                     <div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-answer-id ="{{question.answers[0].id}}">
                         <div class="postHeader mb-3">
                             <a href="{{path('app_user_profile',{'pseudonym':question.answers[0].author.pseudonym})}}">
@@ -38,7 +39,12 @@
                         {% set answer = question.answers[0] %}
                         {% include 'partials/_answer_comment_subcomment.html.twig' %}
                     </div>
+
                     {% endfor %}
+                </div>
+                <div class="flex justify-center">
+                    <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
+                    </div>
                 </div>
             </div>
             <div class="col-span-12 sm:col-span-12 lg:col-span-12 xl:col-span-3 bg-white">
