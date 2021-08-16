@@ -55,6 +55,13 @@ class AppFixtures extends Fixture
             $manager->persist($user);
             $userList[] = $user;
         }
+
+        foreach ($userList as $user) {
+            for ($i = 0; $i < mt_rand(1, count($userList)); $i++) {
+                $user->addSubscription($userList[mt_rand(0, count($userList) - 1)]);
+            }
+            $manager->persist($user);
+        }
         //create fake questions
         for ($a = 0; $a < 21; $a++) {
             $question = new Question;
@@ -89,7 +96,7 @@ class AppFixtures extends Fixture
                     $comment = new Comment;
                     $comment
                         ->setAnswer($answer)
-                        ->setComment('<p>' . implode('</p><p>', $faker->paragraphs(mt_rand(1, 8))))
+                        ->setComment('<p>' . implode('</p><p>', $faker->paragraphs(mt_rand(4, 8))))
                         ->setAuthor($userList[mt_rand(0, 15)]);
                     $manager->persist($comment);
 
@@ -99,7 +106,7 @@ class AppFixtures extends Fixture
                         $subComment
                             ->setAuthor($userList[mt_rand(0, 15)])
                             ->setComment($comment)
-                            ->setSubComment('<p>' . implode('</p><p>', $faker->paragraphs(mt_rand(1, 8))));
+                            ->setSubComment('<p>' . implode('</p><p>', $faker->paragraphs(mt_rand(4, 8))));
                         $manager->persist($subComment);
                     }
                 }

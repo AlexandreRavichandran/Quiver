@@ -103,6 +103,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $dislikedAnswers;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="subscriber")
+     * @JoinTable(name="user_user")
+     */
+    private $subscription;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="subscription")
+     * @JoinTable(name="user_user")
+     */
+    private $subscriber;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -111,6 +123,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->subComments = new ArrayCollection();
         $this->likedAnswers = new ArrayCollection();
         $this->dislikedAnswers = new ArrayCollection();
+        $this->subscription = new ArrayCollection();
+        $this->subscriber = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -453,5 +467,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getSubscriptions(): Collection
+    {
+        return $this->subscription;
+    }
+
+    public function addSubscription(self $subscription): self
+    {
+        if (!$this->subscription->contains($subscription)) {
+            $this->subscription[] = $subscription;
+        }
+
+        return $this;
+    }
+
+    public function removeSubscription(self $subscription): self
+    {
+        $this->subscription->removeElement($subscription);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getSubscribers(): Collection
+    {
+        return $this->subscriber;
+    }
+
+    public function addSubscriber(self $subscriber): self
+    {
+        if (!$this->subscriber->contains($subscriber)) {
+            $this->subscriber[] = $subscriber;
+            $subscriber->addSubscription($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscriber(self $subscriber): self
+    {
+        if ($this->subscriber->removeElement($subscriber)) {
+            $subscriber->removeSubscription($this);
+        }
+
+        return $this;
+    }
+
+    public function isSubscribedTo(self $subscription): bool
+    {
+        $isSubscribed = $subscription->getSubscribers()->contains($this);
+
+        return $isSubscribed;
     }
 }
