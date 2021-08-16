@@ -37,7 +37,7 @@
                         <button class="p-2 bg-indigo-400 text-white font-semibold rounded" type="submit">Se connecter</button>
                     </div>
                     {% if error %}
-                    <div class="mt-4 bg-orange-100 border-r-4 border-orange-500 text-orange-700 p-4 text-center" role="alert">
+                    <div class="mt-4 bg-red-100 border-r-4 border-red-500 text-red-700 p-4 text-center" role="alert">
                         <p class="font-bold">Authentification échouée</p>
                         <p>{{ error.messageKey|trans(error.messageData, 'security','fr_FR') }}</p>
                     </div>
