@@ -29,7 +29,7 @@
                             <a href="{{path('app_user_profile',{'pseudonym':question.answers[0].author.pseudonym})}}">
                                 <p class="text-xl"><img class="inline mr-2 rounded-full" src="https://placehold.it/40x40" alt="">{{question.answers[0].author.pseudonym}}
                             </a>
-                            <a href="#" class="text-indigo-500 text-base ml-2">Suivre</a></p>
+                            <a href="#" data-id="{{question.answers[0].author.id}}" class="subscribeLink text-indigo-500 text-base ml-2">Suivre</a></p>
                             <p class="text-sm text-gray-400">{{question.answers[0].author.description}}</p>
                             <a href="{{path('app_question_show',{'id':question.id})}}" class="block text-xl font-black p-2">{{question.question}}</a>
                         </div>
