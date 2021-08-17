@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserController extends AbstractController
 {
@@ -63,5 +66,35 @@ class UserController extends AbstractController
             'partial' => 'subscription',
             'user' => $user
         ]);
+    }
+
+    /**
+     * 
+     * @Route("/profile/{id}/subscribers/{action}")
+     * @return JsonResponse
+     */
+    public function addSubscriber(User $user, string $action, UserRepository $userRepository, EntityManagerInterface $em): JsonResponse
+    {
+        $userToSubcribeWith = $this->getUser();
+        $userToSubscribe = $userRepository->findOneBy(['id' => $user->getId()]);
+
+        $isSubscribed = in_array($userToSubcribeWith, $userToSubscribe->getSubscribers()->toArray());
+        if ($action === 'add') {
+            if ($isSubscribed) {
+                $userToSubscribe->removeSubscriber($userToSubcribeWith);
+            } else {
+                $userToSubscribe->addSubscriber($userToSubcribeWith);
+            }
+        } else {
+            $userToSubscribe->removeSubscriber($userToSubcribeWith);
+        }
+
+        $em->flush();
+
+        $jsonData = [
+            'subscriberNumber' => count($userToSubscribe->getSubscribers()),
+            'subscriptionNumber' => count($userToSubcribeWith->getSubscriptions()),
+        ];
+        return new JsonResponse($jsonData);
     }
 }
