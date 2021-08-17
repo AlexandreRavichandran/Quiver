@@ -16,22 +16,29 @@ const user = {
 
     },
 
+    handleSubscription: function (target, classIfAdded, classIfRemoved) {
+        if (target.classList.contains(classIfAdded)) {
+            user.AJAXSubscriptionHandler(target.dataset.id, "remove");
+            target.classList.add(classIfRemoved);
+            target.classList.remove(classIfAdded);
+        } else {
+            user.AJAXSubscriptionHandler(target.dataset.id, "add");
+            target.classList.remove(classIfRemoved);
+            target.classList.add(classIfAdded);
+        }
+
+    },
+    
     handleSubscriptionLinks: function (e) {
         e.preventDefault();
         const currentLink = e.currentTarget;
 
+        user.handleSubscription(currentLink, 'link-subscribed', 'link-unsubscribed')
+
         if (currentLink.classList.contains('link-subscribed')) {
-
-            user.AJAXSubscriptionHandler(currentLink.dataset.id, "remove");
-            currentLink.classList.add('link-unsubscribed');
-            currentLink.classList.remove('link-subscribed');
-            currentLink.textContent = "Suivre";
-
-        } else {
-            user.AJAXSubscriptionHandler(currentLink.dataset.id, "add");
-            currentLink.classList.remove('link-unsubscribed');
-            currentLink.classList.add('link-subscribed');
             currentLink.textContent = "Suivi";
+        } else {
+            currentLink.textContent = "Suivre";
         }
 
     },
@@ -40,18 +47,13 @@ const user = {
         e.preventDefault();
         const idOfUserToHandle = e.currentTarget;
 
-        if (idOfUserToHandle.classList.contains('subscribed')) {
+        user.handleSubscription(idOfUserToHandle, 'subscribed', 'notSubscribed')
 
-            user.AJAXSubscriptionHandler(idOfUserToHandle.dataset.id, "remove");
-            idOfUserToHandle.classList.add('notSubscribed');
-            idOfUserToHandle.classList.remove('subscribed');
-            idOfUserToHandle.innerHTML = "<i class='bi bi-person-plus mr-3'></i>Suivre";
+        if (idOfUserToHandle.classList.contains('subscribed')) {
+            idOfUserToHandle.innerHTML = "<i class='bi bi-person-plus-fill mr-3'></i>Suivi";
 
         } else {
-            user.AJAXSubscriptionHandler(idOfUserToHandle.dataset.id, "add");
-            idOfUserToHandle.classList.remove('notSubscribed');
-            idOfUserToHandle.classList.add('subscribed');
-            idOfUserToHandle.innerHTML = "<i class='bi bi-person-plus-fill mr-3'></i>Suivi";
+            idOfUserToHandle.innerHTML = "<i class='bi bi-person-plus mr-3'></i>Suivre";
         }
     },
 
