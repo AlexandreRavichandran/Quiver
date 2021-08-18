@@ -30,7 +30,7 @@
                                 <p class="text-xl"><img class="inline mr-2 rounded-full" src="https://placehold.it/40x40" alt="">{{question.answers[0].author.pseudonym}}
                             </a>
                             <a href="#" data-id="{{question.answers[0].author.id}}" class="subscribeLink font-semibold text-indigo-500 text-base ml-2">Suivre</a></p>
-                            <p class="text-sm text-gray-400">{{question.answers[0].author.description}}</p>
+                            <p class="text-sm mt-2 text-gray-400">{{question.answers[0].author.qualification}}</p>
                             <a href="{{path('app_question_show',{'id':question.id})}}" class="block text-xl font-black p-2">{{question.question}}</a>
                         </div>
                         {% set answer = question.answers[0] %}

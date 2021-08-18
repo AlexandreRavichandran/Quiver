@@ -115,6 +115,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $subscriber;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $qualification;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -525,5 +530,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $isSubscribed = $subscription->getSubscribers()->contains($this);
 
         return $isSubscribed;
+    }
+
+    public function getQualification(): ?string
+    {
+        return $this->qualification;
+    }
+
+    public function setQualification(?string $qualification): self
+    {
+        $this->qualification = $qualification;
+
+        return $this;
     }
 }

@@ -14,7 +14,9 @@
                         <p class="my-3 bg-gray-200 text-gray-500 rounded w-24 px-2">VOUS SUIT</p>
                         {% endif %}
                         {% if user == app.user %}
-                        <a href="#" class="block font-semibold text-gray-400 mt-2 mb-2">Ajouter une qualification de profil</a>
+                        <a href="#" class="block font-semibold text-gray-400 mt-2 mb-2">{{user.qualification}}</a>
+                        {% else %}
+                        <p class="block font-semibold text-gray-400 mt-2 mb-2">{{user.qualification}}</p>
                         {% endif %}
                         <p><a href="#"> {{user.subscribers|length}} abonnés </a> <a href="#"> {{user.subscriptions|length}} qui suit</a></p>
                         <a href="#" class="mt-3 block text-gray-400">{{user.description}}</a>
