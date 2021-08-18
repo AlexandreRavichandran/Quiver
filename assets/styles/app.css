@@ -29,11 +29,11 @@
     }
 
     .link-subscribed{
-        @apply text-gray-400
+        @apply text-gray-300
     }
     
     .link-unsubscribed{
-        @apply text-indigo-400
+        @apply text-indigo-500
     }
 }
 

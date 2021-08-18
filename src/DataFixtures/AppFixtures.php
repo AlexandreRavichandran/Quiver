@@ -51,7 +51,7 @@ class AppFixtures extends Fixture
                 ->setFirstName($faker->firstName())
                 ->setLastName($faker->lastName())
                 ->setPseudonym($faker->userName)
-                ->setRoles([]);
+                ->setRoles(['ROLE_USER']);
             $manager->persist($user);
             $userList[] = $user;
         }

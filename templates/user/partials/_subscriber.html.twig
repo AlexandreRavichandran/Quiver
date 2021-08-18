@@ -9,7 +9,7 @@
             {% if (app.user.isSubscribedTo(subscriber) and subscriber != app.user) %}
             <a href="#" data-id="{{subscriber.id}}" class="subscribeButton pl-4 pr-4 pt-2 w-32 block text-center rounded-full border subscribed"><i class='bi bi-person-plus-fill mr-3'></i>Suivi</a>
             {% elseif (subscriber != app.user) %}
-            <a href="#" data-id="{{subscriber.id}}" class="subscribeButton pl-4 pr-4 pt-2 w-32 block text-center rounded-full border notSubscribed"><i class='bi bi-person-plus mr-3'></i>Suivre</a>
+            <a href="#" data-id="{{subscriber.id}}" class="subscribeButton pl-4 pr-4 pt-2 w-32 block text-center rounded-full font-semibold border notSubscribed"><i class='bi bi-person-plus mr-3'></i>Suivre</a>
             {% endif %}
         </div>
     </a>
