@@ -120,6 +120,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $qualification;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Space::class, mappedBy="subscribers")
+     */
+    private $subscribedSpaces;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -130,6 +135,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->dislikedAnswers = new ArrayCollection();
         $this->subscription = new ArrayCollection();
         $this->subscriber = new ArrayCollection();
+        $this->subscribedSpaces = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -540,6 +546,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setQualification(?string $qualification): self
     {
         $this->qualification = $qualification;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Space[]
+     */
+    public function getSubscribedSpaces(): Collection
+    {
+        return $this->subscribedSpaces;
+    }
+
+    public function addSubscribedSpace(Space $subscribedSpaces): self
+    {
+        if (!$this->subscribedSpaces->contains($subscribedSpaces)) {
+            $this->subscribedSpaces[] = $subscribedSpaces;
+            $subscribedSpaces->addSubscriber($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscribedSpace(Space $subscribedSpaces): self
+    {
+        if ($this->subscribedSpaces->removeElement($subscribedSpaces)) {
+            $subscribedSpaces->removeSubscriber($this);
+        }
 
         return $this;
     }

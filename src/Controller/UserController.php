@@ -62,6 +62,7 @@ class UserController extends AbstractController
      */
     public function subscriptions(User $user): Response
     {
+        
         return $this->render('user/index.html.twig', [
             'partial' => 'subscription',
             'user' => $user

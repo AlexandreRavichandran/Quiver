@@ -17,16 +17,15 @@
         </div>
     </a>
    {% endfor %} 
-    <div class="border-b-2 flex justify-between p-4">
-        <h3 class="font-black align-center"><img class="inline mr-2" src="https://placehold.it/40x40" alt="">Langages informatiques</span></h3>
-       
-    
-    </div>
-    <div class="border-b-2 p-4">
-        <h3 class="font-black align-center"><img class="inline mr-2" src="https://placehold.it/40x40" alt="">Espace suivi</h3>
-        <p class="font-semibold text-gray-300">3.3 k abonnées</p>
-        <p>Description de l'espace</p>
-    </div>
+    {% for space in user.subscribedSpaces %}
+    <a href="{{path('app_space_show',{'id':space.id})}}">
+        <div class="border-b-2 p-4">
+            <h3 class="font-black align-center"><img class="inline mr-2 rounded" src="https://placehold.it/40x40" alt="">{{space.name}}</h3>
+            <p class="font-semibold text-gray-300">{{space.subscribers|length}} abonnées</p>
+            <p>{{space.description}}</p>
+        </div>
+    </a>
+    {% endfor %}
     <div class="flex justify-center">
         <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
         </div>

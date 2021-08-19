@@ -20,18 +20,14 @@
                     <a href="#discoverSpaces" class="block p-2 rounded border"><i class="bi bi-compass mr-1"></i>Découvrir des espaces</a>
                 </span>
                 <div class="userSpaceList">
+                {% for space in userFollowingSpaces %}
+                <a href="{{path('app_space_show',{'id':space.id})}}">
                     <div class="userSpace flex justify-between p-2 border-b-2">
-                        <p class="font-black"><img class="inline mr-3" src="https://placehold.it/60x60" alt="">Espace 1 </p>
+                        <p class="font-black"><img class="inline mr-3" src="https://placehold.it/60x60" alt="">{{space.name}} </p>
                         <i class="bi bi-chevron-right"></i>
                     </div>
-                    <div class="userSpace flex justify-between p-2 border-b-2">
-                        <p class="font-black"><img class="inline mr-3" src="https://placehold.it/60x60" alt="">Espace 2 </p>
-                        <i class="bi bi-chevron-right"></i>
-                    </div>
-                    <div id="discoverSpaces" class="userSpace flex justify-between p-2 border-b-2">
-                        <p class="font-black"><img class="inline mr-3" src="https://placehold.it/60x60" alt="">Espace 3 </p>
-                        <i class="bi bi-chevron-right"></i>
-                    </div>
+                </a>
+                {% endfor %}
                 </div>
             </div> 
         </div>

@@ -53,6 +53,10 @@ class AppFixtures extends Fixture
                 ->setQualification($faker->sentence(2))
                 ->setPseudonym($faker->userName)
                 ->setRoles(['ROLE_USER']);
+            for ($j = 0; $j < mt_rand(0, count($spaceList)); $j++) {
+
+                $user->addSubscribedSpace($spaceList[mt_rand(0, count($spaceList) - 1)]);
+            }
             $manager->persist($user);
             $userList[] = $user;
         }

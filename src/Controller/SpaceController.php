@@ -62,6 +62,8 @@ class SpaceController extends AbstractController
      */
     public function index(SpaceRepository $spaceRepository): Response
     {
+        $userFollowingSpaces = $this->getUser()->getSubscribedSpaces();
+
         $spaces = $spaceRepository->findBy([], null, 6);
 
         return $this->render(
@@ -69,6 +71,7 @@ class SpaceController extends AbstractController
             [
                 'page' => 'space',
                 'spaces' => $spaces,
+                'userFollowingSpaces' => $userFollowingSpaces
             ]
         );
     }
@@ -80,7 +83,13 @@ class SpaceController extends AbstractController
      */
     public function following(SpaceRepository $spaceRepository, QuestionRepository $questionRepository): Response
     {
-        $questions = $questionRepository->findAllQuestionsWithAnswers(4);
+        $userFollowingSpaces = $this->getUser()->getSubscribedSpaces()->toArray();
+        $userFollowingSpaceNames = [];
+        foreach ($userFollowingSpaces as $space) {
+            $userFollowingSpaceNames[] = $space->getId();
+        }
+        $questions = $questionRepository->findAllQuestionsBySpaceNames($userFollowingSpaceNames, 3);
+
         $spaces = $spaceRepository->findBy([], null, 8);
 
         return $this->render(

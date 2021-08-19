@@ -30,6 +30,16 @@ class QuestionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllQuestionsBySpaceNames($spaceNames, $limit = null)
+    {
+        return $this->createQueryBuilder('q')
+            ->join('q.space', 's')
+            ->andWhere('s.id IN (' . implode(', ', $spaceNames) . ')')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return Question[] Returns an array of Question objects
     //  */

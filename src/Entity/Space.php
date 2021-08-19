@@ -38,9 +38,15 @@ class Space
      */
     private $description;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="subscribedSpaces")
+     */
+    private $subscribers;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
+        $this->subscribers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -95,6 +101,30 @@ class Space
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getSubscribers(): Collection
+    {
+        return $this->subscribers;
+    }
+
+    public function addSubscriber(User $subscriber): self
+    {
+        if (!$this->subscribers->contains($subscriber)) {
+            $this->subscribers[] = $subscriber;
+        }
+
+        return $this;
+    }
+
+    public function removeSubscriber(User $subscriber): self
+    {
+        $this->subscribers->removeElement($subscriber);
 
         return $this;
     }
