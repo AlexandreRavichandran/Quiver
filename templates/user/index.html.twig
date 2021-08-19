@@ -18,7 +18,7 @@
                         {% else %}
                         <p class="block font-semibold text-gray-400 mt-2 mb-2">{{user.qualification}}</p>
                         {% endif %}
-                        <p><a href="#"> {{user.subscribers|length}} abonnés </a> <a href="#"> {{user.subscriptions|length}} qui suit</a></p>
+                        <p><a href="#"> {{user.subscribers|length}} abonnés </a> <a href="#"> {{user.subscriptions|length + user.subscribedSpaces|length}} qui suit</a></p>
                         <a href="#" class="mt-3 block text-gray-400">{{user.description}}</a>
                         
                     </div>
@@ -30,7 +30,7 @@
                             <li class="list-item mr-4 mb-0 py-4 {% if partial is same as 'answer' %} profileActive {% endif %}"><a href="{{path('app_user_profile_answer',{'pseudonym':user.pseudonym})}}">{{user.answers|length}} réponses</a></li>
                             <li class="list-item mr-4 mb-0 py-4 {% if partial is same as 'question' %} profileActive {% endif %}"><a href="{{path('app_user_profile_question',{'pseudonym':user.pseudonym})}}">{{user.questions|length}} questions</a></li>
                             <li class="list-item mr-4 mb-0 py-4 {% if partial is same as 'subscriber' %} profileActive {% endif %}"><a href="{{path('app_user_profile_subscriber',{'pseudonym':user.pseudonym})}}"><span id="subscriberNumber">{{user.subscribers|length}}</span> abonnés</a></li>
-                            <li class="list-item mr-4 mb-0 py-4 {% if partial is same as 'subscription' %} profileActive {% endif %}"><a href="{{path('app_user_profile_subscription',{'pseudonym':user.pseudonym})}}">{{user.subscriptions|length}} abonnements</a></li>
+                            <li class="list-item mr-4 mb-0 py-4 {% if partial is same as 'subscription' %} profileActive {% endif %}"><a href="{{path('app_user_profile_subscription',{'pseudonym':user.pseudonym})}}">{{user.subscriptions|length + user.subscribedSpaces|length}} abonnements</a></li>
                         </ul>
                     </nav>
                 </div>

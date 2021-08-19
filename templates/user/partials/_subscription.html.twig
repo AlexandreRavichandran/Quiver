@@ -1,5 +1,5 @@
 <div class="header border-b-2 flex justify-between p-4">
-    <h3 class="font-semibold text-xl"> {{user.subscriptions|length}} abonnements </h3>
+    <h3 class="font-semibold text-xl"> {{user.subscriptions|length + user.subscribedSpaces|length}} abonnements </h3>
     <select name="" id="">
         <option value="" selected>Personnes</option>
         <option value="">Espaces</option>
@@ -12,7 +12,7 @@
         <div class="border-b-2 flex justify-between p-4">
             <h3 class="font-black align-center"><img class="inline mr-2" src="https://placehold.it/40x40" alt="">{{subscription.pseudonym}}, <span class="font-semibold text-gray-400">metier</span></h3>
             {% if (subscription.isSubscribedTo(app.user) and subscription != app.user) %}
-            <a href="#" class="pl-4 pr-4 pt-2 w-32 block text-center rounded-full border bg-gray-100 hover:bg-gray-200">Vous suit</a>
+            <a href="#" class="subcribed pl-4 pr-4 pt-2 w-32 block text-center rounded-full border bg-gray-100 hover:bg-gray-200">Vous suit</a>
             {% endif %}
         </div>
     </a>

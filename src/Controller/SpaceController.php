@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SpaceController extends AbstractController
 {
@@ -142,5 +143,27 @@ class SpaceController extends AbstractController
                 'questions' => $questions,
             ]
         );
+    }
+
+    /**
+     *
+     * @Route("/spaces/{id}/subscribers/{action}")
+     * @return JsonResponse
+     */
+    public function subscribe(Space $space, string $action, EntityManagerInterface $em): JsonResponse
+    {
+        $user = $this->getUser();
+        $isSubscribedTo = $space->hasSubscriber($user);
+        if ($action === 'add') {
+            if ($isSubscribedTo) {
+                $space->removeSubscriber($user);
+            } else {
+                $space->addSubscriber($user);
+            }
+        } else {
+            $space->removeSubscriber($user);
+        }
+        $em->flush();
+        return new JsonResponse;
     }
 }

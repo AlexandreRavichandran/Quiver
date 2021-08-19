@@ -14,6 +14,7 @@
             {{ encore_entry_script_tags('post') }}
             {{ encore_entry_script_tags('modal') }}
             {{ encore_entry_script_tags('user') }}
+            {{ encore_entry_script_tags('space') }}
             {% if app.user is not same as null %}
             <script> const user = "{{app.user.pseudonym}}"</script>
             {% endif %}

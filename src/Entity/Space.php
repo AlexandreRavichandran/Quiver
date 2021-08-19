@@ -128,4 +128,10 @@ class Space
 
         return $this;
     }
+
+    public function hasSubscriber(User $user): bool
+    {
+        $isSubscribed = $this->getSubscribers()->contains($user);
+        return $isSubscribed;
+    }
 }
