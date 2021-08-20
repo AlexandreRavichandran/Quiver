@@ -26,14 +26,8 @@ const space = {
     },
 
     AJAXRequestHandler: function (id, action) {
-        const xhttp = new XMLHttpRequest;
 
-        xhttp.onreadyStateChange = function () {
-            return true;
-        }
-
-        xhttp.open('GET', '/spaces/' + id + '/subscribers/' + action, true);
-        xhttp.send();
+        fetch('/spaces/' + id + '/subscribers/' + action).then(response => response.json())
     }
 }
 

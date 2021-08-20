@@ -28,7 +28,7 @@ const user = {
         }
 
     },
-    
+
     handleSubscriptionLinks: function (e) {
         e.preventDefault();
         const currentLink = e.currentTarget;
@@ -58,17 +58,8 @@ const user = {
     },
 
     AJAXSubscriptionHandler: function (id, action) {
-        const xhttp = new XMLHttpRequest();
 
-        xhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                return true;
-            }
-        };
-
-        xhttp.open('GET', '/profile/' + id + '/subscribers/' + action, true);
-        xhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xhttp.send();
+        fetch('/profile/' + id + '/subscribers/' + action).then(response => response.json())
     }
 }
 

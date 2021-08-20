@@ -35,7 +35,7 @@ const post = {
         }
 
     },
-    
+
     handlePostDisplay: function (e) {
         e.preventDefault();
         const postToDisplay = e.target.closest('.postBody');
@@ -96,20 +96,14 @@ const post = {
     },
 
     handleLikeAction: function (answerId, action) {
-        const xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                const datas = JSON.parse(this.responseText);
-                const likeNumber = document.querySelector('#answer_' + datas.answerId + '_likeNumber');
-                const dislikeNumber = document.querySelector('#answer_' + datas.answerId + '_dislikeNumber');
-                likeNumber.textContent = datas.likeNumber;
-                dislikeNumber.textContent = datas.dislikeNumber;
-            }
-        };
+        fetch('/answers/' + answerId + '/' + action).then(response => response.json()).then(datas => {
+            const likeNumber = document.querySelector('#answer_' + datas.answerId + '_likeNumber');
+            const dislikeNumber = document.querySelector('#answer_' + datas.answerId + '_dislikeNumber');
+            likeNumber.textContent = datas.likeNumber;
+            dislikeNumber.textContent = datas.dislikeNumber;
+        });
 
-        xhttp.open('GET', '/answers/' + answerId + '/' + action, true);
-        xhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xhttp.send();
+
     },
 
     handleFlashMessageButton: function (e) {
