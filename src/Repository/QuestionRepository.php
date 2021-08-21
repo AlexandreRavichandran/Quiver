@@ -25,7 +25,7 @@ class QuestionRepository extends ServiceEntityRepository
             ->join('q.answers', 'a')
             ->groupBy('a.question')
             ->andHaving('COUNT(a.answer) > 0')
-            ->where('q.createdAt > :date')
+            ->andWhere('q.createdAt < :date')
             ->setParameter('date', $date)
             ->orderBy('q.createdAt', 'DESC')
             ->setMaxResults($limit)

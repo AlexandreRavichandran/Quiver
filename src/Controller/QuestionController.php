@@ -71,16 +71,20 @@ class QuestionController extends AbstractController
 
     /**
      * 
-     * @Route("/questions/generate/{id}", name="question_generate_AJAX")
+     * @Route("/questions/generate/{date}", name="question_generate_AJAX")
      * @return JsonResponse
      */
     public function getMoreQuestionsAndAnswers(string $date, QuestionRepository $questionRepository): JsonResponse
     {
         $questions = $questionRepository->findAllQuestionsWithAnswers($date, 3);
-        
-        /**
-         * Faire le truc avec renderView https://www.youtube.com/watch?v=25IqZbLYoK0 52 min
-         */
-        return new JsonResponse();
+
+        $jsonData = [
+            'content' => $this->renderView(
+                'partials/question_headers/question_header_full.html.twig',
+                ['questions' => $questions]
+            )
+        ];
+
+        return new JsonResponse($jsonData);
     }
 }

@@ -6,6 +6,7 @@ use App\Entity\Space;
 use App\Form\SpaceType;
 use App\Repository\SpaceRepository;
 use App\Repository\QuestionRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,9 +21,8 @@ class HomeController extends AbstractController
      */
     public function index(SpaceRepository $spaceRepository, QuestionRepository $questionRepository, Request $request, EntityManagerInterface $em): Response
     {
-
-        //dd($questionRepository->findAllQuestionsWithAnswers(4));
-        $questions = $questionRepository->findAllQuestionsWithAnswers(0, 3);
+        $date = new DateTime();
+        $questions = $questionRepository->findAllQuestionsWithAnswers($date->format('Y-m-d'), 3);
         $spaces = $spaceRepository->findBy([], null, 8);
 
 

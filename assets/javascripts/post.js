@@ -34,6 +34,7 @@ const post = {
             flashMessageButtons[index].addEventListener('click', post.handleFlashMessageButton);
         }
 
+        document.addEventListener('scroll', post.addMorePosts);
     },
 
     handlePostDisplay: function (e) {
@@ -108,9 +109,29 @@ const post = {
 
     handleFlashMessageButton: function (e) {
         e.preventDefault();
-        console.log(e.currentTarget);
+
         const flashMessage = e.currentTarget.closest('.flashMessage');
         flashMessage.style.display = 'none';
+    },
+
+    addMorePosts: function () {
+
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1) {
+
+            const lastElement = document.querySelector('#content').lastElementChild;
+            const lastDate = lastElement.dataset.questionsDate;
+
+
+            fetch('/questions/generate/' + lastDate).then(response => response.json()).then(datas => {
+                if (datas.content !== '') {
+                    document.querySelector('#content').innerHTML += datas.content;
+                } else {
+                    document.querySelector('.loadingSpinner').style.display = 'none';
+
+                }
+
+            });
+        }
     }
 
 }

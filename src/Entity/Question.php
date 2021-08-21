@@ -82,12 +82,10 @@ class Question
         return $this->createdAt;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
-    public function setCreatedAt(): self
+
+    public function setCreatedAt($date): self
     {
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = $date;
 
         return $this;
     }

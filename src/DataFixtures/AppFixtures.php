@@ -72,7 +72,8 @@ class AppFixtures extends Fixture
             $question = new Question;
             $question
                 ->setQuestion($faker->sentence . '?')
-                ->setAuthor($userList[mt_rand(0, 15)]);
+                ->setAuthor($userList[mt_rand(0, 15)])
+                ->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeAD()));
             for ($b = 0; $b < mt_rand(1, 4); $b++) {
                 $question->addSpace($spaceList[mt_rand(0, 10)]);
             }
