@@ -1,5 +1,5 @@
 {% for question in questions %}
-    <div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-question-id = {{question.id}} data-questions-date ="{{question.createdAt|date('Y-m-d')}}" data-answer-id ="{{question.answers[0].id}}">
+    <div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-question-id = {{question.id}} data-questions-date ="{{question.createdAt|date('Y-m-d')}}" data-questions-date ="{{question.createdAt|date('Y-m-d')}}" data-answer-id ="{{question.answers[0].id}}">
         <div class="postHeader mb-3">
             <div class="flex">
                 <a class="block" href="{{path('app_space_show',{'id':question.space[0].id})}}">

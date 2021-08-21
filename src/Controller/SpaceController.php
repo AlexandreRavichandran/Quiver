@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Space;
 use App\Repository\SpaceRepository;
 use App\Repository\QuestionRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,12 +85,14 @@ class SpaceController extends AbstractController
      */
     public function following(SpaceRepository $spaceRepository, QuestionRepository $questionRepository): Response
     {
+        $date = new DateTime();
+        $date = $date->format('d-m-Y');
         $userFollowingSpaces = $this->getUser()->getSubscribedSpaces()->toArray();
         $userFollowingSpaceNames = [];
         foreach ($userFollowingSpaces as $space) {
             $userFollowingSpaceNames[] = $space->getId();
         }
-        $questions = $questionRepository->findAllQuestionsBySpaceNames($userFollowingSpaceNames, 3);
+        $questions = $questionRepository->findAllQuestionsBySpaceNames($userFollowingSpaceNames, $date, 3);
 
         $spaces = $spaceRepository->findBy([], null, 8);
 
@@ -165,5 +168,26 @@ class SpaceController extends AbstractController
         }
         $em->flush();
         return new JsonResponse;
+    }
+
+    /**
+     * 
+     * @Route("/following/generate/{date}", name="app_user_following_AJAX")
+     * @return JsonResponse
+     */
+    public function addMoreFollowingQuestions(string $date, QuestionRepository $questionRepository): JsonResponse
+    {
+        $userFollowingSpaces = $this->getUser()->getSubscribedSpaces()->toArray();
+        $userFollowingSpaceNames = [];
+        foreach ($userFollowingSpaces as $space) {
+            $userFollowingSpaceNames[] = $space->getId();
+        }
+        $questions = $questionRepository->findAllQuestionsBySpaceNames($userFollowingSpaceNames, $date, 3);
+        $jsonData = [
+            'content' => $this->renderView('partials/question_headers/question_header_follow.html.twig', [
+                'questions' => $questions
+            ])
+        ];
+        return new JsonResponse($jsonData);
     }
 }

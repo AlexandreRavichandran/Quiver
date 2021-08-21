@@ -33,11 +33,14 @@ class QuestionRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findAllQuestionsBySpaceNames($spaceNames, $limit = null)
+    public function findAllQuestionsBySpaceNames($spaceNames, $date, $limit = null)
     {
         return $this->createQueryBuilder('q')
             ->join('q.space', 's')
             ->andWhere('s.id IN (' . implode(', ', $spaceNames) . ')')
+            ->andWhere('q.createdAt < :date')
+            ->setParameter('date', $date)
+            ->orderBy('q.createdAt', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();

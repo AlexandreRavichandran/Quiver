@@ -34,7 +34,7 @@ const post = {
             flashMessageButtons[index].addEventListener('click', post.handleFlashMessageButton);
         }
 
-        document.addEventListener('scroll', post.addMorePosts);
+        document.addEventListener('scroll', post.selectAjaxRequest);
     },
 
     handlePostDisplay: function (e) {
@@ -114,27 +114,59 @@ const post = {
         flashMessage.style.display = 'none';
     },
 
+    selectAjaxRequest: function () {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1) {
+            console.log(location.pathname);
+            switch (location.pathname) {
+                case '/':
+                    post.addMorePosts();
+                    break;
+                case '/following':
+                    post.addMoreFollowingPosts();
+                    break;
+                default:
+                    break;
+            }
+
+            // if (location.pathname === '/') {
+            //     post.addMorePosts();
+            // }
+
+        }
+    },
     addMorePosts: function () {
 
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1) {
+        const lastElement = document.querySelector('#content').lastElementChild;
+        const lastDate = lastElement.dataset.questionsDate;
 
-            const lastElement = document.querySelector('#content').lastElementChild;
-            const lastDate = lastElement.dataset.questionsDate;
+        fetch('/questions/generate/' + lastDate).then(response => response.json()).then(datas => {
+            if (datas.content !== '') {
+                document.querySelector('#content').innerHTML += datas.content;
+                post.init();
+            } else {
+                document.querySelector('.loadingSpinner').style.display = 'none';
+            }
 
+        });
+    },
 
-            fetch('/questions/generate/' + lastDate).then(response => response.json()).then(datas => {
-                if (datas.content !== '') {
-                    document.querySelector('#content').innerHTML += datas.content;
-                } else {
-                    document.querySelector('.loadingSpinner').style.display = 'none';
+    addMoreFollowingPosts: function () {
 
-                }
+        const lastElement = document.querySelector('#content').lastElementChild;
+        const lastDate = lastElement.dataset.questionsDate;
 
-            });
-        }
+        fetch('/following/generate/' + lastDate).then(response => response.json()).then(datas => {
+            if (datas.content !== '') {
+                document.querySelector('#content').innerHTML += datas.content;
+                post.init();
+            } else {
+                document.querySelector('.loadingSpinner').style.display = 'none';
+            }
+
+        });
     }
-
 }
+
 
 
 document.addEventListener('DOMContentLoaded', post.init)

@@ -23,8 +23,10 @@
                         </div>
                     </a>
                     {% include 'partials/modals/_question_create_modal.html.twig' %}
-                    {% include 'partials/question_headers/question_header_follow.html.twig' %}
-                    <div class="flex justify-center">
+                    <div id="content">
+                        {% include 'partials/question_headers/question_header_follow.html.twig' %}
+                    </div>
+                    <div class="flex justify-center loadingSpinner">
                         <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
                         </div>
                     </div>
