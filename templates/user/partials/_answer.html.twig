@@ -2,14 +2,7 @@
     <h3 class="font-semibold text-xl"> {{user.answers|length}} réponses </h3>
 </div>
 <div class="answers"> 
-{% for answer in user.answers %}
-    <div class="bg-white border border-gray-300 p-4 mb-3 questionAnswer" data-answer-id ="{{answer.id}}">
-        <div class="postHeader mb-3">
-            <a href="{{path('app_question_show',{'id':answer.question.id})}}" class="block text-xl font-black p-2">{{answer.question.question}}</a>
-        </div>
-    {% include 'partials/_answer_comment_subcomment.html.twig' %}
-    </div>
-{% endfor %}
+    {% include 'partials/question_headers/question_header_profile.html.twig' %}
     <div class="flex justify-center">
         <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
         </div>

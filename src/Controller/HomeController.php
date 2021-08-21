@@ -22,7 +22,7 @@ class HomeController extends AbstractController
     {
 
         //dd($questionRepository->findAllQuestionsWithAnswers(4));
-        $questions = $questionRepository->findAllQuestionsWithAnswers(3);
+        $questions = $questionRepository->findAllQuestionsWithAnswers(0, 3);
         $spaces = $spaceRepository->findBy([], null, 8);
 
 

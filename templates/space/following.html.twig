@@ -23,29 +23,7 @@
                         </div>
                     </a>
                     {% include 'partials/modals/_question_create_modal.html.twig' %}
-                {% for question in questions %}
-                    <div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-answer-id ="{{question.answers[0].id}}">
-                        <div class="postHeader mb-3">
-                            <div class="flex">
-                                <a class="block" href="{{path('app_space_show',{'id':question.space[0].id})}}">
-                                    <div>
-                                        <p class="text-xl"><img class="rounded" src="https://placehold.it/50x50" alt="">
-                                    </div>
-                                </a>
-                                <div class="ml-3 flex flex-col">
-                                    <p class="font-semibold text-xl">{{question.space[0].name}}</p>
-                                    <p class="text-gray-400">Réponse de <a href="{{path('app_user_profile',{'pseudonym':question.answers[0].author.pseudonym})}}">{{question.answers[0].author.pseudonym}}</a> - {{question.answers[0].createdAt|date('d/m/Y')}}</p>
-                                    
-                                </div>
-                            </div>
-                                <a href="{{path('app_question_show',{'id':question.id})}}" class="block text-xl font-black p-2">{{question.question}}</a>
-                           
-                                
-                        </div>
-                        {% set answer = question.answers[0] %}
-                        {% include 'partials/_answer_comment_subcomment.html.twig' %}
-                    </div>
-                {% endfor %}
+                    {% include 'partials/question_headers/question_header_follow.html.twig' %}
                     <div class="flex justify-center">
                         <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
                         </div>

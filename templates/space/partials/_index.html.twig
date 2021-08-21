@@ -1,15 +1,1 @@
-{% for question in questions %}
-<div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-answer-id ="{{question.answers[0].id}}">
-    <div class="postHeader">
-        <a href="{{path('app_user_profile',{'pseudonym':question.author.pseudonym})}}" class="text-xl">{{question.author.pseudonym}}<a href="#" data-id="{{question.answers[0].author.id}}" class="subscribeLink font-semibold text-indigo-500 text-base ml-2">Suivre</a></p>
-        <p class="text-sm text-gray-400">Lorem ipsum dolor sit amet consectetur adipisicing elit. A eveniet consequatur suscipit neque temporibus delectus laudantium debitis hic alias sed ab maxime dolores repudiandae, ullam unde laborum, pariatur, cupiditate deserunt sequi recusandae. Ipsum molestias magni, error dicta enim autem sint aliquam, culpa qui debitis, fuga nam maiores modi recusandae tenetur.</p>
-        <a href="{{path('app_question_show',{'id':question.id})}}" class="block text-xl font-black p-2">{{question.question}}</a>
-    </div>
-    {% set answer = question.answers[0] %}
-    {% include 'partials/_answer_comment_subcomment.html.twig' %}
-</div>
-{% endfor %}
-<div class="flex justify-center">
-    <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
-    </div>
-</div>
+{% include 'partials/question_headers/question_header_full.html.twig' %}

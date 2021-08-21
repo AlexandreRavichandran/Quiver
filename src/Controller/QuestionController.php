@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
@@ -66,5 +67,20 @@ class QuestionController extends AbstractController
             'question' => $question,
             'alternativeQuestions' => $alternativeQuestions
         ]);
+    }
+
+    /**
+     * 
+     * @Route("/questions/generate/{id}", name="question_generate_AJAX")
+     * @return JsonResponse
+     */
+    public function getMoreQuestionsAndAnswers(string $date, QuestionRepository $questionRepository): JsonResponse
+    {
+        $questions = $questionRepository->findAllQuestionsWithAnswers($date, 3);
+        
+        /**
+         * Faire le truc avec renderView https://www.youtube.com/watch?v=25IqZbLYoK0 52 min
+         */
+        return new JsonResponse();
     }
 }

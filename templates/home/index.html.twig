@@ -25,22 +25,7 @@
                     </a>
                     {% include 'partials/modals/_question_create_modal.html.twig' %}
                     {% endif %}
-                    {% for question in questions %}
-
-                    <div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-answer-id ="{{question.answers[0].id}}">
-                        <div class="postHeader mb-3">
-                            <a href="{{path('app_user_profile',{'pseudonym':question.answers[0].author.pseudonym})}}">
-                                <p class="text-xl"><img class="inline mr-2 rounded-full" src="https://placehold.it/40x40" alt="">{{question.answers[0].author.pseudonym}}
-                            </a>
-                            <a href="#" data-id="{{question.answers[0].author.id}}" class="{% if app.user.isSubscribedTo(question.answers[0].author) %}link-subscribed{% else %}link-unsubscribed{% endif %} subscribeLink text-base font-semibold ml-2">{% if app.user.isSubscribedTo(question.answers[0].author) %}Suivi{% else %}Suivre{% endif %}</a></p>
-                            <p class="text-sm text-gray-400">{{question.answers[0].author.qualification}}</p>
-                            <a href="{{path('app_question_show',{'id':question.id})}}" class="block text-xl font-black p-2">{{question.question}}</a>
-                        </div>
-                        {% set answer = question.answers[0] %}
-                        {% include 'partials/_answer_comment_subcomment.html.twig' %}
-                    </div>
-
-                    {% endfor %}
+                    {% include 'partials/question_headers/question_header_full.html.twig' %}
                 </div>
                 <div class="flex justify-center">
                     <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">

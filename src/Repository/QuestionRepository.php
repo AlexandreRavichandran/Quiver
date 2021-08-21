@@ -19,12 +19,14 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
-    public function findAllQuestionsWithAnswers($limit = null)
+    public function findAllQuestionsWithAnswers($date = 0, $limit = null)
     {
         return $this->createQueryBuilder('q')
             ->join('q.answers', 'a')
             ->groupBy('a.question')
             ->andHaving('COUNT(a.answer) > 0')
+            ->where('q.createdAt > :date')
+            ->setParameter('date', $date)
             ->orderBy('q.createdAt', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
