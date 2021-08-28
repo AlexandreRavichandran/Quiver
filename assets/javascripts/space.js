@@ -1,9 +1,17 @@
+import * as addMorePosts from './post.js';
 const space = {
 
     init: function () {
-        const spaceSubscribeButton = document.querySelector('#spaceSubscribeButton');
 
-        spaceSubscribeButton.addEventListener('click', space.subscribeButtonHandler);
+        const spaceSubscribeButton = document.querySelector('.spaceSubscribeButton');
+        if (spaceSubscribeButton) {
+            spaceSubscribeButton.addEventListener('click', space.subscribeButtonHandler);
+        }
+        const generatePostButton = document.querySelector('#generateFollowing a');
+        console.log(generatePostButton);
+        if (generatePostButton) {
+            generatePostButton.addEventListener('click', space.handleMorePostButton)
+        }
     },
 
     subscribeButtonHandler: function (e) {
@@ -26,9 +34,14 @@ const space = {
     },
 
     AJAXRequestHandler: function (id, action) {
+        fetch('/spaces/' + id + '/subscribers/' + action).then(response => response.json());
+    },
 
-        fetch('/spaces/' + id + '/subscribers/' + action).then(response => response.json())
+    handleMorePostButton: function (e) {
+        e.preventDefault();
+
+        console.log(addMorePosts);
+        addMorePosts(e.currentTarget, 'following/generate');
     }
 }
-
 document.addEventListener('DOMContentLoaded', space.init);

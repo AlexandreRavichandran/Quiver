@@ -34,7 +34,10 @@ const post = {
             flashMessageButtons[index].addEventListener('click', post.handleFlashMessageButton);
         }
 
-        document.addEventListener('scroll', post.selectAjaxRequest);
+        const generatePostButton = document.querySelector('#generateHome a');
+        if (generatePostButton) {
+            generatePostButton.addEventListener('click', post.handleMorePostButton)
+        }
     },
 
     handlePostDisplay: function (e) {
@@ -95,7 +98,10 @@ const post = {
         }
 
     },
-
+    handleMorePostButton: function (e) {
+        e.preventDefault();
+        post.addMorePosts(e.currentTarget, 'questions/generate');
+    },
     handleLikeAction: function (answerId, action) {
         fetch('/answers/' + answerId + '/' + action).then(response => response.json()).then(datas => {
             const likeNumber = document.querySelector('#answer_' + datas.answerId + '_likeNumber');
@@ -114,40 +120,25 @@ const post = {
         flashMessage.style.display = 'none';
     },
 
-    selectAjaxRequest: function () {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1) {
-            console.log(location.pathname);
-            switch (location.pathname) {
-                case '/':
-                    post.addMorePosts();
-                    break;
-                case '/following':
-                    post.addMoreFollowingPosts();
-                    break;
-                default:
-                    break;
-            }
-
-            // if (location.pathname === '/') {
-            //     post.addMorePosts();
-            // }
-
-        }
-    },
-    addMorePosts: function () {
-
+    addMorePosts: function (clickedElement, controllerRoute) {
         const lastElement = document.querySelector('#content').lastElementChild;
         const lastDate = lastElement.dataset.questionsDate;
+        clickedElement.closest('#generateHome').classList.add('hidden');
 
-        fetch('/questions/generate/' + lastDate).then(response => response.json()).then(datas => {
+        document.querySelector('.loadingSpinner').classList.remove('hidden');
+
+        fetch('/' + controllerRoute + '/' + lastDate).then(response => response.json()).then(datas => {
             if (datas.content !== '') {
                 document.querySelector('#content').innerHTML += datas.content;
                 post.init();
+                clickedElement.closest('#generateHome').classList.remove('hidden');
             } else {
-                document.querySelector('.loadingSpinner').style.display = 'none';
+
             }
+            document.querySelector('.loadingSpinner').classList.add('hidden');
 
         });
+        user.init();
     },
 
     addMoreFollowingPosts: function () {
@@ -166,7 +157,6 @@ const post = {
         });
     }
 }
-
 
 
 document.addEventListener('DOMContentLoaded', post.init)

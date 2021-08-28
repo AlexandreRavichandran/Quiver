@@ -21,6 +21,9 @@ class HomeController extends AbstractController
      */
     public function index(SpaceRepository $spaceRepository, QuestionRepository $questionRepository, Request $request, EntityManagerInterface $em): Response
     {
+        if (!$this->getUser()) {
+            return  $this->redirectToRoute('app_login');
+        }
         $date = new DateTime();
         $questions = $questionRepository->findAllQuestionsWithAnswers($date->format('Y-m-d'), 3);
         $spaces = $spaceRepository->findBy([], null, 8);

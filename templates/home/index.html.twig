@@ -29,9 +29,12 @@
                         {% include 'partials/question_headers/question_header_full.html.twig' %}
                     </div>
                 </div>
-                <div class="flex justify-center loadingSpinner">
+                <div class="flex justify-center hidden loadingSpinner">
                     <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
                     </div>
+                </div>
+                <div class="flex justify-center" id="generateHome">
+                    <a href="#" class="mt-4 text-center rounded-full w-80 p-3 bg-indigo-500 font-bold text-white text-xl">Charger plus de réponses </a>
                 </div>
             </div>
             <div class="hidden col-span-12 sm:col-span-12 md:block lg:col-span-12 xl:col-span-3 bg-white">

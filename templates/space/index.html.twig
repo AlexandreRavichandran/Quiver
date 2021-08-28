@@ -45,11 +45,14 @@
                     </div>
                 {% endfor %}
                 </div>
-                <div class="flex justify-center">
+                <div class="flex justify-center hidden">
                     <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
                     </div>
                 </div>
             </div>      
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('space') }}
 {% endblock %}

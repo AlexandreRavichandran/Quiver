@@ -22,9 +22,9 @@ Encore
      */
     .addEntry('app', './assets/javascripts/app.js')
     .addEntry('post', './assets/javascripts/post.js')
-    .addEntry('modal', './assets/javascripts/modal.js')
     .addEntry('user', './assets/javascripts/user.js')
     .addEntry('space', './assets/javascripts/space.js')
+    .addEntry('modal', './assets/javascripts/modal.js')
 
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
