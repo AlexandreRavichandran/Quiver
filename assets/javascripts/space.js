@@ -8,7 +8,6 @@ const space = {
             spaceSubscribeButton.addEventListener('click', space.subscribeButtonHandler);
         }
         const generatePostButton = document.querySelector('#generateFollowing a');
-        console.log(generatePostButton);
         if (generatePostButton) {
             generatePostButton.addEventListener('click', space.handleMorePostButton)
         }
@@ -39,8 +38,6 @@ const space = {
 
     handleMorePostButton: function (e) {
         e.preventDefault();
-
-        console.log(addMorePosts);
         addMorePosts(e.currentTarget, 'following/generate');
     }
 }

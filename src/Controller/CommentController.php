@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Repository\UserRepository;
 use App\Repository\AnswerRepository;
+use App\Repository\CommentRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CommentController extends AbstractController
 {
@@ -62,5 +65,22 @@ class CommentController extends AbstractController
             }
         }
         return $this->redirectToRoute('app_home');
+    }
+
+    /**
+     * Undocumented function
+     * @Route("/answer/comments/{id}/{date}",name="app_comments_generate")
+     */
+    public function getMoreComments(int $id, string $date = null, CommentRepository $commentRepository)
+    {
+        if ($date === null) {
+            $date = new DateTimeImmutable();
+        }
+        $comments = $commentRepository->findCommentByAnswer($id, $date, 2);
+
+        $jsonData = [
+            'content' => $this->renderView('partials/_comments_subcomments.html.twig', ['comments' => $comments])
+        ];
+        return new JsonResponse($jsonData);
     }
 }

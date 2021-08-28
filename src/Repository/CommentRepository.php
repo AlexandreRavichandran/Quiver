@@ -19,6 +19,18 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
+    public function findCommentByAnswer($answerId, $date = 0, $limit = null): array
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.answer', 'a')
+            ->andWhere('a.id = :id')
+            ->andWhere('c.createdAt < :date')
+            ->setParameters(['id' => $answerId, 'date' => $date])
+            ->orderBy('c.createdAt', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return Comment[] Returns an array of Comment objects
     //  */

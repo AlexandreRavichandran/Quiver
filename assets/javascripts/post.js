@@ -45,7 +45,7 @@ const post = {
         const postToDisplay = e.target.closest('.postBody');
         const moreLink = postToDisplay.querySelector('.moreLink');
 
-        console.log(postToDisplay);
+
         moreLink.style.display = 'none';
         postToDisplay.querySelector('.answer').removeAttribute('style');
 
@@ -54,12 +54,22 @@ const post = {
     handleCommentDisplay: function (e) {
         e.preventDefault();
         const postToDisplay = e.target;
+        const postId = e.currentTarget.closest('.questionAnswer').dataset.answerId;
+
         const comments = postToDisplay.closest('.postFooter').querySelector('.numberOfComments');
         const commentList = postToDisplay.closest('.postFooter').querySelector('.comments');
-
         if (comments.style.display == 'block') {
-            comments.style.display = 'none';
             commentList.style.display = 'block';
+            comments.style.display = 'none';
+            const loading = postToDisplay.closest('.postFooter').querySelector('.loadingMoreommentsSpinner')
+            loading.classList.remove('hidden');
+            fetch('/answer/comments/' + postId).then(function (response) { return response.json() }).then(function (jsonResponse) {
+                loading.classList.add('hidden');
+                comments.style.display = 'none';
+                commentList.style.display = 'block';
+                const commentListe = postToDisplay.closest('.postFooter').querySelector('.commentList');
+                commentListe.innerHTML = jsonResponse.content;
+            })
         } else {
             comments.style.display = 'block';
             commentList.style.display = 'none';
@@ -125,7 +135,7 @@ const post = {
         const lastDate = lastElement.dataset.questionsDate;
         clickedElement.closest('#generateHome').classList.add('hidden');
 
-        document.querySelector('.loadingSpinner').classList.remove('hidden');
+        document.querySelector('.loadingMorePostsSpinner').classList.remove('hidden');
 
         fetch('/' + controllerRoute + '/' + lastDate).then(response => response.json()).then(datas => {
             if (datas.content !== '') {
@@ -135,24 +145,7 @@ const post = {
             } else {
 
             }
-            document.querySelector('.loadingSpinner').classList.add('hidden');
-
-        });
-        user.init();
-    },
-
-    addMoreFollowingPosts: function () {
-
-        const lastElement = document.querySelector('#content').lastElementChild;
-        const lastDate = lastElement.dataset.questionsDate;
-
-        fetch('/following/generate/' + lastDate).then(response => response.json()).then(datas => {
-            if (datas.content !== '') {
-                document.querySelector('#content').innerHTML += datas.content;
-                post.init();
-            } else {
-                document.querySelector('.loadingSpinner').style.display = 'none';
-            }
+            document.querySelector('.loadingMorePostsSpinner').classList.add('hidden');
 
         });
     }
