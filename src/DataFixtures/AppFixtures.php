@@ -103,7 +103,9 @@ class AppFixtures extends Fixture
                     $comment
                         ->setAnswer($answer)
                         ->setComment('<p>' . implode('</p><p>', $faker->paragraphs(mt_rand(4, 8))))
+                        ->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeAD()))
                         ->setAuthor($userList[mt_rand(0, 15)]);
+
                     $manager->persist($comment);
 
                     //create fake sub_comments

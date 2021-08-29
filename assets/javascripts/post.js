@@ -8,10 +8,15 @@ const post = {
         const likeButtons = document.querySelectorAll('.likeButton');
         const dislikeButtons = document.querySelectorAll('.dislikeButton');
         const flashMessageButtons = document.querySelectorAll('.flashMessageCloseButton');
+        const loadMoreCommentsButton = document.querySelectorAll('.loadMoreComments');
 
 
         for (let index = 0; index < posts.length; index++) {
             posts[index].addEventListener('click', post.handlePostDisplay);
+        }
+
+        for (let index = 0; index < loadMoreCommentsButton.length; index++) {
+            loadMoreCommentsButton[index].addEventListener('click', post.showMoreComments);
         }
 
         for (let index = 0; index < commentButtons.length; index++) {
@@ -51,30 +56,52 @@ const post = {
 
     },
 
+    showMoreComments: function (e) {
+        e.preventDefault();
+        const clickedElement = e.currentTarget;
+        const commentContainer = clickedElement.closest('.comments').querySelector('.commentList');
+        const commentLoaderSpinner = clickedElement.closest('.comments').querySelector('.loadingMoreCommentsSpinner');
+        const postId = clickedElement.closest('.questionAnswer').dataset.answerId;
+        const comments = commentContainer.querySelectorAll('.commentheader');
+        const lastCommentDate = comments[comments.length - 1].dataset.commentDate;
+        clickedElement.classList.add('hidden');
+        commentLoaderSpinner.classList.remove('hidden');
+        fetch('/answer/comments/' + postId + '/' + lastCommentDate).then(function (response) { return response.json() }).then(function (datas) {
+            if (datas.content !== '') {
+                clickedElement.classList.remove('hidden');
+                commentContainer.innerHTML += datas.content;
+                post.init();
+            }
+            commentLoaderSpinner.classList.add('hidden');
+        })
+    },
+
     handleCommentDisplay: function (e) {
         e.preventDefault();
-        const postToDisplay = e.target;
-        const postId = e.currentTarget.closest('.questionAnswer').dataset.answerId;
+        const clickedPost = e.currentTarget.closest('.questionAnswer')
+        const postId = clickedPost.dataset.answerId;
+        console.log(postId);
+        const postFooter = clickedPost.querySelector('.postFooter');
+        const commentsNumber = postFooter.querySelector('.numberOfComments');
+        const commentSection = postFooter.querySelector('.comments');
+        const commentContainer = postFooter.querySelector('.commentList');
 
-        const comments = postToDisplay.closest('.postFooter').querySelector('.numberOfComments');
-        const commentList = postToDisplay.closest('.postFooter').querySelector('.comments');
-        if (comments.style.display == 'block') {
-            commentList.style.display = 'block';
-            comments.style.display = 'none';
-            const loading = postToDisplay.closest('.postFooter').querySelector('.loadingMoreommentsSpinner')
+        if (commentsNumber.style.display == 'block') {
+
+            commentSection.style.display = 'block';
+            commentsNumber.style.display = 'none';
+            const loading = postFooter.querySelector('.loadingMoreommentsSpinner');
             loading.classList.remove('hidden');
             fetch('/answer/comments/' + postId).then(function (response) { return response.json() }).then(function (jsonResponse) {
                 loading.classList.add('hidden');
-                comments.style.display = 'none';
-                commentList.style.display = 'block';
-                const commentListe = postToDisplay.closest('.postFooter').querySelector('.commentList');
-                commentListe.innerHTML = jsonResponse.content;
+                commentContainer.innerHTML = jsonResponse.content;
+                post.init();
             })
-        } else {
-            comments.style.display = 'block';
-            commentList.style.display = 'none';
-        };
 
+        } else {
+            commentsNumber.style.display = 'block';
+            commentSection.style.display = 'none';
+        };
     },
 
     handleLikeButton: function (e) {
@@ -142,8 +169,6 @@ const post = {
                 document.querySelector('#content').innerHTML += datas.content;
                 post.init();
                 clickedElement.closest('#generateHome').classList.remove('hidden');
-            } else {
-
             }
             document.querySelector('.loadingMorePostsSpinner').classList.add('hidden');
 

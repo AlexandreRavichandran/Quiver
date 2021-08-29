@@ -1,15 +1,18 @@
 {% for comment in comments %}
-    <div class="commentheader flex mt-3">
+    <div class="commentheader flex mt-3 border-t-4 pt-3" data-comment-date="{{comment.createdAt|date('Y-m-d')}}">
         <img class="block rounded-full" src="https://placehold.it/45x45" alt="">
         <div class="ml-2">
             <p class="font-semibold text-xl">{{comment.author.pseudonym}}</p>
             <p class="text-gray-300">{{comment.createdAt|date('d/m/Y')}}</p>
         </div>
     </div>
-    <p class="p-4 pt-0">{{comment.comment}}</p>
+    <p class="p-2 pt-0">{{comment.comment}}</p>
+    <div class="commentFooter px-3 mb-4">
+        <a class="block bg-gray-200 p-3 rounded-full w-32 font-semibold" href="#">Répondre<i class="ml-2 bi bi-arrow-return-left"></i></a>
+    </div>
     <div class=" ml-3 pl-3 border-l-4 sub_comments">
         {% for subComments in comment.subComments %}
-        <div class="commentheader flex ">
+        <div class="subCommentheader flex ">
             <img class="block rounded-full" src="https://placehold.it/45x45" alt="">
             <div class="ml-2">
                 <p class="font-semibold">{{subComments.author.pseudonym}}</p>
@@ -22,6 +25,3 @@
         {% endfor %}
     </div>
 {% endfor %}
-    <div class="bg-gray-200 rounded-full mt-2 mb-2">
-        <a href="#" class="p-2 block font-semibold text-center rounded w-50">Voir plus de commentaires</a>
-    </div>

@@ -3,7 +3,7 @@ const space = {
 
     init: function () {
 
-        const spaceSubscribeButton = document.querySelector('.spaceSubscribeButton');
+        const spaceSubscribeButton = document.querySelector('#spaceSubscribeButton');
         if (spaceSubscribeButton) {
             spaceSubscribeButton.addEventListener('click', space.subscribeButtonHandler);
         }
@@ -15,7 +15,7 @@ const space = {
 
     subscribeButtonHandler: function (e) {
         e.preventDefault();
-        subscribeButton = e.currentTarget;
+        const subscribeButton = e.currentTarget;
         const isSubscribed = subscribeButton.classList.contains('subscribedSpace');
         const spaceId = e.currentTarget.dataset.id;
 

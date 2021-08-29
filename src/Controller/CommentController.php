@@ -77,7 +77,6 @@ class CommentController extends AbstractController
             $date = new DateTimeImmutable();
         }
         $comments = $commentRepository->findCommentByAnswer($id, $date, 2);
-
         $jsonData = [
             'content' => $this->renderView('partials/_comments_subcomments.html.twig', ['comments' => $comments])
         ];
