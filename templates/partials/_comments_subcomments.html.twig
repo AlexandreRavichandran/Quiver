@@ -1,4 +1,5 @@
 {% for comment in comments %}
+<div>
     <div class="commentheader flex mt-3 border-t-4 pt-3" data-comment-date="{{comment.createdAt|date('Y-m-d')}}">
         <img class="block rounded-full" src="https://placehold.it/45x45" alt="">
         <div class="ml-2">
@@ -17,7 +18,7 @@
                     </div>
                     <input type="hidden" name="commentId" value="{{comment.id}}">
                     <div class="col-span-2 ml-3 flex justify-end self-center">
-                        <button type="submit" class="p-4 bg-indigo-400 text text-white rounded">Répondre</button>
+                        <button type="submit" class="p-2 bg-indigo-400 text text-white rounded">Répondre</button>
                     </div>   
                 </div>
             </form>
@@ -37,4 +38,34 @@
         </div>
         {% endfor %}
     </div>
+</div>
 {% endfor %}
+
+<template id="commentTemplate">
+    <div>
+        <div class="commentheader flex mt-3 border-t-4 pt-3" data-comment-date="">
+            <img class="block rounded-full" src="https://placehold.it/45x45" alt="">
+            <div class="ml-2">
+                <p class="font-semibold text-xl name"></p>
+                <p class="text-gray-300 date"></p>
+            </div>
+        </div>
+        <p class="p-2 pt-0 comment"></p>
+        <div class="commentFooter px-3 mb-4">
+            <a class="block bg-gray-200 p-3 rounded-full w-32 font-semibold subCommentFormButton" href="#">Répondre<i class="ml-2 bi bi-arrow-return-left"></i></a>
+            <div class="subCommentForm my-4 hidden">
+                <form class="flex w-full flex justify-center" action="{{path('app_sub_comment_create')}}" method="post">
+                    <div class="grid grid-cols-12">
+                        <div class="col-span-10">
+                            <textarea required="required" class="commentSpace" name="subComment" id="subComment_comment" class="w-full"></textarea>
+                        </div>
+                        <input type="hidden" name="commentId" value="">
+                        <div class="col-span-2 ml-3 flex justify-end self-center">
+                            <button type="submit" class="p-2 bg-indigo-400 text text-white rounded">Répondre</button>
+                        </div>   
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>

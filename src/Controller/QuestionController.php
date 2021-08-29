@@ -6,6 +6,7 @@ use App\Entity\Question;
 use App\Form\QuestionType;
 use App\Repository\QuestionRepository;
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Validator\Constraints\Json;
 
 class QuestionController extends AbstractController
 {
@@ -28,13 +30,15 @@ class QuestionController extends AbstractController
             $questionSentence = $request->request->get('question');
             $question = new Question;
             $question->setQuestion(htmlspecialchars($questionSentence));
-            $question->setAuthor($this->getUser());
+            $question->setAuthor($this->getUser())
+                ->setCreatedAt(new DateTimeImmutable());
 
             //Check if created question objet is valid following the entity's contraint
             $errors = $validator->validate($question);
             if (count($errors) === 0) {
                 $em->persist($question);
                 $em->flush();
+                return new JsonResponse(['data' => $question->getQuestion()]);
                 return $this->redirectToRoute('app_question_show', [
                     'id' => $question->getId()
                 ]);

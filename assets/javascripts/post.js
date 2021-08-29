@@ -10,6 +10,8 @@ const post = {
         const flashMessageButtons = document.querySelectorAll('.flashMessageCloseButton');
         const loadMoreCommentsButton = document.querySelectorAll('.loadMoreComments');
         const displaySubCommentForm = document.querySelectorAll('.subCommentFormButton');
+        const generatePostButton = document.querySelector('#generateHome a');
+        const commentForm = document.querySelectorAll('.commentForm form');
 
 
         for (let index = 0; index < posts.length; index++) {
@@ -44,7 +46,10 @@ const post = {
             displaySubCommentForm[index].addEventListener('click', post.handleSubCommentFormDisplay);
         }
 
-        const generatePostButton = document.querySelector('#generateHome a');
+        for (let index = 0; index < commentForm.length; index++) {
+            commentForm[index].addEventListener('submit', post.handleCommentForm);
+        }
+
         if (generatePostButton) {
             generatePostButton.addEventListener('click', post.handleMorePostButton)
         }
@@ -182,12 +187,36 @@ const post = {
     handleSubCommentFormDisplay: function (e) {
         e.preventDefault();
         const subCommentForm = e.currentTarget.closest('.commentFooter').querySelector('.subCommentForm');
-        if(subCommentForm.classList.contains('hidden')){
+        if (subCommentForm.classList.contains('hidden')) {
             subCommentForm.classList.remove('hidden');
-        }else{
+        } else {
             subCommentForm.classList.add('hidden');
         }
 
+    },
+
+    handleCommentForm: function (e) {
+        e.preventDefault();
+        const currentTarget = e.currentTarget;
+        const comment = currentTarget.querySelector('.commentSpace');
+        const answerId = currentTarget.closest('.questionAnswer').dataset.answerId;
+        const data = { 'comment': comment.value, 'answerId': answerId };
+        const config = {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        fetch('/comments/create', config).then(function (response) { return response.json() }).then(function (response) {
+            const template = document.querySelector('#commentTemplate').content.cloneNode(true);
+            template.querySelector('.name').textContent = response.user;
+            template.querySelector('.date').textContent = response.date;
+            template.querySelector('.comment').textContent = response.comment;
+            currentTarget.closest('.comments').querySelector('.commentList').prepend(template);
+            post.init();
+            comment.value = '';
+        })
     }
 }
 

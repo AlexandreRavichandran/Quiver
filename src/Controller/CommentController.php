@@ -34,21 +34,26 @@ class CommentController extends AbstractController
     public function create(AnswerRepository $answerRepository, EntityManagerInterface $em, Request $request, UserRepository $user, ValidatorInterface $validator): Response
     {
         if ($request->isMethod('POST')) {
-            $commentSentence = $request->request->get('comment');
-            $answerId = $request->request->getInt('answerId');
-
+            $datas = json_decode($request->getContent());
             $comment = new Comment;
             $comment
-                ->setAnswer($answerRepository->find($answerId))
-                ->setComment($commentSentence)
+                ->setAnswer($answerRepository->find($datas->answerId))
+                ->setComment($datas->comment)
+                ->setCreatedAt(new DateTimeImmutable())
                 ->setAuthor($this->getUser());
             $errors = $validator->validate($comment);
             if (count($errors) === 0) {
                 $em->persist($comment);
                 $em->flush();
-                return $this->redirectToRoute('app_question_show', [
-                    'id' => $comment->getAnswer()->getQuestion()->getId()
-                ]);
+                $jsonData = [
+                    'comment' => $comment->getComment(),
+                    'user' => $this->getUser()->getPseudonym(),
+                    'date' => $comment->getCreatedAt()->format('d/m/Y')
+                ];
+                return new JsonResponse($jsonData, 200);
+                // return $this->redirectToRoute('app_question_show', [
+                //     'id' => $comment->getAnswer()->getQuestion()->getId()
+                // ]);
             }
 
             //Display error messages
