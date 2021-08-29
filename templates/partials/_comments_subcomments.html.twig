@@ -1,5 +1,5 @@
 {% for comment in comments %}
-<div>
+<div class="comment" data-comment-id="{{comment.id}}">
     <div class="commentheader flex mt-3 border-t-4 pt-3" data-comment-date="{{comment.createdAt|date('Y-m-d')}}">
         <img class="block rounded-full" src="https://placehold.it/45x45" alt="">
         <div class="ml-2">
@@ -11,7 +11,7 @@
     <div class="commentFooter px-3 mb-4">
         <a class="block bg-gray-200 p-3 rounded-full w-32 font-semibold subCommentFormButton" href="#">Répondre<i class="ml-2 bi bi-arrow-return-left"></i></a>
         <div class="subCommentForm my-4 hidden">
-            <form class="flex w-full flex justify-center" action="{{path('app_sub_comment_create')}}" method="post">
+            <form class="flex w-full flex justify-center" action="" method="post">
                 <div class="grid grid-cols-12">
                     <div class="col-span-10">
                         <textarea required="required" class="commentSpace" name="subComment" id="subComment_comment_{{comment.id}}" class="w-full"></textarea>
@@ -24,7 +24,7 @@
             </form>
         </div>
     </div>
-    <div class=" ml-3 pl-3 border-l-4 sub_comments">
+    <div class=" ml-3 pl-3 border-l-4 subComments">
         {% for subComments in comment.subComments %}
         <div class="subCommentheader flex ">
             <img class="block rounded-full" src="https://placehold.it/45x45" alt="">
@@ -54,7 +54,7 @@
         <div class="commentFooter px-3 mb-4">
             <a class="block bg-gray-200 p-3 rounded-full w-32 font-semibold subCommentFormButton" href="#">Répondre<i class="ml-2 bi bi-arrow-return-left"></i></a>
             <div class="subCommentForm my-4 hidden">
-                <form class="flex w-full flex justify-center" action="{{path('app_sub_comment_create')}}" method="post">
+                <form class="flex w-full flex justify-center" action="" method="post">
                     <div class="grid grid-cols-12">
                         <div class="col-span-10">
                             <textarea required="required" class="commentSpace" name="subComment" id="subComment_comment" class="w-full"></textarea>
@@ -67,5 +67,17 @@
                 </form>
             </div>
         </div>
+    </div>
+</template>
+<template id="subCommentTemplate">
+    <div class="subCommentheader flex ">
+        <img class="block rounded-full" src="https://placehold.it/45x45" alt="">
+        <div class="ml-2">
+            <p class="font-semibold subCommentName"></p>
+            <p class="text-gray-300 subCommentDate"></p>
+        </div>
+    </div>
+    <div class="p-4 pt-1 mb-3 subCommentContent">
+       
     </div>
 </template>

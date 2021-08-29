@@ -12,6 +12,7 @@ const post = {
         const displaySubCommentForm = document.querySelectorAll('.subCommentFormButton');
         const generatePostButton = document.querySelector('#generateHome a');
         const commentForm = document.querySelectorAll('.commentForm form');
+        const subCommentForm = document.querySelectorAll('.subCommentForm form');
 
 
         for (let index = 0; index < posts.length; index++) {
@@ -50,6 +51,9 @@ const post = {
             commentForm[index].addEventListener('submit', post.handleCommentForm);
         }
 
+        for (let index = 0; index < subCommentForm.length; index++) {
+            subCommentForm[index].addEventListener('submit', post.handleSubCommentForm);
+        }
         if (generatePostButton) {
             generatePostButton.addEventListener('click', post.handleMorePostButton)
         }
@@ -100,7 +104,7 @@ const post = {
 
             commentSection.style.display = 'block';
             commentsNumber.style.display = 'none';
-            const loading = postFooter.querySelector('.loadingMoreommentsSpinner');
+            const loading = postFooter.querySelector('.loadingMoreCommentsSpinner');
             loading.classList.remove('hidden');
             fetch('/answer/comments/' + postId).then(function (response) { return response.json() }).then(function (jsonResponse) {
                 loading.classList.add('hidden');
@@ -214,6 +218,30 @@ const post = {
             template.querySelector('.date').textContent = response.date;
             template.querySelector('.comment').textContent = response.comment;
             currentTarget.closest('.comments').querySelector('.commentList').prepend(template);
+            post.init();
+            comment.value = '';
+        })
+    },
+
+    handleSubCommentForm: function (e) {
+        e.preventDefault();
+        const currentTarget = e.currentTarget;
+        const comment = currentTarget.querySelector('.commentSpace');
+        const commentId = currentTarget.closest('.comment').dataset.commentId;
+        const data = { 'subComment': comment.value, 'commentId': commentId };
+        const config = {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        fetch('/subComments/create', config).then(function (response) { return response.json() }).then(function (response) {
+            const template = document.querySelector('#subCommentTemplate').content.cloneNode(true);
+            template.querySelector('.subCommentName').textContent = response.user;
+            template.querySelector('.subCommentDate').textContent = response.date;
+            template.querySelector('.subCommentContent').textContent = response.comment;
+            currentTarget.closest('.comment').querySelector('.subComments').append(template);
             post.init();
             comment.value = '';
         })
