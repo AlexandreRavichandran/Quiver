@@ -9,6 +9,7 @@ const post = {
         const dislikeButtons = document.querySelectorAll('.dislikeButton');
         const flashMessageButtons = document.querySelectorAll('.flashMessageCloseButton');
         const loadMoreCommentsButton = document.querySelectorAll('.loadMoreComments');
+        const displaySubCommentForm = document.querySelectorAll('.subCommentFormButton');
 
 
         for (let index = 0; index < posts.length; index++) {
@@ -37,6 +38,10 @@ const post = {
 
         for (let index = 0; index < flashMessageButtons.length; index++) {
             flashMessageButtons[index].addEventListener('click', post.handleFlashMessageButton);
+        }
+
+        for (let index = 0; index < displaySubCommentForm.length; index++) {
+            displaySubCommentForm[index].addEventListener('click', post.handleSubCommentFormDisplay);
         }
 
         const generatePostButton = document.querySelector('#generateHome a');
@@ -173,6 +178,16 @@ const post = {
             document.querySelector('.loadingMorePostsSpinner').classList.add('hidden');
 
         });
+    },
+    handleSubCommentFormDisplay: function (e) {
+        e.preventDefault();
+        const subCommentForm = e.currentTarget.closest('.commentFooter').querySelector('.subCommentForm');
+        if(subCommentForm.classList.contains('hidden')){
+            subCommentForm.classList.remove('hidden');
+        }else{
+            subCommentForm.classList.add('hidden');
+        }
+
     }
 }
 

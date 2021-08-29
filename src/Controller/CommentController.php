@@ -51,17 +51,10 @@ class CommentController extends AbstractController
                 ]);
             }
 
-            //Check if the referer route is valid
-            try {
-                $redirectRoute =  $this->generateUrl($request->request->get('referer'));
-                $redirectRoute = $request->request->get('referer');
-            } catch (RouteNotFoundException $e) {
-                $redirectRoute = 'app_home';
-            }
-
             //Display error messages
             foreach ($errors as $error) {
                 $this->addFlash('yellow', $error->getMessage());
+                return $this->redirectToRoute('app_home');
             }
         }
         return $this->redirectToRoute('app_home');
