@@ -19,6 +19,16 @@ class SpaceRepository extends ServiceEntityRepository
         parent::__construct($registry, Space::class);
     }
 
+    public function findSpaces($id, $limit)
+    {
+        return $this
+            ->createQueryBuilder('s')
+            ->andWhere('s.id > :id')
+            ->setParameter(':id', $id)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return Space[] Returns an array of Space objects
     //  */

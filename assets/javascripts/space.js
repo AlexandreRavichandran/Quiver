@@ -9,10 +9,33 @@ const space = {
         }
         const generatePostButton = document.querySelector('#generateFollowing a');
         if (generatePostButton) {
-            generatePostButton.addEventListener('click', space.handleMorePostButton)
+            generatePostButton.addEventListener('click', space.handleMorePostButton);
+        }
+
+        const generateSpaceButton = document.querySelector('#generateSpace');
+        if (generateSpaceButton) {
+            generateSpaceButton.addEventListener('click', space.generateSpaces);
         }
     },
 
+    generateSpaces: function (e) {
+        e.preventDefault();
+        const clickedButton = e.currentTarget;
+        const spaceLoader = document.querySelector('.spaceLoader');
+        spaceLoader.classList.remove('hidden');
+        const lastSpaceId = document.querySelector('.spaceList').lastElementChild.dataset.id;
+        fetch('/spaces/generate/' + lastSpaceId).then(function (response) { return response.json() }).then(function (responseJson) {
+            if (responseJson.content !== '') {
+                const spaceList = document.querySelector('.spaceList');
+                spaceLoader.classList.add('hidden');
+                spaceList.innerHTML += responseJson.content;
+            } else {
+                spaceLoader.classList.add('hidden');
+                clickedButton.classList.add('hidden');
+            }
+
+        })
+    },
     subscribeButtonHandler: function (e) {
         e.preventDefault();
         const subscribeButton = e.currentTarget;

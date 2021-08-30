@@ -182,4 +182,20 @@ class SpaceController extends AbstractController
         ];
         return new JsonResponse($jsonData);
     }
+
+    /**
+     * 
+     * @Route("/spaces/generate/{id}")
+     * @return void
+     */
+    public function generateSpaces(int $id, SpaceRepository $spaceRepository)
+    {
+        $spaces = $spaceRepository->findSpaces($id, 6);
+
+        $jsonData = [
+            'content' => $this->renderView('space/partials/_spaceList.html.twig', ['spaces' => $spaces])
+        ];
+
+        return new JsonResponse($jsonData);
+    }
 }

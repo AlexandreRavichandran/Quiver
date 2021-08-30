@@ -36,7 +36,7 @@
                 <h2 class="font-black text-2xl"> Découvrir des espaces </h2>
                 <div class="grid grid-cols-12 gap-4 mt-4 spaceList flex flex-wrap mb-3">
                 {% for space in spaces %}
-                    <div class="col-span-12 md:col-span-6 lg:col-span-4 spaceCard bg-white rounded-xl p-2 border border-gray-300 hover:bg-gray-200">
+                    <div data-id="{{space.id}}" class="col-span-12 md:col-span-6 lg:col-span-4 spaceCard bg-white rounded-xl p-2 border border-gray-300 hover:bg-gray-200">
                         <a href="{{path('app_space_show',{'id':space.id})}}">
                             <img class="block ml-auto mr-auto" src="https://placehold.it/150x150" alt="">
                             <h3 class="text-center font-black text-xl">{{space.name}}</h3>
@@ -45,9 +45,12 @@
                     </div>
                 {% endfor %}
                 </div>
-                <div class="flex justify-center hidden">
+                <div class="flex justify-center hidden spaceLoader">
                     <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
                     </div>
+                </div>
+                <div class="flex justify-center" id="generateSpace">
+                    <a href="#" class="mt-4 text-center rounded-full w-80 p-3 bg-indigo-500 font-bold text-white text-xl">Charger plus d'espaces</a>
                 </div>
             </div>      
         </div>
