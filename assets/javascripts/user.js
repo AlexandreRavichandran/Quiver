@@ -14,6 +14,11 @@ const user = {
             subscribeLinks[index].addEventListener('click', user.handleSubscriptionLinks);
         }
 
+        const subscriptionFilter = document.querySelector('#subscriptionFilter');
+        if (subscriptionFilter) {
+            subscriptionFilter.addEventListener('change', user.filterSubscriptionPage);
+        }
+
     },
 
     handleSubscription: function (target, classIfAdded, classIfRemoved) {
@@ -60,6 +65,20 @@ const user = {
     AJAXSubscriptionHandler: function (id, action) {
 
         fetch('/profile/' + id + '/subscribers/' + action).then(response => response.json())
+    },
+
+    filterSubscriptionPage: function (e) {
+        const elementToFilter = e.currentTarget.value;
+        const subscriptionContainer = document.querySelector('.subscriptions')
+        const subscriptions = subscriptionContainer.querySelectorAll('.subscription');
+
+        for (let index = 0; index < subscriptions.length; index++) {
+            if (!subscriptions[index].classList.contains(elementToFilter)) {
+                subscriptions[index].classList.add('hidden');
+            }else{
+                subscriptions[index].classList.remove('hidden');
+            }
+        }
     }
 }
 
