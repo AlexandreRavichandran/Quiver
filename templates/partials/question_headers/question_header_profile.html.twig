@@ -1,5 +1,5 @@
 {% for answer in user.answers %}
-    <div class="bg-white border border-gray-300 p-4 mb-3 questionAnswer" data-question-id = {{question.id}} data-questions-date ="{{question.createdAt|date('Y-m-d')}}" data-answer-id ="{{answer.id}}">
+    <div class="bg-white border border-gray-300 p-4 mb-3 questionAnswer" data-question-id = {{answer.question.id}} data-questions-date ="{{answer.question.createdAt|date('Y-m-d')}}" data-answer-id ="{{answer.id}}">
         <div class="postHeader mb-3">
             <a href="{{path('app_question_show',{'id':answer.question.id})}}" class="block text-xl font-black p-2">{{answer.question.question}}</a>
         </div>
