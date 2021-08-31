@@ -19,8 +19,7 @@
                         <p class="block font-semibold text-gray-400 mt-2 mb-2">{{user.qualification}}</p>
                         {% endif %}
                         <p><a href="{{path('app_user_profile_subscriber',{'pseudonym':user.pseudonym})}}"> {{user.subscribers|length}} abonnés </a> <a href="{{path('app_user_profile_subscription',{'pseudonym':user.pseudonym})}}"> {{user.subscriptions|length + user.subscribedSpaces|length}} qui suit</a></p>
-                        <a href="#" class="mt-3 block text-gray-400">{{user.description}}</a>
-                        
+                        <a href="#" class="mt-3 block text-gray-400">{{user.description}}</a> 
                     </div>
                 </div>
                 <div>

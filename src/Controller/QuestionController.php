@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Question;
 use App\Form\QuestionType;
+use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
@@ -56,13 +57,29 @@ class QuestionController extends AbstractController
     /**
      * @Route("/questions/{id}", name="app_question_show")
      */
-    public function index(Question $question, QuestionRepository $questionRepository): Response
+    public function index(Question $question, QuestionRepository $questionRepository, AnswerRepository $answerRepository): Response
     {
+        $date = new DateTimeImmutable();
         $alternativeQuestions = $questionRepository->findBy([], null, 5);
+        $answers = $answerRepository->findAnswersByQuestionId($question->getId(), $date, 3);
         return $this->render('question/show.html.twig', [
             'question' => $question,
+            'answers' => $answers,
             'alternativeQuestions' => $alternativeQuestions
         ]);
+    }
+
+    /**
+     * @Route("/questions/{id}/generate/{date}", name="app_question_generate")
+     */
+    public function showMoreAnswer(Question $question, string $date, AnswerRepository $answerRepository): Response
+    {
+
+        $answers = $answerRepository->findAnswersByQuestionId($question->getId(), $date, 3);
+        $jsonData = [
+            'content' => $this->renderView('partials/question_headers/question_header_singleQuestion.html.twig', ['answers' => $answers])
+        ];
+        return new JsonResponse($jsonData);
     }
 
     /**

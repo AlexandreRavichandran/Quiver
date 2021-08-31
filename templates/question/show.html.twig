@@ -23,21 +23,15 @@
                     </div>
                 </div>
                 <p class="p-2 text-2xl"> {{question.answers|length}} Reponses </p>
-                {% for answer in question.answers %}
-                <a href="#">
-                    <div class="commentheader border-t-2 flex mb-4 pt-3">
-                        <img class="block rounded-full" src="https://placehold.it/50x45" alt="">
-                        <div class="ml-2">
-                            <p class="font-semibold text-xl">{{answer.author.pseudonym}}</p>
-                            <p class="text-gray-300">{{answer.createdAt|date('d/m/Y')}}</p>
-                        </div>
-                    </div>
-                </a>
-                {% include 'partials/_answer_comment_subcomment.html.twig' %}
-                {% endfor %}
-                <div class="flex justify-center">
+               <div class="content">
+                {% include 'partials/question_headers/question_header_singleQuestion.html.twig' %}
+               </div>
+                <div class="flex justify-center hidden loadingMoreAnswersSpinner">
                     <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
                     </div>
+                </div>
+                <div class="flex justify-center" id="generateAnswers">
+                    <a href="#" class="mt-4 text-center rounded-full w-80 p-3 bg-indigo-500 font-bold text-white text-xl">Charger plus de réponses </a>
                 </div>
             </div>
             <div class="col-span-12 lg:col-span-4 row-span-2"> 
@@ -47,7 +41,6 @@
                     <li class="mb-3 hover:bg-gray-200"><a href="{{path('app_question_show',{'id':question.id})}}" class="text-indigo-500">{{question.question}} </a></li>
                 {% endfor %}
                 </ul>
-                <a class="block text-gray-400 text-center mt-5" href="#"> Poser une question</a>
             </div>
         </div>
     </div>

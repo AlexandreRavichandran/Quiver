@@ -13,6 +13,7 @@ const post = {
         const generatePostButton = document.querySelector('#generateHome a');
         const commentForm = document.querySelectorAll('.commentForm form');
         const subCommentForm = document.querySelectorAll('.subCommentForm form');
+        const generateAnswerButton = document.querySelector('#generateAnswers a');
 
 
         for (let index = 0; index < posts.length; index++) {
@@ -57,6 +58,11 @@ const post = {
         if (generatePostButton) {
             generatePostButton.addEventListener('click', post.handleMorePostButton)
         }
+
+        if (generateAnswerButton) {
+            generateAnswerButton.addEventListener('click', post.generateAnswers);
+        }
+
     },
 
     handlePostDisplay: function (e) {
@@ -245,6 +251,26 @@ const post = {
             post.init();
             comment.value = '';
         })
+    },
+    generateAnswers: function (e) {
+        e.preventDefault();
+        const clickedElement = e.currentTarget;
+        const lastAnswer = document.querySelector('.content').lastElementChild;
+        const id = lastAnswer.dataset.questionId;
+        const date = lastAnswer.dataset.answerDate;
+        clickedElement.closest('#generateAnswers').classList.add('hidden');
+        document.querySelector('.loadingMoreAnswersSpinner').classList.remove('hidden');
+        fetch('/questions/' + id + '/generate/' + date).then(function (response) { return response.json() }).then(function (datas) {
+            if (datas.content !== '') {
+                document.querySelector('#content').innerHTML += datas.content;
+                post.init();
+                clickedElement.closest('#generateHome').classList.remove('hidden');
+            } else {
+
+            }
+            document.querySelector('.loadingMoreAnswersSpinner').classList.add('hidden');
+        })
+
     }
 }
 

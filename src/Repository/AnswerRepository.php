@@ -19,6 +19,19 @@ class AnswerRepository extends ServiceEntityRepository
         parent::__construct($registry, Answer::class);
     }
 
+    public function findAnswersByQuestionId($id, $date = 0, $limit = null)
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->join('a.question', 'q')
+            ->andWhere('q.id = :id')
+            ->andWhere('a.createdAt < :date')
+            ->setParameters([':id' => $id, ':date' => $date])
+            ->orderBy('a.createdAt', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return Answer[] Returns an array of Answer objects
     //  */

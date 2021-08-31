@@ -1,0 +1,12 @@
+{% for answer in answers %}
+    <div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-question-id = {{answer.question.id}} data-answer-date ="{{answer.createdAt|date('Y-m-d')}}" data-answer-id ="{{answer.id}}">
+        <div class="border-t-2 flex mb-4 pt-3">
+            <img class="block rounded-full" src="https://placehold.it/50x45" alt="">
+            <div class="ml-2">
+                <p class="font-semibold text-xl">{{answer.author.pseudonym}}</p>
+                <p class="text-gray-300">{{answer.createdAt|date('d/m/Y')}}</p>
+            </div>
+        </div>
+        {% include 'partials/_answer_comment_subcomment.html.twig' %}
+    </div>
+{% endfor %}
