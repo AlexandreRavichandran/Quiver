@@ -8,17 +8,6 @@
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
-
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-            {{ encore_entry_script_tags('post') }}
-            {{ encore_entry_script_tags('space') }}
-            {{ encore_entry_script_tags('user') }}
-            {{ encore_entry_script_tags('modal') }}
-            {% if app.user is not same as null %}
-            <script> const user = "{{app.user.pseudonym}}"</script>
-            {% endif %}
-        {% endblock %}
     </head>
 
     <body class="bg-gray-100">
@@ -36,6 +25,17 @@
                 {% endfor %}
             {% endfor %}
         </div>
+
         {% block body %}{% endblock %}  
+        {% block javascripts %}
+        {% endblock %}
+        {{ encore_entry_script_tags('app') }}
+        {{ encore_entry_script_tags('post') }}
+        {{ encore_entry_script_tags('space') }}
+        {{ encore_entry_script_tags('user') }}
+        {{ encore_entry_script_tags('modal') }}
+        {% if app.user is not same as null %}
+            <script> const user = "{{app.user.pseudonym}}"</script>
+        {% endif %}
     </body>
 </html>

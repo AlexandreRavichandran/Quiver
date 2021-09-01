@@ -14,6 +14,8 @@ const post = {
         const commentForm = document.querySelectorAll('.commentForm form');
         const subCommentForm = document.querySelectorAll('.subCommentForm form');
         const generateAnswerButton = document.querySelector('#generateAnswers a');
+        const answerButton = document.querySelector('.answerButton');
+        const postAnswerButton = document.querySelector('#answerPostButton');
 
 
         for (let index = 0; index < posts.length; index++) {
@@ -61,6 +63,14 @@ const post = {
 
         if (generateAnswerButton) {
             generateAnswerButton.addEventListener('click', post.generateAnswers);
+        }
+
+        if (answerButton) {
+            answerButton.addEventListener('click', post.showEditor);
+        }
+
+        if (postAnswerButton) {
+            postAnswerButton.addEventListener('click', post.postAnswer);
         }
 
     },
@@ -274,7 +284,46 @@ const post = {
             document.querySelector('.loadingMoreAnswersSpinner').classList.add('hidden');
         })
 
+    },
+    showEditor: function (e) {
+        e.preventDefault();
+        e.currentTarget.classList.add('hidden');
+        const editorSpace = e.currentTarget.closest('.answerHeader').querySelector('#editor');
+        ClassicEditor
+            .create(editorSpace, {
+                removePlugins: ['Heading'],
+                toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
+        document.querySelector('#answerPostButton').classList.remove('hidden');
+    },
+
+    postAnswer: function (e) {
+        e.preventDefault();
+        const editorSpace = e.currentTarget.closest('.answerHeader').querySelector('.ck-editor__editable');
+        const questionid = e.currentTarget.closest('.answerHeader').dataset.questionId;
+
+        const data = { 'answer': editorSpace.innerHTML, 'questionId': questionid, 'user': user };
+        const config = {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        if (editorSpace.textContent.length > 0) {
+            fetch('/answers/create', config).then(function (response) { return response.json() }).then(function (responseJson) {
+                document.querySelector('.content').innerHTML += responseJson.content;
+                document.querySelector('#answerNumber').textContent++;
+                editorSpace.innerHTML = "";
+                post.init();
+            })
+        }
     }
+
 }
 
 

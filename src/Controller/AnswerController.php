@@ -4,13 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Answer;
 use App\Repository\AnswerRepository;
+use App\Repository\QuestionRepository;
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AnswerController extends AbstractController
 {
@@ -64,23 +67,35 @@ class AnswerController extends AbstractController
     /**
      * 
      * @Route("/answers/create",name="app_answer_create")
-     * @return Response
+     * @return JsonResponse
      */
-    public function create(EntityManagerInterface $em): Response
+    public function create(Request $request, EntityManagerInterface $em, QuestionRepository $questionRepository, ValidatorInterface $validatorInterface): JsonResponse
     {
-        $form = $this->createForm(Answer::class);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($request->isMethod('POST')) {
+            $datas = json_decode($request->getContent());
+            $question = $questionRepository->findOneBy(['id' => $datas->questionId]);
             $answer = new Answer;
-            $answer = $form->getData();
-            $em->persist($answer);
-            $em->flush();
-            return $this->redirectToRoute('app_question_show', [
-                'id' => $answer->getQuestion->getId()
-            ]);
-        }
+            $answer
+                ->setAnswer($datas->answer)
+                ->setAuthor($this->getUser())
+                ->setCreatedAt(new DateTimeImmutable())
+                ->setViewsNumber(0)
+                ->setQuestion($question);
+            $errors = $validatorInterface->validate($answer);
 
-        return $this->render('partials/forms/_answer_create_form.html.twig', [
-            'form' => $form->createView()
-        ]);
+            if (count($errors) === 0) {
+                $em->persist($answer);
+                $em->flush();
+                $jsonData = [
+                    'content' => $this->renderView('partials/question_headers/question_header_singleQuestion.html.twig', ['answers' => [$answer]])
+                ];
+                return new JsonResponse($jsonData, 200);
+
+                foreach ($errors as $error) {
+                    $this->addFlash('yellow', $error->getMessage());
+                    return $this->redirectToRoute('app_question_show', ['question' => $question]);
+                }
+            }
+        }
     }
 }
