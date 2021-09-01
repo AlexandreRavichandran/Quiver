@@ -222,6 +222,8 @@ const post = {
             const template = document.querySelector('#commentTemplate').content.cloneNode(true);
             template.querySelector('.name').textContent = response.user;
             template.querySelector('.date').textContent = response.date;
+            const formattedDate = response.date.replaceAll('/', '-');
+            template.querySelector('.commentheader').dataset.commentDate = formattedDate;
             template.querySelector('.comment').textContent = response.comment;
             currentTarget.closest('.comments').querySelector('.commentList').prepend(template);
             post.init();
@@ -247,7 +249,8 @@ const post = {
             template.querySelector('.subCommentName').textContent = response.user;
             template.querySelector('.subCommentDate').textContent = response.date;
             template.querySelector('.subCommentContent').textContent = response.comment;
-            currentTarget.closest('.comment').querySelector('.subComments').append(template);
+            currentTarget.closest('.comment').querySelector('.subComments').prepend(template);
+            currentTarget.classList.add('hidden');
             post.init();
             comment.value = '';
         })

@@ -39,7 +39,6 @@ class QuestionController extends AbstractController
             if (count($errors) === 0) {
                 $em->persist($question);
                 $em->flush();
-                return new JsonResponse(['data' => $question->getQuestion()]);
                 return $this->redirectToRoute('app_question_show', [
                     'id' => $question->getId()
                 ]);
