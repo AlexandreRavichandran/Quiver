@@ -1,11 +1,13 @@
 {% for comment in comments %}
 <div class="comment" data-comment-id="{{comment.id}}">
-    <div class="commentheader flex mt-3 border-t-4 pt-3" data-comment-date="{{comment.createdAt|date('Y-m-d')}}">
-        <img class="block rounded-full" src="/images/profile_pictures/image-{{comment.author.id}}.jpg" alt="" width="45px">
-        <div class="ml-2">
-            <p class="font-semibold text-xl">{{comment.author.pseudonym}}</p>
-            <p class="text-gray-300">{{comment.createdAt|date('d/m/Y')}}</p>
-        </div>
+    <div class="commentheader mt-3 border-t-4 pt-3" data-comment-date="{{comment.createdAt|date('Y-m-d')}}">
+        <a class="block flex" href="{{path('app_user_profile',{'pseudonym':comment.author.pseudonym})}}">
+            <img class="block rounded-full" src="/images/profile_pictures/image-{{comment.author.id}}.jpg" alt="" width="45px">
+            <div class="ml-2">
+                <p class="font-semibold text-xl">{{comment.author.pseudonym}}</p>
+                <p class="text-gray-300">{{comment.createdAt|date('d/m/Y')}}</p>
+            </div>
+        </a>
     </div>
     <p class="p-2 pt-0">{{comment.comment}}</p>
     <div class="commentFooter px-3 mb-4">
@@ -26,12 +28,14 @@
     </div>
     <div class=" ml-3 pl-3 border-l-4 subComments">
         {% for subComments in comment.subComments %}
-        <div class="subCommentheader flex ">
-            <img class="block rounded-full" src="/images/profile_pictures/image-{{subComments.author.id}}.jpg" alt="" width="45px">
-            <div class="ml-2">
-                <p class="font-semibold">{{subComments.author.pseudonym}}</p>
-                <p class="text-gray-300">{{subComments.createdAt|date('d/m/Y')}}</p>
-            </div>
+        <div class="subCommentheader ">
+            <a class="flex block" href="{{path('app_user_profile',{'pseudonym':subComments.author.pseudonym})}}">
+                <img class="block rounded-full" src="/images/profile_pictures/image-{{subComments.author.id}}.jpg" alt="" width="45px">
+                <div class="ml-2">
+                    <p class="font-semibold">{{subComments.author.pseudonym}}</p>
+                    <p class="text-gray-300">{{subComments.createdAt|date('d/m/Y')}}</p>
+                </div>
+            </a>
         </div>
         <div class="p-4 pt-1 mb-3">
             {{subComments.subComment}}
@@ -43,12 +47,14 @@
 
 <template id="commentTemplate">
     <div>
-        <div class="commentheader flex mt-3 border-t-4 pt-3" data-comment-date=" ">
-            <img class="block rounded-full" src="/images/profile_pictures/image-{{app.user.id}}.jpg" alt="" width="45px">
-            <div class="ml-2">
-                <p class="font-semibold text-xl name"></p>
-                <p class="text-gray-300 date"></p>
-            </div>
+        <div class="commentheader mt-3 border-t-4 pt-3" data-comment-date=" ">
+            <a class="block flex " href="{{path('app_user_profile',{'pseudonym':app.user.pseudonym})}}">
+                <img class="block rounded-full" src="/images/profile_pictures/image-{{app.user.id}}.jpg" alt="" width="45px">
+                <div class="ml-2">
+                    <p class="font-semibold text-xl name"></p>
+                    <p class="text-gray-300 date"></p>
+                </div>
+            </a>
         </div>
         <p class="p-2 pt-0 comment"></p>
         <div class="commentFooter px-3 mb-4">
@@ -71,11 +77,13 @@
 </template>
 <template id="subCommentTemplate">
     <div class="subCommentheader flex ">
-        <img class="block rounded-full" src="/images/profile_pictures/image-{{app.user.id}}.jpg" alt="" width="45px">
-        <div class="ml-2">
-            <p class="font-semibold subCommentName"></p>
-            <p class="text-gray-300 subCommentDate"></p>
-        </div>
+        <a class="flex block" href="{{path('app_user_profile',{'pseudonym':app.user.pseudonym})}}">
+            <img class="block rounded-full" src="/images/profile_pictures/image-{{app.user.id}}.jpg" alt="" width="45px">
+            <div class="ml-2">
+                <p class="font-semibold subCommentName"></p>
+                <p class="text-gray-300 subCommentDate"></p>
+            </div>
+        </a>
     </div>
     <div class="p-4 pt-1 mb-3 subCommentContent">
        
