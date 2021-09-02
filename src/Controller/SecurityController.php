@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +13,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, UserRepository $userRepository): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_user_profile');
@@ -23,7 +24,9 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        $allUsers = $userRepository->findAll();
+        $randomUser = $allUsers[mt_rand(0, count($allUsers) - 1)];
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'user' => $randomUser]);
     }
 
     /**

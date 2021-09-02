@@ -62,7 +62,7 @@ class UserController extends AbstractController
      */
     public function subscriptions(User $user): Response
     {
-        
+
         return $this->render('user/index.html.twig', [
             'partial' => 'subscription',
             'user' => $user
@@ -95,6 +95,21 @@ class UserController extends AbstractController
         $jsonData = [
             'subscriberNumber' => count($userToSubscribe->getSubscribers()),
             'subscriptionNumber' => count($userToSubcribeWith->getSubscriptions()),
+        ];
+        return new JsonResponse($jsonData);
+    }
+
+    /**
+     * @Route("/login/user/generate",name="app_login_generate")
+     * @return JsonResponse
+     */
+    public function generateUser(UserRepository $userRepository): JsonResponse
+    {
+        $allUsers = $userRepository->findAll();
+        $randomUser = $allUsers[mt_rand(0, count($allUsers) - 1)];
+
+        $jsonData = [
+            'email' => $randomUser->getEmail()
         ];
         return new JsonResponse($jsonData);
     }

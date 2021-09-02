@@ -19,6 +19,11 @@ const user = {
             subscriptionFilter.addEventListener('change', user.filterSubscriptionPage);
         }
 
+        const generateUser = document.querySelector('#generateUser');
+        if (generateUser) {
+            generateUser.addEventListener('click', user.handleGenerateUser);
+        }
+
     },
 
     handleSubscription: function (target, classIfAdded, classIfRemoved) {
@@ -75,10 +80,23 @@ const user = {
         for (let index = 0; index < subscriptions.length; index++) {
             if (!subscriptions[index].classList.contains(elementToFilter)) {
                 subscriptions[index].classList.add('hidden');
-            }else{
+            } else {
                 subscriptions[index].classList.remove('hidden');
             }
         }
+    },
+    handleGenerateUser: function (e) {
+        e.preventDefault();
+        const email = document.querySelector('#inputEmail');
+        const password = document.querySelector('#inputPassword');
+
+        fetch('/login/user/generate').then(function (response) { return response.json() }).then(function (responseJson) {
+
+            email.value = responseJson.email;
+            password.value = 'demo';
+
+        })
+
     }
 }
 
