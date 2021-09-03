@@ -78,16 +78,14 @@ class SpaceController extends AbstractController
     public function following(SpaceRepository $spaceRepository, QuestionRepository $questionRepository): Response
     {
         $date = new DateTime();
-        $date = $date->format('d-m-Y');
+        $date = $date->format('Y-m-d');
         $userFollowingSpaces = $this->getUser()->getSubscribedSpaces()->toArray();
         $userFollowingSpaceNames = [];
         foreach ($userFollowingSpaces as $space) {
             $userFollowingSpaceNames[] = $space->getId();
         }
         $questions = $questionRepository->findAllQuestionsBySpaceNames($userFollowingSpaceNames, $date, 3);
-
         $spaces = $spaceRepository->findBy([], null, 8);
-
         return $this->render(
             'space/following.html.twig',
             [

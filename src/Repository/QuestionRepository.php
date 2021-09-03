@@ -37,7 +37,7 @@ class QuestionRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('q')
             ->join('q.space', 's')
-            ->andWhere('s.id IN (' . implode(', ', $spaceNames) . ')')
+            ->andWhere('s.id IN (' . implode(',', $spaceNames) . ')')
             ->andWhere('q.createdAt < :date')
             ->setParameter('date', $date)
             ->orderBy('q.createdAt', 'DESC')

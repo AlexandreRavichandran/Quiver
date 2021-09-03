@@ -16,6 +16,7 @@ const post = {
         const generateAnswerButton = document.querySelector('#generateAnswers a');
         const answerButton = document.querySelector('.answerButton');
         const postAnswerButton = document.querySelector('#answerPostButton');
+        const generateFollowingPostButton = document.querySelector('#generateFollowing a');
 
 
         for (let index = 0; index < posts.length; index++) {
@@ -71,6 +72,10 @@ const post = {
 
         if (postAnswerButton) {
             postAnswerButton.addEventListener('click', post.postAnswer);
+        }
+
+        if (generateFollowingPostButton) {
+            generateFollowingPostButton.addEventListener('click', post.handleMorePostButton);
         }
 
     },
@@ -322,6 +327,25 @@ const post = {
                 post.init();
             })
         }
+    },
+
+    handleMorePostButton: function (e) {
+        e.preventDefault();
+        const currentTarget = e.currentTarget
+        const lastElement = document.querySelector('#content').lastElementChild;
+        const lastDate = lastElement.dataset.questionsDate;
+        currentTarget.closest('#generateFollowing').classList.add('hidden');
+
+        document.querySelector('.loadingMoreFollowingPostsSpinner').classList.remove('hidden');
+
+        fetch('/following/generate/' + lastDate).then(response => response.json()).then(datas => {
+            if (datas.content !== '') {
+                document.querySelector('#content').innerHTML += datas.content;
+                post.init();
+                currentTarget.closest('#generateFollowing').classList.remove('hidden');
+            }
+            document.querySelector('.loadingMoreFollowingPostsSpinner').classList.add('hidden');
+        })
     }
 
 }

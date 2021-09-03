@@ -7,10 +7,7 @@ const space = {
         if (spaceSubscribeButton) {
             spaceSubscribeButton.addEventListener('click', space.subscribeButtonHandler);
         }
-        const generatePostButton = document.querySelector('#generateFollowing a');
-        if (generatePostButton) {
-            generatePostButton.addEventListener('click', space.handleMorePostButton);
-        }
+
 
         const generateSpaceButton = document.querySelector('#generateSpace');
         if (generateSpaceButton) {
@@ -59,9 +56,6 @@ const space = {
         fetch('/spaces/' + id + '/subscribers/' + action).then(response => response.json());
     },
 
-    handleMorePostButton: function (e) {
-        e.preventDefault();
-        addMorePosts(e.currentTarget, 'following/generate');
-    }
+
 }
 document.addEventListener('DOMContentLoaded', space.init);
