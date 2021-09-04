@@ -6,6 +6,7 @@ use App\Entity\Space;
 use App\Repository\SpaceRepository;
 use App\Repository\QuestionRepository;
 use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,8 +57,7 @@ class SpaceController extends AbstractController
      */
     public function index(SpaceRepository $spaceRepository): Response
     {
-        $userFollowingSpaces = $this->getUser()->getSubscribedSpaces();
-
+        $userFollowingSpaces = $spaceRepository->orderUserSpace($this->getUser()->getId(), 'lastVisited');
         $spaces = $spaceRepository->findBy([], null, 6);
 
         return $this->render(
@@ -97,12 +97,32 @@ class SpaceController extends AbstractController
     }
 
     /**
+     * Undocumented function
+     * @Route("/spaces/user/generate/{order}", name="app_space_order")
+     * @return JsonResponse
+     */
+    public function setUserOrderSpace($order, SpaceRepository $spaceRepository): JsonResponse
+    {
+        if ($order === 'name' || $order === 'lastVisited') {
+            $userFollowingSpaces = $spaceRepository->orderUserSpace($this->getUser()->getId(), $order);
+            $jsonData = [
+                'content' => $this->renderView('space/partials/_userSpaceList.html.twig', ['userFollowingSpaces' => $userFollowingSpaces])
+            ];
+            return new JsonResponse($jsonData);
+        }
+
+        return new JsonResponse(null, 401);
+    }
+
+    /**
      * Show one space and its related questions
      * @Route("/spaces/{id}",name="app_space_show")
      * @return Response
      */
-    public function show(Space $space, SpaceRepository $spaceRepository): Response
+    public function show(Space $space, SpaceRepository $spaceRepository, EntityManagerInterface $em): Response
     {
+        $space->setLastVisited(new DateTimeImmutable());
+        $em->flush();
         $spaces = $spaceRepository->findBy([], null, 8);
         $questions = $space->getQuestions();
 

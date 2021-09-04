@@ -13,6 +13,11 @@ const space = {
         if (generateSpaceButton) {
             generateSpaceButton.addEventListener('click', space.generateSpaces);
         }
+
+        const userOrderSpaceButton = document.querySelector('#orderSpaces');
+        if (userOrderSpaceButton) {
+            userOrderSpaceButton.addEventListener('change', space.handleUserSpaceOrder);
+        }
     },
 
     generateSpaces: function (e) {
@@ -55,6 +60,14 @@ const space = {
     AJAXRequestHandler: function (id, action) {
         fetch('/spaces/' + id + '/subscribers/' + action).then(response => response.json());
     },
+
+    handleUserSpaceOrder: function (e) {
+        const newOrder = e.currentTarget.value;
+        fetch('/spaces/user/generate/' + newOrder).then(function (response) { return response.json() }).then(function (responseJson) {
+            const userSpaceList = document.querySelector('.userSpaceList');
+            userSpaceList.innerHTML = responseJson.content;
+        });
+    }
 
 
 }

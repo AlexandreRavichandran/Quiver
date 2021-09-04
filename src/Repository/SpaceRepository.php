@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+
 use App\Entity\Space;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Space|null find($id, $lockMode = null, $lockVersion = null)
@@ -26,6 +27,24 @@ class SpaceRepository extends ServiceEntityRepository
             ->andWhere('s.id > :id')
             ->setParameter(':id', $id)
             ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function orderUserSpace($userId, $order)
+    {
+        $queryBuilder = $this
+            ->createQueryBuilder('s')
+            ->innerJoin('s.subscribers', 'u')
+            ->andWhere('u.id = :id')
+            ->setParameter(':id', $userId);
+            if($order === 'name'){
+            $queryBuilder->orderBy('s.name', 'ASC');
+            }
+            if($order === 'lastVisited'){
+            $queryBuilder->orderBy('s.lastVisited', 'DESC');
+            }
+        return $queryBuilder
             ->getQuery()
             ->getResult();
     }

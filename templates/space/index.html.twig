@@ -8,10 +8,9 @@
             <div class="col-span-12 sm:col-span-12 lg:col-span-8 xl:col-span-6 p-4 bg-white border border-gray-300">
                 <div class="spaceHeader flex justify-between">
                     <h1 class="font-black text-2xl">Vos espaces</h1>
-                    <select name="" id="">
-                        <option value="">Ordre alphabetique</option>
-                        <option value="">Par rôle</option>
-                        <option value="">Visité récemment</option>
+                    <select id="orderSpaces">
+                        <option value="name">Ordre alphabetique</option>
+                        <option value="lastVisited">Visité récemment</option>
                     </select>
                 </div>
                 <span class="flex justify-start mt-2">
@@ -20,14 +19,7 @@
                     <a href="#discoverSpaces" class="block p-2 rounded border"><i class="bi bi-compass mr-1"></i>Découvrir des espaces</a>
                 </span>
                 <div class="userSpaceList">
-                {% for space in userFollowingSpaces %}
-                <a href="{{path('app_space_show',{'id':space.id})}}">
-                    <div class="userSpace flex justify-between p-2 border-b-2">
-                        <p class="font-black"><img class="inline mr-3" src="https://placehold.it/60x60" alt="">{{space.name}} </p>
-                        <i class="bi bi-chevron-right"></i>
-                    </div>
-                </a>
-                {% endfor %}
+                {% include 'space/partials/_userSpaceList.html.twig' %}
                 </div>
             </div> 
         </div>
@@ -37,7 +29,7 @@
                 <div class="grid grid-cols-12 gap-4 mt-4 spaceList flex flex-wrap mb-3">
                 {% for space in spaces %}
                     <div data-id="{{space.id}}" class="col-span-12 md:col-span-6 lg:col-span-4 spaceCard bg-white rounded-xl p-2 border border-gray-300 hover:bg-gray-200">
-                        <a href="{{path('app_space_show',{'id':space.id})}}">
+                        <a target="_blank" href="{{path('app_space_show',{'id':space.id})}}">
                             <img class="block ml-auto mr-auto" src="https://placehold.it/150x150" alt="">
                             <h3 class="text-center font-black text-xl">{{space.name}}</h3>
                             <p class="text-center">{{space.description}}</p>

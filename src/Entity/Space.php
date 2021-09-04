@@ -43,6 +43,11 @@ class Space
      */
     private $subscribers;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastVisited;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -133,5 +138,17 @@ class Space
     {
         $isSubscribed = $this->getSubscribers()->contains($user);
         return $isSubscribed;
+    }
+
+    public function getLastVisited(): ?\DateTimeInterface
+    {
+        return $this->lastVisited;
+    }
+
+    public function setLastVisited(?\DateTimeInterface $lastVisited): self
+    {
+        $this->lastVisited = $lastVisited;
+
+        return $this;
     }
 }
