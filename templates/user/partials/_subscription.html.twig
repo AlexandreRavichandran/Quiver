@@ -3,14 +3,13 @@
     <select id="subscriptionFilter">
         <option value="user" selected>Personnes</option>
         <option value="space">Espaces</option>
-        <option value="">Sujets</option>
     </select>
 </div>
 <div class="subscriptions mt-3">
     {% for subscription in user.subscriptions %}
     <a class="subscription user" href="{{path('app_user_profile',{'pseudonym':subscription.pseudonym})}}">
         <div class="subscription user border-b-2 flex justify-between p-4">
-            <h3 class="font-black align-center"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/image-{{subscription.id}}.jpg" alt="" width="40px">{{subscription.pseudonym}}, <span class="font-semibold text-gray-400">metier</span></h3>
+            <h3 class="font-black align-center"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/image-{{subscription.id}}.jpg" alt="" width="40px">{{subscription.pseudonym}}, <span class="font-semibold text-gray-400">{{subscription.qualification}}</span></h3>
             {% if (subscription.isSubscribedTo(app.user) and subscription != app.user) %}
             <a href="#" class="subcribed pl-4 pr-4 pt-2 w-32 block text-center rounded-full border bg-gray-100 hover:bg-gray-200">Vous suit</a>
             {% endif %}

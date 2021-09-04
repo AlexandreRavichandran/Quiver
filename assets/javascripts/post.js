@@ -10,7 +10,7 @@ const post = {
         const flashMessageButtons = document.querySelectorAll('.flashMessageCloseButton');
         const loadMoreCommentsButton = document.querySelectorAll('.loadMoreComments');
         const displaySubCommentForm = document.querySelectorAll('.subCommentFormButton');
-        const generatePostButton = document.querySelector('#generateHome a');
+        const generateHomePostButton = document.querySelector('#generateHome a');
         const commentForm = document.querySelectorAll('.commentForm form');
         const subCommentForm = document.querySelectorAll('.subCommentForm form');
         const generateAnswerButton = document.querySelector('#generateAnswers a');
@@ -58,8 +58,8 @@ const post = {
         for (let index = 0; index < subCommentForm.length; index++) {
             subCommentForm[index].addEventListener('submit', post.handleSubCommentForm);
         }
-        if (generatePostButton) {
-            generatePostButton.addEventListener('click', post.handleMorePostButton)
+        if (generateHomePostButton) {
+            generateHomePostButton.addEventListener('click', post.handleMoreHomePostButton)
         }
 
         if (generateAnswerButton) {
@@ -170,10 +170,6 @@ const post = {
         }
 
     },
-    handleMorePostButton: function (e) {
-        e.preventDefault();
-        post.addMorePosts(e.currentTarget, 'questions/generate');
-    },
     handleLikeAction: function (answerId, action) {
         fetch('/answers/' + answerId + '/' + action).then(response => response.json()).then(datas => {
             const likeNumber = document.querySelector('#answer_' + datas.answerId + '_likeNumber');
@@ -192,14 +188,16 @@ const post = {
         flashMessage.style.display = 'none';
     },
 
-    addMorePosts: function (clickedElement, controllerRoute) {
+    handleMoreHomePostButton: function (e) {
+        e.preventDefault();
+        const clickedElement = e.currentTarget;
         const lastElement = document.querySelector('#content').lastElementChild;
         const lastDate = lastElement.dataset.questionsDate;
         clickedElement.closest('#generateHome').classList.add('hidden');
 
         document.querySelector('.loadingMorePostsSpinner').classList.remove('hidden');
 
-        fetch('/' + controllerRoute + '/' + lastDate).then(response => response.json()).then(datas => {
+        fetch('/questions/generate/' + lastDate).then(response => response.json()).then(datas => {
             if (datas.content !== '') {
                 document.querySelector('#content').innerHTML += datas.content;
                 post.init();
@@ -347,8 +345,8 @@ const post = {
             document.querySelector('.loadingMoreFollowingPostsSpinner').classList.add('hidden');
         })
     }
-
 }
+
 
 
 document.addEventListener('DOMContentLoaded', post.init)

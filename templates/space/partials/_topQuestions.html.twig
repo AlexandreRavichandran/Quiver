@@ -5,7 +5,6 @@
         <p class="font-semibold text-gray-400"><a href="{{path('app_question_show',{'id':question.id})}}">{{question.answers|length}} réponses</a> - Question posée le {{question.createdAt|date('d/m/Y')}}</p>
         <div class="links flex ">
             <a class="block p-2 rounded hover:bg-gray-200 mr-6" href="#"><i class="bi text-2xl bi-pencil-square"></i></a>
-            <a class="block p-2 rounded hover:bg-gray-200 mr-6" href="#"><i class="bi text-2xl bi-arrow-down-square mr-1"></i><span>14</span></a>
         </div>
     </div>
     {% endfor %}
