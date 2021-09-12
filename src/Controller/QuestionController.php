@@ -39,6 +39,7 @@ class QuestionController extends AbstractController
             if (count($errors) === 0) {
                 $em->persist($question);
                 $em->flush();
+                $this->addFlash('green', 'Votre question a bien été postée. Veuillez lier votre question à des espaces.');
                 return $this->redirectToRoute('app_question_show', [
                     'id' => $question->getId()
                 ]);

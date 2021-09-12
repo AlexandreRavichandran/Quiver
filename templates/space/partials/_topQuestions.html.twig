@@ -1,15 +1,21 @@
 <div>
     {% for question in questions %}
-    <div class="questions p-2 mb-4 bg-white border border-gray-300">
+    <div class="answerHeader questions p-2 mb-4 bg-white border border-gray-300" data-question-id = {{question.id}}>
         <a href="{{path('app_question_show',{'id':question.id})}}" class="font-black p-2">{{question.question}}</a>
         <p class="font-semibold text-gray-400"><a href="{{path('app_question_show',{'id':question.id})}}">{{question.answers|length}} réponses</a> - Question posée le {{question.createdAt|date('d/m/Y')}}</p>
         <div class="links flex ">
-            <a class="block p-2 rounded hover:bg-gray-200 mr-6" href="#"><i class="bi text-2xl bi-pencil-square"></i></a>
+            <a class="multipleAnswerButton block p-2 rounded hover:bg-gray-200 mr-6" href="#"><i class="bi text-2xl bi-pencil-square"></i></a>
+        </div>
+        <div>
+            <div id="editor">
+            </div>
+            <div id="answerPostButton" class="hidden mt-3">
+                <a href="#" class="text-center px-2 py-1 block bg-indigo-400 font-bold text-xl text-white rounded-full w-28">Poster</a>
+            </div>
         </div>
     </div>
     {% endfor %}
-    <div class="flex justify-center">
-        <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
-        </div>
-    </div>
 </div>
+{% block javascripts %}
+<script src="https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js"></script>
+{% endblock %}

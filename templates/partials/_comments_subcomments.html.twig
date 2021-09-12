@@ -9,7 +9,7 @@
             </div>
         </a>
     </div>
-    <p class="p-2 pt-0">{{comment.comment}}</p>
+    <p class="p-2 pt-0">{{comment.comment|raw}}</p>
     <div class="commentFooter px-3 mb-4">
         <a class="block bg-gray-200 p-3 rounded-full w-32 font-semibold subCommentFormButton" href="#">Répondre<i class="ml-2 bi bi-arrow-return-left"></i></a>
         <div class="subCommentForm my-4 hidden">
@@ -38,7 +38,7 @@
             </a>
         </div>
         <div class="p-4 pt-1 mb-3">
-            {{subComments.subComment}}
+            {{subComments.subComment|raw}}
         </div>
         {% endfor %}
     </div>

@@ -15,9 +15,10 @@ const post = {
         const subCommentForm = document.querySelectorAll('.subCommentForm form');
         const generateAnswerButton = document.querySelector('#generateAnswers a');
         const answerButton = document.querySelector('.answerButton');
+        const multipleAnswerButton = document.querySelectorAll('.multipleAnswerButton');
         const postAnswerButton = document.querySelector('#answerPostButton');
+        const multiplePostAnswerButton = document.querySelectorAll('.answerPostButton')
         const generateFollowingPostButton = document.querySelector('#generateFollowing a');
-
 
         for (let index = 0; index < posts.length; index++) {
             posts[index].addEventListener('click', post.handlePostDisplay);
@@ -58,6 +59,15 @@ const post = {
         for (let index = 0; index < subCommentForm.length; index++) {
             subCommentForm[index].addEventListener('submit', post.handleSubCommentForm);
         }
+
+        for (let index = 0; index < multipleAnswerButton.length; index++) {
+            multipleAnswerButton[index].addEventListener('click', post.showEditor);
+        }
+
+        for (let index = 0; index < multiplePostAnswerButton.length; index++) {
+            multiplePostAnswerButton[index].addEventListener('click', post.postAnswer);
+        }
+
         if (generateHomePostButton) {
             generateHomePostButton.addEventListener('click', post.handleMoreHomePostButton)
         }
@@ -73,7 +83,6 @@ const post = {
         if (postAnswerButton) {
             postAnswerButton.addEventListener('click', post.postAnswer);
         }
-
         if (generateFollowingPostButton) {
             generateFollowingPostButton.addEventListener('click', post.handleMorePostButton);
         }
@@ -291,7 +300,8 @@ const post = {
     showEditor: function (e) {
         e.preventDefault();
         e.currentTarget.classList.add('hidden');
-        const editorSpace = e.currentTarget.closest('.answerHeader').querySelector('#editor');
+        const question = e.currentTarget.closest('.answerHeader');
+        const editorSpace = question.querySelector('#editor');
         ClassicEditor
             .create(editorSpace, {
                 removePlugins: ['Heading'],
@@ -301,13 +311,14 @@ const post = {
                 console.log(error);
             });
 
-        document.querySelector('#answerPostButton').classList.remove('hidden');
+        question.querySelector('#answerPostButton').classList.remove('hidden');
     },
 
     postAnswer: function (e) {
         e.preventDefault();
-        const editorSpace = e.currentTarget.closest('.answerHeader').querySelector('.ck-editor__editable');
-        const questionid = e.currentTarget.closest('.answerHeader').dataset.questionId;
+        const currentTarget = e.currentTarget
+        const editorSpace = currentTarget.closest('.answerHeader').querySelector('.ck-editor__editable');
+        const questionid = currentTarget.closest('.answerHeader').dataset.questionId;
 
         const data = { 'answer': editorSpace.innerHTML, 'questionId': questionid, 'user': user };
         const config = {
@@ -319,10 +330,17 @@ const post = {
         }
         if (editorSpace.textContent.length > 0) {
             fetch('/answers/create', config).then(function (response) { return response.json() }).then(function (responseJson) {
-                document.querySelector('.content').innerHTML += responseJson.content;
-                document.querySelector('#answerNumber').textContent++;
-                editorSpace.innerHTML = "";
-                post.init();
+                if (document.querySelector('.content')) {
+                    document.querySelector('.content').innerHTML += responseJson.content;
+                    document.querySelector('#answerNumber').textContent++;
+                    document.querySelector('.answerButton').classList.remove('hidden');
+                    editorSpace.closest('.ck-editor').remove();
+                    document.querySelector('#answerPostButton').remove();
+
+                    post.init();
+                } else {
+                    window.location.href = ('/questions/' + questionid);
+                }
             })
         }
     },
