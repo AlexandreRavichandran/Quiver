@@ -16,9 +16,6 @@
                 <p class="text-xl"><a class="block p-2 rounded hover:bg-gray-200 mr-1 {% if app.user in answer.dislikedUsers %} disliked {% endif %} dislikeButton" href="#"><i class="bi text-2xl bi-arrow-down-square mr-2"></i><span id="answer_{{answer.id}}_dislikeNumber">{{answer.dislikedUsers|length}}</span></a></p>
                 <p class="text-xl"><a class="block p-2 rounded hover:bg-gray-200 mr-1 commentButton" href="#"><i class="bi text-2xl bi-chat mr-2"></i><span>{{answer.comments|length}}</span></a></p>
             </div>
-            <div class="col-span-3 flex justify-end">
-                <a class="block p-2 rounded hover:bg-gray-200 mr-6" href="#"><i class="bi p-2 text-xl bi-three-dots"></i></a>
-            </div>
         </div>
         <a style="display:block" href="#" class="numberOfComments block p-3 mt-2 bg-gray-200 text-gray-400">{{answer.comments|length}} commentaires</a>
         <div style="display:none" class="comments mt-3"> 
