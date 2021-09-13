@@ -306,7 +306,7 @@ const post = {
         ClassicEditor
             .create(editorSpace, {
                 ckfinder: {
-                    uploadUrl: '/test',
+                    uploadUrl: '/answerPicture/add',
                 },
                 removePlugins: ['Heading'],
                 toolbar: ['imageUpload', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],

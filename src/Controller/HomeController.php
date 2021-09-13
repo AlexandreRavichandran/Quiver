@@ -59,14 +59,16 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/test",name="trst")
+     * @Route("/answerPicture/add",name="app_answer_picture_add")
      */
     public function test(Request $request): JsonResponse
     {
-        dd($request);
+        $file = $request->files->get('upload');
+        $newName = $this->getUser()->getPseudonym() . '-' . uniqId() . '-' . $file->getClientOriginalName();
+        $file->move($this->getParameter('pictures_directory'), $newName);
         $jsonData = [
             'uploaded' => true,
-            'url' => '/public/images/'
+            'url' => '/images/' . $newName
         ];
 
         return new JsonResponse($jsonData);
