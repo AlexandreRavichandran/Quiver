@@ -305,8 +305,11 @@ const post = {
         const editorSpace = question.querySelector('#editor');
         ClassicEditor
             .create(editorSpace, {
+                ckfinder: {
+                    uploadUrl: '/test',
+                },
                 removePlugins: ['Heading'],
-                toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+                toolbar: ['imageUpload', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
             })
             .catch(error => {
                 console.log(error);

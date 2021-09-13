@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class HomeController extends AbstractController
 {
@@ -55,5 +56,19 @@ class HomeController extends AbstractController
     public function impressum(): Response
     {
         return $this->render('home/impressum.html.twig');
+    }
+
+    /**
+     * @Route("/test",name="trst")
+     */
+    public function test(Request $request): JsonResponse
+    {
+        dd($request);
+        $jsonData = [
+            'uploaded' => true,
+            'url' => '/public/images/'
+        ];
+
+        return new JsonResponse($jsonData);
     }
 }
