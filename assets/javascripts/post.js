@@ -18,7 +18,7 @@ const post = {
         const answerButton = document.querySelector('.answerButton');
         const multipleAnswerButton = document.querySelectorAll('.multipleAnswerButton');
         const postAnswerButton = document.querySelector('#answerPostButton');
-        const multiplePostAnswerButton = document.querySelectorAll('.answerPostButton')
+        const multiplePostAnswerButton = document.querySelectorAll('.multiplePostAnswerButton')
         const generateFollowingPostButton = document.querySelector('#generateFollowing a');
 
         for (let index = 0; index < posts.length; index++) {
@@ -68,6 +68,11 @@ const post = {
         for (let index = 0; index < multiplePostAnswerButton.length; index++) {
             multiplePostAnswerButton[index].addEventListener('click', post.postAnswer);
         }
+
+        for (let index = 0; index < multiplePostAnswerButton.length; index++) {
+            multiplePostAnswerButton[index].addEventListener('click', post.postAnswer);
+        }
+
 
         if (generateHomePostButton) {
             generateHomePostButton.addEventListener('click', post.handleMoreHomePostButton)
@@ -314,8 +319,13 @@ const post = {
             .catch(error => {
                 console.log(error);
             });
+        if(question.querySelector('#answerPostButton')){
+            question.querySelector('#answerPostButton').classList.remove('hidden');
 
-        question.querySelector('#answerPostButton').classList.remove('hidden');
+        }else{
+            question.querySelector('.multiplePostAnswerButton').classList.remove('hidden');
+        }
+        
     },
 
     postAnswer: function (e) {
@@ -323,7 +333,6 @@ const post = {
         const currentTarget = e.currentTarget
         const editorSpace = currentTarget.closest('.answerHeader').querySelector('.ck-editor__editable');
         const questionid = currentTarget.closest('.answerHeader').dataset.questionId;
-
         const data = { 'answer': editorSpace.innerHTML, 'questionId': questionid, 'user': user };
         const config = {
             method: 'POST',

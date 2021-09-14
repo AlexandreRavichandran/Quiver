@@ -1,4 +1,4 @@
-<div class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center">
+<div class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-9999999">
     <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
         <div class="modal-container bg-white w-11/12 md:w-8/12 lg:w-8/12 xl:w-5/12 mx-auto rounded shadow-lg z-50 overflow-y-auto"> 
             <div class="modal-close absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
@@ -26,8 +26,7 @@
             <div class="flex mt-3">
                 <img class="block rounded-full" src="/images/profile_pictures/image-{{app.user.id}}.jpg" alt="" width="45px">
                 <p class="p-2 self-center text-gray-500">{{app.user.firstName}} {{app.user.lastName|upper}} a demandé </p>
-            </div>
-            {# Inserer ici le formulaire pour poser une question #}
+            </div> 
             <form action="{{path('app_question_create')}}" method="post">
                 <div class="mb-6">
                     <input type="text" name="question" required="required" class="mt-1 w-full" placeholder='Commencez votre question "Que", "Comment", "Pourquoi", etc.'>
