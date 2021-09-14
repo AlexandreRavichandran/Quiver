@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UserController extends AbstractController
 {
@@ -17,7 +19,6 @@ class UserController extends AbstractController
      */
     public function index(User $user): Response
     {
-
         return $this->render('user/index.html.twig', [
             'partial' => 'profile',
             'user' => $user
@@ -62,7 +63,6 @@ class UserController extends AbstractController
      */
     public function subscriptions(User $user): Response
     {
-
         return $this->render('user/index.html.twig', [
             'partial' => 'subscription',
             'user' => $user
@@ -70,7 +70,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * 
+     *
      * @Route("/profile/{id}/subscribers/{action}")
      * @return JsonResponse
      */
@@ -112,5 +112,32 @@ class UserController extends AbstractController
             'email' => $randomUser->getEmail()
         ];
         return new JsonResponse($jsonData);
+    }
+
+    /**
+     *
+     * @Route("/profile/qualification/update",name="app_user_qualification_update")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateQualification(Request $request, EntityManagerInterface $em, ValidatorInterface $validatorInterface):JsonResponse
+    {
+        $datas = json_decode($request->getContent());
+        $user = $this->getUser();
+        $newQualification = $datas->newQualification;
+        $user->setQualification($newQualification);
+        $errors = $validatorInterface->validate($user);
+
+        if (count($errors) === 0) {
+            $em->persist($user);
+            $em->flush();
+            $responseCode = 200;
+            $jsonData = ['newQualification'=>$newQualification];
+        } else {
+            $responseCode = 401;
+            $jsonData = [];
+        }
+
+        return new JsonResponse($jsonData, $responseCode);
     }
 }

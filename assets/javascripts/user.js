@@ -24,6 +24,17 @@ const user = {
             generateUser.addEventListener('click', user.handleGenerateUser);
         }
 
+        const qualification = document.querySelector('#userQualification');
+        if (qualification) {
+            qualification.addEventListener('click', user.allowQualificationSetting);
+        }
+
+        const setQualification = document.querySelector('.userQualificationSetting');
+        if (setQualification) {
+            setQualification.addEventListener('keyup', user.updateQualification);
+        }
+
+
     },
 
     handleSubscription: function (target, classIfAdded, classIfRemoved) {
@@ -97,6 +108,36 @@ const user = {
 
         })
 
+    },
+    allowQualificationSetting: function (e) {
+        e.preventDefault()
+        e.currentTarget.classList.add('hidden');
+        const qualificationInput = document.querySelector('.userQualificationSetting');
+        qualificationInput.classList.remove('hidden');
+        qualificationInput.value = e.currentTarget.textContent;
+
+    },
+
+    updateQualification: function (e) {
+        if (e.keyCode === 13) {
+            const newQualification = e.currentTarget;
+
+            const data = { 'newQualification': newQualification.value };
+            const config = {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+            fetch('/profile/qualification/update', config).then(function (response) { return response.json() }).then(function (responseJson) {
+                const userQualification = document.querySelector('#userQualification');
+                userQualification.classList.remove('hidden');
+                userQualification.textContent = newQualification.value;
+                newQualification.classList.add('hidden');
+
+            });
+        }
     }
 }
 
