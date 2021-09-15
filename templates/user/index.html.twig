@@ -7,20 +7,29 @@
         <div class="grid grid-cols-12">
             <div class="col-span-12 lg:col-span-8 p-4">
                 <div class="header flex justify-center">
-                    <img class="block rounded-full" src="/images/profile_pictures/image-{{user.id}}.jpg" alt="" width="160px">
-                    <div class="ml-4 self-center">
-                        <h1 class="text-3xl font-black">{{user.firstName}} {{user.lastName|upper}}</h1>
-                        {% if user.pseudonym is not same as app.user.pseudonym and user.isSubscribedTo(app.user) %}
-                        <p class="my-3 bg-gray-200 text-gray-500 rounded w-24 px-2">VOUS SUIT</p>
-                        {% endif %}
-                        {% if user == app.user %}
-                        <a href="#" id="userQualification" class="block font-semibold text-gray-400 mt-2 mb-2">{{user.qualification}}</a>
-                        <input type="text" class="hidden userQualificationSetting ">
-                        {% else %}
-                        <p class="block font-semibold text-gray-400 mt-2 mb-2">{{user.qualification}}</p>
-                        {% endif %}
-                        <p><a href="{{path('app_user_profile_subscriber',{'pseudonym':user.pseudonym})}}"> {{user.subscribers|length}} abonnés </a> <a href="{{path('app_user_profile_subscription',{'pseudonym':user.pseudonym})}}"> {{user.subscriptions|length + user.subscribedSpaces|length}} qui suit</a></p>
-                        <a href="#" class="userDescription mt-3 block text-gray-400">{{user.description}}</a> 
+                    <div class="flex row items-center">
+                        <img class="block rounded-full" src="/images/profile_pictures/image-{{user.id}}.jpg" alt="" width="160px">
+                    </div>
+                    <div class="row">
+                        <div class="ml-4 self-center">
+                            <h1 class="text-3xl font-black">{{user.firstName}} {{user.lastName|upper}}</h1>
+                            {% if user.pseudonym is not same as app.user.pseudonym and user.isSubscribedTo(app.user) %}
+                            <p class="my-3 bg-gray-200 text-gray-500 rounded w-24 px-2">VOUS SUIT</p>
+                            {% endif %}
+                            {% if user == app.user %}
+                            <a href="#" id="userQualification" class="block font-semibold text-gray-400 mt-2 mb-2">{{user.qualification}}</a>
+                            <input type="text" class="hidden userQualificationSetting">
+                            <a href="#" id="userDescription" class="mt-3 block text-gray-400">{{user.description}}</a>
+                            <textarea style="max-height:200px" class="hidden userDescriptionSetting w-full sm:w-50" cols="80" rows="2"></textarea>
+                            <a href="#" id="updateDescription" class="hidden flex justify-center p-2 bg-indigo-400 rounded text-white mt-2 w-20">Modifier</a>
+                            <p
+                            {% else %}
+                            <p class="block font-semibold text-gray-400 mt-2 mb-2">{{user.qualification}}</p>
+                            <p class=" mt-3 block text-gray-400">{{user.description}}</p> 
+                            {% endif %}
+                            <p><a href="{{path('app_user_profile_subscriber',{'pseudonym':user.pseudonym})}}"> {{user.subscribers|length}} abonnés </a> <a href="{{path('app_user_profile_subscription',{'pseudonym':user.pseudonym})}}"> {{user.subscriptions|length + user.subscribedSpaces|length}} qui suit</a></p>
+                            
+                        </div>
                     </div>
                 </div>
                 <div>

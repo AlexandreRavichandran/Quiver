@@ -140,4 +140,31 @@ class UserController extends AbstractController
 
         return new JsonResponse($jsonData, $responseCode);
     }
+
+        /**
+     *
+     * @Route("/profile/description/update",name="app_user_description_update")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateDescription(Request $request, EntityManagerInterface $em, ValidatorInterface $validatorInterface):JsonResponse
+    {
+        $datas = json_decode($request->getContent());
+        $user = $this->getUser();
+        $newDescription = $datas->newDescription;
+        $user->setDescription($newDescription);
+        $errors = $validatorInterface->validate($user);
+
+        if (count($errors) === 0) {
+            $em->persist($user);
+            $em->flush();
+            $responseCode = 200;
+            $jsonData = ['newQualification'=>$newDescription];
+        } else {
+            $responseCode = 401;
+            $jsonData = [];
+        }
+
+        return new JsonResponse($jsonData, $responseCode);
+    }
 }

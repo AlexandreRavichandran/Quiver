@@ -34,7 +34,15 @@ const user = {
             setQualification.addEventListener('keyup', user.updateQualification);
         }
 
+        const description = document.querySelector('#userDescription');
+        if (description) {
+            description.addEventListener('click', user.allowDescriptionSetting);
+        }
 
+        const setDescription = document.querySelector('#updateDescription')
+        if (setDescription) {
+            setDescription.addEventListener('click', user.updateDescription);
+        }
     },
 
     handleSubscription: function (target, classIfAdded, classIfRemoved) {
@@ -138,6 +146,42 @@ const user = {
 
             });
         }
+    },
+    allowDescriptionSetting: function (e) {
+        e.preventDefault();
+       
+        e.currentTarget.classList.add('hidden');
+        const descriptionInput = document.querySelector('.userDescriptionSetting');
+        const updateDescriptionButton = document.querySelector('#updateDescription');
+        descriptionInput.classList.remove('hidden');
+        updateDescriptionButton.classList.remove('hidden');
+
+        descriptionInput.value = e.currentTarget.textContent;
+
+    },
+    updateDescription: function (e) {
+
+        const newDescription = document.querySelector('.userDescriptionSetting');
+        
+        const data = { 'newDescription': newDescription.value };
+        const config = {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        fetch('/profile/description/update', config).then(function (response) { return response.json() }).then(function (responseJson) {
+            console.log('ok');
+            const userDescription = document.querySelector('#userDescription');
+            const updateDescriptionButton = document.querySelector('#updateDescription')
+            userDescription.textContent = newDescription.value;
+            newDescription.classList.add('hidden');
+            updateDescriptionButton.classList.add('hidden');
+            userDescription.classList.remove('hidden');
+
+        });
+
     }
 }
 
