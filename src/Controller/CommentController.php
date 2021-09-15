@@ -19,16 +19,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class CommentController extends AbstractController
 {
     /**
-     * @Route("/comment", name="comment")
-     */
-    public function index(): Response
-    {
-        return $this->render('comment/index.html.twig', [
-            'controller_name' => 'CommentController',
-        ]);
-    }
-
-    /**
      * @Route("/comments/create", name="app_comment_create")
      */
     public function create(AnswerRepository $answerRepository, EntityManagerInterface $em, Request $request, UserRepository $user, ValidatorInterface $validator): Response
@@ -51,9 +41,6 @@ class CommentController extends AbstractController
                     'date' => $comment->getCreatedAt()->format('d/m/Y')
                 ];
                 return new JsonResponse($jsonData, 200);
-                // return $this->redirectToRoute('app_question_show', [
-                //     'id' => $comment->getAnswer()->getQuestion()->getId()
-                // ]);
             }
 
             //Display error messages

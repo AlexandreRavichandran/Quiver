@@ -87,7 +87,7 @@ class AnswerController extends AbstractController
                 $em->persist($answer);
                 $em->flush();
                 $jsonData = [
-                    'content' => $this->renderView('partials/question_headers/question_header_singleQuestion.html.twig', ['answers' => [$answer]])
+                    'content' => $this->renderView('partials/question_headers/question_header_single_question.html.twig', ['answers' => [$answer]])
                 ];
                 return new JsonResponse($jsonData, 200);
 

@@ -30,7 +30,7 @@
                 </div>
                 <p class="p-2 text-2xl"> <span id="answerNumber">{{question.answers|length}}</span> réponses </p>
                <div class="content">
-                {% include 'partials/question_headers/question_header_singleQuestion.html.twig' %}
+                {% include 'partials/question_headers/question_header_single_question.html.twig' %}
                </div>
                 <div class="flex justify-center hidden loadingMoreAnswersSpinner">
                     <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
@@ -43,7 +43,7 @@
             <div class="col-span-12 lg:col-span-4 row-span-2"> 
                 <h3 class="pb-3 border-b-2 text-center">Questions similaires</h3>
                 <ul class="text-center">
-                {% for question in alternativeQuestions %}
+                {% for question in alternative_questions %}
                     <li class="mb-3 hover:bg-gray-200"><a href="{{path('app_question_show',{'id':question.id})}}" class="text-indigo-500">{{question.question}} </a></li>
                 {% endfor %}
                 </ul>

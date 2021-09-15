@@ -1,4 +1,4 @@
-{% for space in userFollowingSpaces %}
+{% for space in user_following_spaces %}
     <a href="{{path('app_space_show',{'id':space.id})}}">
         <div class="userSpace flex justify-between p-2 border-b-2">
             <p class="font-black"><img class="inline mr-3" src="https://placehold.it/60x60" alt="">{{space.name}} </p>

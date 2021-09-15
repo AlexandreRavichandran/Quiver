@@ -65,7 +65,7 @@ class QuestionController extends AbstractController
         return $this->render('question/show.html.twig', [
             'question' => $question,
             'answers' => $answers,
-            'alternativeQuestions' => $alternativeQuestions
+            'alternative_questions' => $alternativeQuestions
         ]);
     }
 
@@ -77,7 +77,7 @@ class QuestionController extends AbstractController
 
         $answers = $answerRepository->findAnswersByQuestionId($question->getId(), $date, 3);
         $jsonData = [
-            'content' => $this->renderView('partials/question_headers/question_header_singleQuestion.html.twig', ['answers' => $answers])
+            'content' => $this->renderView('partials/question_headers/question_header_single_question.html.twig', ['answers' => $answers])
         ];
         return new JsonResponse($jsonData);
     }

@@ -65,7 +65,7 @@ class SpaceController extends AbstractController
             [
                 'page' => 'space',
                 'spaces' => $spaces,
-                'userFollowingSpaces' => $userFollowingSpaces
+                'user_following_spaces' => $userFollowingSpaces
             ]
         );
     }
@@ -106,7 +106,7 @@ class SpaceController extends AbstractController
         if ($order === 'name' || $order === 'lastVisited') {
             $userFollowingSpaces = $spaceRepository->orderUserSpace($this->getUser()->getId(), $order);
             $jsonData = [
-                'content' => $this->renderView('space/partials/_userSpaceList.html.twig', ['userFollowingSpaces' => $userFollowingSpaces])
+                'content' => $this->renderView('space/partials/_user_space_list.html.twig', ['userFollowingSpaces' => $userFollowingSpaces])
             ];
             return new JsonResponse($jsonData);
         }
@@ -150,7 +150,7 @@ class SpaceController extends AbstractController
         return $this->render(
             'space/show.html.twig',
             [
-                'partial' => 'topQuestions',
+                'partial' => 'top_questions',
                 'spaces' => $spaces,
                 'space' => $space,
                 'questions' => $questions,
