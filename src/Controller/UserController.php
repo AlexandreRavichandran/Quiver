@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/profile/{pseudonym}", name="app_user_profile")
+     * @Route("/profile/{pseudonym}", name="app_user_profile",methods="GET")
      */
     public function index(User $user): Response
     {
@@ -26,7 +26,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/profile/{pseudonym}/answers", name="app_user_profile_answer")
+     * @Route("/profile/{pseudonym}/answers", name="app_user_answer",methods="GET")
      */
     public function answers(User $user): Response
     {
@@ -37,7 +37,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/profile/{pseudonym}/questions", name="app_user_profile_question")
+     * @Route("/profile/{pseudonym}/questions", name="app_user_question",methods="GET")
      */
     public function questions(User $user): Response
     {
@@ -48,7 +48,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/profile/{pseudonym}/subscribers", name="app_user_profile_subscriber")
+     * @Route("/profile/{pseudonym}/subscribers", name="app_user_subscriber",methods="GET")
      */
     public function subscribers(User $user): Response
     {
@@ -59,7 +59,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/profile/{pseudonym}/subscriptions", name="app_user_profile_subscription")
+     * @Route("/profile/{pseudonym}/subscriptions", name="app_user_subscription",methods="GET")
      */
     public function subscriptions(User $user): Response
     {
@@ -69,12 +69,16 @@ class UserController extends AbstractController
         ]);
     }
 
+
+    /*****************  API REQUEST METHODS *****************/
+
+
     /**
      *
-     * @Route("/profile/{id}/subscribers/{action}")
+     * @Route("/profile/{id}/subscribers/{action}",name="api_user_handle_subscriber",methods="GET",requirements={"id"="\d+","action"="\b(add)\b|\b(remove)\b"})
      * @return JsonResponse
      */
-    public function addSubscriber(User $user, string $action, UserRepository $userRepository, EntityManagerInterface $em): JsonResponse
+    public function handleSubsriber(User $user, string $action, UserRepository $userRepository, EntityManagerInterface $em): JsonResponse
     {
         $userToSubcribeWith = $this->getUser();
         $userToSubscribe = $userRepository->findOneBy(['id' => $user->getId()]);
@@ -100,7 +104,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/login/user/generate",name="app_login_generate")
+     * @Route("/login/user/generate",name="api_user_generate",methods="GET")
      * @return JsonResponse
      */
     public function generateUser(UserRepository $userRepository): JsonResponse
@@ -116,7 +120,7 @@ class UserController extends AbstractController
 
     /**
      *
-     * @Route("/profile/qualification/update",name="app_user_qualification_update")
+     * @Route("/profile/qualification/update",name="api_user_update_qualification",methods="POST")
      * @param Request $request
      * @return JsonResponse
      */
@@ -141,9 +145,9 @@ class UserController extends AbstractController
         return new JsonResponse($jsonData, $responseCode);
     }
 
-        /**
+    /**
      *
-     * @Route("/profile/description/update",name="app_user_description_update")
+     * @Route("/profile/description/update",name="api_user_update_description",methods="POST")
      * @param Request $request
      * @return JsonResponse
      */

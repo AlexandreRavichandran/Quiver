@@ -186,7 +186,7 @@ const post = {
 
     },
     handleLikeAction: function (answerId, action) {
-        fetch('/answers/' + answerId + '/' + action).then(response => response.json()).then(datas => {
+        fetch('/api/answers/' + answerId + '/' + action).then(response => response.json()).then(datas => {
             const likeNumber = document.querySelector('#answer_' + datas.answerId + '_likeNumber');
             const dislikeNumber = document.querySelector('#answer_' + datas.answerId + '_dislikeNumber');
             likeNumber.textContent = datas.likeNumber;
@@ -311,7 +311,7 @@ const post = {
         ClassicEditor
             .create(editorSpace, {
                 ckfinder: {
-                    uploadUrl: '/answerPicture/add',
+                    uploadUrl: '/answer/picture/add',
                 },
                 removePlugins: ['Heading'],
                 toolbar: ['imageUpload', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],

@@ -20,9 +20,10 @@ use Symfony\Component\Validator\Constraints\Json;
 
 class QuestionController extends AbstractController
 {
+
     /**
      * 
-     * @Route("/questions/create",name="app_question_create")
+     * @Route("/questions/create",name="app_question_create",methods="POST")
      * @return Response
      */
     public function create(EntityManagerInterface $em, Request $request, ValidatorInterface $validator, UserRepository $user): Response
@@ -48,16 +49,15 @@ class QuestionController extends AbstractController
             //Display error messages
             foreach ($errors as $error) {
                 $this->addFlash('yellow', $error->getMessage());
-                return $this->redirectToRoute('app_home');
+                return $this->redirectToRoute('app_home_index');
             }
         }
     }
 
-
     /**
-     * @Route("/questions/{id}", name="app_question_show")
+     * @Route("/questions/{id}", name="app_question_show",methods="GET",requirements={"id"="\d+"})
      */
-    public function index(Question $question, QuestionRepository $questionRepository, AnswerRepository $answerRepository): Response
+    public function show(Question $question, QuestionRepository $questionRepository, AnswerRepository $answerRepository): Response
     {
         $date = new DateTimeImmutable();
         $alternativeQuestions = $questionRepository->findBy([], null, 5);
@@ -69,10 +69,13 @@ class QuestionController extends AbstractController
         ]);
     }
 
+    /*****************  API REQUEST METHODS *****************/
+
+
     /**
-     * @Route("/questions/{id}/generate/{date}", name="app_question_generate")
+     * @Route("/questions/{id}/generate/{date}", name="api_question_generate_more_answer",methods="GET",requirements={"id"="\d+","date"="\d{4}-\d{2}-\d{2}"})
      */
-    public function showMoreAnswer(Question $question, string $date, AnswerRepository $answerRepository): Response
+    public function generateMoreAnswer(Question $question, string $date, AnswerRepository $answerRepository): Response
     {
 
         $answers = $answerRepository->findAnswersByQuestionId($question->getId(), $date, 3);
@@ -84,10 +87,10 @@ class QuestionController extends AbstractController
 
     /**
      * 
-     * @Route("/questions/generate/{date}", name="question_generate_AJAX")
+     * @Route("/questions/generate/{date}", name="api_generate_more_question_and_answer",methods="GET",requirements={"date"="\d{4}-\d{2}-\d{2}"})
      * @return JsonResponse
      */
-    public function getMoreQuestionsAndAnswers(string $date, QuestionRepository $questionRepository): JsonResponse
+    public function generateMoreQuestionsAndAnswers(string $date, QuestionRepository $questionRepository): JsonResponse
     {
         $questions = $questionRepository->findAllQuestionsWithAnswers($date, 3);
 
@@ -100,4 +103,5 @@ class QuestionController extends AbstractController
 
         return new JsonResponse($jsonData);
     }
+
 }

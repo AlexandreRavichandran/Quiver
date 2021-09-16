@@ -18,8 +18,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CommentController extends AbstractController
 {
+
+
+    /*****************  API REQUEST METHODS *****************/
+
     /**
-     * @Route("/comments/create", name="app_comment_create")
+     * @Route("/comments/create", name="api_comment_create",methods="POST")
      */
     public function create(AnswerRepository $answerRepository, EntityManagerInterface $em, Request $request, UserRepository $user, ValidatorInterface $validator): Response
     {
@@ -46,17 +50,17 @@ class CommentController extends AbstractController
             //Display error messages
             foreach ($errors as $error) {
                 $this->addFlash('yellow', $error->getMessage());
-                return $this->redirectToRoute('app_home');
+                return $this->redirectToRoute('app_home_index');
             }
         }
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_home_index');
     }
 
     /**
-     * Undocumented function
-     * @Route("/answer/comments/{id}/{date}",name="app_comments_generate")
+     * 
+     * @Route("/answer/comments/{id}/{date}",name="api_comment_generate",methods="GET",requirements={"id"="\d+","date"="\d{4}-\d{2}-\d{2}"})
      */
-    public function getMoreComments(int $id, string $date = null, CommentRepository $commentRepository)
+    public function generate(int $id, string $date = null, CommentRepository $commentRepository)
     {
         if ($date === null) {
             $date = new DateTimeImmutable();

@@ -21,7 +21,7 @@ class SpaceController extends AbstractController
 
     /**
      * 
-     * @Route("/spaces/create", name="app_space_create")
+     * @Route("/spaces/create", name="app_space_create",methods="POST")
      * @return Response
      */
     public function create(Request $request, ValidatorInterface $validator, EntityManagerInterface $em): Response
@@ -46,14 +46,14 @@ class SpaceController extends AbstractController
             //Display error messages
             foreach ($errors as $error) {
                 $this->addFlash('yellow', $error->getMessage());
-                return $this->redirectToRoute('app_home');
+                return $this->redirectToRoute('app_home_index');
             }
         }
     }
 
     /**
      * Create & discover spaces
-     * @Route("/spaces", name="app_space_index")
+     * @Route("/spaces", name="app_space_index",methods="GET")
      */
     public function index(SpaceRepository $spaceRepository): Response
     {
@@ -72,7 +72,7 @@ class SpaceController extends AbstractController
 
     /**
      * Show questions with user's following spaces
-     * @Route("/following",name="app_space_following")
+     * @Route("/following",name="app_space_following",methods="GET")
      * @return Response
      */
     public function following(SpaceRepository $spaceRepository, QuestionRepository $questionRepository): Response
@@ -97,26 +97,8 @@ class SpaceController extends AbstractController
     }
 
     /**
-     * Undocumented function
-     * @Route("/spaces/user/generate/{order}", name="app_space_order")
-     * @return JsonResponse
-     */
-    public function setUserOrderSpace($order, SpaceRepository $spaceRepository): JsonResponse
-    {
-        if ($order === 'name' || $order === 'lastVisited') {
-            $userFollowingSpaces = $spaceRepository->orderUserSpace($this->getUser()->getId(), $order);
-            $jsonData = [
-                'content' => $this->renderView('space/partials/_user_space_list.html.twig', ['userFollowingSpaces' => $userFollowingSpaces])
-            ];
-            return new JsonResponse($jsonData);
-        }
-
-        return new JsonResponse(null, 401);
-    }
-
-    /**
      * Show one space and its related questions
-     * @Route("/spaces/{id}",name="app_space_show")
+     * @Route("/spaces/{id}",name="app_space_show",methods="GET",requirements={"id"="\d+"})
      * @return Response
      */
     public function show(Space $space, SpaceRepository $spaceRepository, EntityManagerInterface $em): Response
@@ -139,7 +121,7 @@ class SpaceController extends AbstractController
 
     /**
      * Show one space and its related questions
-     * @Route("/spaces/{id}/top_questions",name="app_space_show_top_question")
+     * @Route("/spaces/{id}/top_questions",name="app_space_show_top_question",methods="GET",requirements={"id"="\d+"})
      * @return Response
      */
     public function showTopQuestions(Space $space, SpaceRepository $spaceRepository): Response
@@ -158,9 +140,12 @@ class SpaceController extends AbstractController
         );
     }
 
+
+    /*****************  API REQUEST METHODS *****************/
+
     /**
      *
-     * @Route("/spaces/{id}/subscribers/{action}")
+     * @Route("/spaces/{id}/subscribers/{action}", name="api_space_subscribe",methods="GET",requirements={"id"="\d+","action"="\b(add)\b|\b(remove)\b"})
      * @return JsonResponse
      */
     public function subscribe(Space $space, string $action, EntityManagerInterface $em): JsonResponse
@@ -182,7 +167,7 @@ class SpaceController extends AbstractController
 
     /**
      * 
-     * @Route("/following/generate/{date}", name="app_user_following_AJAX")
+     * @Route("/following/generate/{date}", name="api_space_generate_more_following_question", methods="GET", requirements={"date"="\d{4}-\d{2}-\d{2}"})
      * @return JsonResponse
      */
     public function addMoreFollowingQuestions(string $date, QuestionRepository $questionRepository): JsonResponse
@@ -203,10 +188,10 @@ class SpaceController extends AbstractController
 
     /**
      * 
-     * @Route("/spaces/generate/{id}")
-     * @return void
+     * @Route("/spaces/generate/{id}", name="api_space_generate_space",methods="GET",requirements={"id":"\d+"})
+     * @return JsonResponse
      */
-    public function generateSpaces(int $id, SpaceRepository $spaceRepository)
+    public function generateSpaces(int $id, SpaceRepository $spaceRepository):JsonResponse
     {
         $spaces = $spaceRepository->findSpaces($id, 6);
 

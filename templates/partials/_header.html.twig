@@ -2,11 +2,11 @@
     <header class="container mx-auto pt-2">
         <div class="grid grid-cols-12 pt-3">
             <div class="col-span-3 text-center sm:col-span-3 md:col-span-3 lg:col-span-2 xl:col-span-2">
-                <a class="block text-indigo-500 text-4xl font-semibold" href="{{path('app_home')}}">Quiver</a>
+                <a class="block text-indigo-500 text-4xl font-semibold" href="{{path('app_home_index')}}">Quiver</a>
             </div>
             {% if app.user is not same as null %}
             <div class="flex col-span-8 sm:col-span-7 md:col-span-6 lg:col-span-4 xl:col-span-3">
-                <a class="block pb-2 mr-10 {% if page is defined and page is same as 'home' %} active {% endif %}" href="{{path('app_home')}}"><i class="bi mb-0 text-3xl bi-house-door-fill "></i></a>
+                <a class="block pb-2 mr-10 {% if page is defined and page is same as 'home' %} active {% endif %}" href="{{path('app_home_index')}}"><i class="bi mb-0 text-3xl bi-house-door-fill "></i></a>
                 <a class="block pb-2 mr-10 {% if page is defined and page is same as 'following' %} active {% endif %}" href="{{path('app_space_following')}}"><i class="bi text-3xl bi-card-list"></i></a>
                 <a class="block pb-2 mr-10 {% if page is defined and page is same as 'answer' %} active {% endif %}" href="{{path('app_answer_index')}}"><i class="bi text-3xl bi-pencil-square"></i></a>
                 <a class="block pb-2 mr-10 {% if page is defined and page is same as 'space' %} active {% endif %}" href="{{path('app_space_index')}}"><i class="bi text-3xl bi-collection"></i></a>

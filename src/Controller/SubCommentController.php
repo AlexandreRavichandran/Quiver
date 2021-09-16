@@ -14,8 +14,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SubCommentController extends AbstractController
 {
+
+    /*****************  API REQUEST METHODS *****************/
+
     /**
-     * @Route("/subComments/create", name="app_subComment_create")
+     * @Route("/subComments/create", name="api_subcomment_create",methods="POST")
      */
     public function create(EntityManagerInterface $em, Request $request, CommentRepository $commentRepository, ValidatorInterface $validator): Response
     {
@@ -42,9 +45,9 @@ class SubCommentController extends AbstractController
             //Display error messages
             foreach ($errors as $error) {
                 $this->addFlash('yellow', $error->getMessage());
-                return $this->redirectToRoute('app_home');
+                return $this->redirectToRoute('app_home_index');
             }
         }
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_home_index');
     }
 }

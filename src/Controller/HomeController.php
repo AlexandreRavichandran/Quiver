@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="app_home")
+     * @Route("/", name="app_home_index",methods="GET")
      * @return Response
      */
     public function index(SpaceRepository $spaceRepository, QuestionRepository $questionRepository, Request $request, EntityManagerInterface $em): Response
@@ -41,7 +41,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/about", name="app_about")
+     * @Route("/about", name="app_about",methods="GET")
      * @return Response
      */
     public function about(): Response
@@ -50,27 +50,11 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/impressum", name="app_impressum")
+     * @Route("/impressum", name="app_impressum",methods="GET")
      * @return Response
      */
     public function impressum(): Response
     {
         return $this->render('home/impressum.html.twig');
-    }
-
-    /**
-     * @Route("/answerPicture/add",name="app_answer_picture_add")
-     */
-    public function test(Request $request): JsonResponse
-    {
-        $file = $request->files->get('upload');
-        $newName = $this->getUser()->getPseudonym() . '-' . uniqId() . '-' . $file->getClientOriginalName();
-        $file->move($this->getParameter('pictures_directory'), $newName);
-        $jsonData = [
-            'uploaded' => true,
-            'url' => '/images/' . $newName
-        ];
-
-        return new JsonResponse($jsonData);
     }
 }
