@@ -1,7 +1,7 @@
 {% for space in spaces %}
     <div data-id="{{space.id}}" class="col-span-12 md:col-span-6 lg:col-span-4 spaceCard bg-white rounded-xl p-2 border border-gray-300 hover:bg-gray-200">
         <a href="{{path('app_space_show',{'id':space.id})}}">
-            <img class="block ml-auto mr-auto" src="https://placehold.it/150x150" alt="">
+            <img class="block ml-auto mr-auto" src="https://picsum.photos/150/150" alt="">
             <h3 class="text-center font-black text-xl">{{space.name}}</h3>
             <p class="text-center">{{space.description}}</p>
         </a>
