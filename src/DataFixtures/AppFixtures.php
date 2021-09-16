@@ -86,7 +86,7 @@ class AppFixtures extends Fixture
                     ->setViewsNumber(mt_rand(1000, 200000))
                     ->setQuestion($question)
                     ->setAuthor($userList[mt_rand(0, 15)])
-                    ->setAnswer('<img src="https://picsum.photos/900/320">' . '<p>' . implode('</p><p>', $faker->paragraphs(30)));
+                    ->setAnswer('<img src="https://picsum.photos/900/320">' . '<p>' . implode('</p><p>', $faker->paragraphs(15)));
 
                 for ($c = 0; $c < mt_rand(0, 15); $c++) {
                     if (mt_rand(0, 1)) {

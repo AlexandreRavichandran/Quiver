@@ -319,13 +319,13 @@ const post = {
             .catch(error => {
                 console.log(error);
             });
-        if(question.querySelector('#answerPostButton')){
+        if (question.querySelector('#answerPostButton')) {
             question.querySelector('#answerPostButton').classList.remove('hidden');
 
-        }else{
+        } else {
             question.querySelector('.multiplePostAnswerButton').classList.remove('hidden');
         }
-        
+
     },
 
     postAnswer: function (e) {

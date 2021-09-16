@@ -13,13 +13,13 @@
     <div class="commentFooter px-3 mb-4">
         <a class="block bg-gray-200 p-3 rounded-full w-32 font-semibold subCommentFormButton" href="#">Répondre<i class="ml-2 bi bi-arrow-return-left"></i></a>
         <div class="subCommentForm my-4 hidden">
-            <form class="flex w-full flex justify-center" action="" method="post">
-                <div class="grid grid-cols-12">
-                    <div class="col-span-10">
-                        <textarea required="required" class="commentSpace" name="subComment" id="subComment_comment_{{comment.id}}" class="w-full"></textarea>
+            <form class="flex" method="post">
+                <div class="grid grid-cols-12 w-full">
+                    <div class="col-span-11">
+                        <textarea required="required" class="form-textarea commentSpace" name="subComment" id="subComment_comment_{{comment.id}}" class="w-full"></textarea>
                     </div>
                     <input type="hidden" name="commentId" value="{{comment.id}}">
-                    <div class="col-span-2 ml-3 flex justify-end self-center">
+                    <div class="col-span-1 ml-2 self-center">
                         <button type="submit" class="p-2 bg-indigo-400 text text-white rounded">Répondre</button>
                     </div>   
                 </div>
@@ -60,7 +60,7 @@
         <div class="commentFooter px-3 mb-4">
             <a class="block bg-gray-200 p-3 rounded-full w-32 font-semibold subCommentFormButton" href="#">Répondre<i class="ml-2 bi bi-arrow-return-left"></i></a>
             <div class="subCommentForm my-4 hidden">
-                <form class="flex w-full flex justify-center" action="" method="post">
+                <form class="flex w-full flex justify-center" action="#" method="post">
                     <div class="grid grid-cols-12">
                         <div class="col-span-10">
                             <textarea required="required" class="commentSpace" name="subComment" id="subComment_comment" class="w-full"></textarea>
