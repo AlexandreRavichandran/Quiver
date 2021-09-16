@@ -56,11 +56,25 @@ class AnswerController extends AbstractController
     /**
      * @Route("/answers", name="app_answer_index")
      */
-    public function index(): Response
+    public function index(QuestionRepository $questionRepository): Response
     {
+        $user = $this->getUser();
+        $userSpaces = [];
+        foreach ($user->getSubscribedSpaces() as $space) {
+            $userSpaces[] = $space->getId();
+        }
+        if (count($userSpaces) > 0) {
+            $userQuestions = $questionRepository->findAllQuestionsBySpaceNames($userSpaces, null, null);
+        } else {
+            $userQuestions = [];
+        }
+        
         return $this->render(
             'answer/index.html.twig',
-            ['page' => 'answer']
+            [
+                'page' => 'answer',
+                'questions' => $userQuestions
+            ]
         );
     }
 

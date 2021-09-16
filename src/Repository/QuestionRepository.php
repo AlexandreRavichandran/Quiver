@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Question;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -35,6 +36,9 @@ class QuestionRepository extends ServiceEntityRepository
 
     public function findAllQuestionsBySpaceNames($spaceNames, $date, $limit = null)
     {
+        if($date === null){
+            $date = new DateTimeImmutable();
+        }
         return $this->createQueryBuilder('q')
             ->join('q.space', 's')
             ->andWhere('s.id IN (' . implode(',', $spaceNames) . ')')
