@@ -19,8 +19,14 @@ class SpaceRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Space::class);
     }
-
-    public function findSpaces($id, $limit)
+    
+    /**
+     *
+     * @param integer $id Id of the previous space (default to 1)
+     * @param integer|null $limit Max of query results 
+     * @return array
+     */
+    public function findSpaces(int $id = 1, int $limit = null):array
     {
         return $this
             ->createQueryBuilder('s')
@@ -30,50 +36,4 @@ class SpaceRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-    public function orderUserSpace($userId, $order)
-    {
-        $queryBuilder = $this
-            ->createQueryBuilder('s')
-            ->innerJoin('s.subscribers', 'u')
-            ->andWhere('u.id = :id')
-            ->setParameter(':id', $userId);
-            if($order === 'name'){
-            $queryBuilder->orderBy('s.name', 'ASC');
-            }
-            if($order === 'lastVisited'){
-            $queryBuilder->orderBy('s.lastVisited', 'DESC');
-            }
-        return $queryBuilder
-            ->getQuery()
-            ->getResult();
-    }
-    // /**
-    //  * @return Space[] Returns an array of Space objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Space
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

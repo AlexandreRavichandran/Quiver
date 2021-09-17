@@ -77,7 +77,7 @@ class QuestionController extends AbstractController
      */
     public function generateMoreAnswer(Question $question, string $date, AnswerRepository $answerRepository): Response
     {
-
+        $date = new DateTimeImmutable($date);
         $answers = $answerRepository->findAnswersByQuestionId($question->getId(), $date, 3);
         $jsonData = [
             'content' => $this->renderView('partials/question_headers/question_header_single_question.html.twig', ['answers' => $answers])

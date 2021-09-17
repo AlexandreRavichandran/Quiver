@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Answer;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Answer|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,8 +20,20 @@ class AnswerRepository extends ServiceEntityRepository
         parent::__construct($registry, Answer::class);
     }
 
-    public function findAnswersByQuestionId($id, $date = 0, $limit = null)
+    /**
+     * 
+     *
+     * @param integer $id Id of the question 
+     * @param DateTimeImmutable|null $date Find answer earlier than... (default to "now")
+     * @param integer|null $limit Max of query results
+     * @return array
+     */
+    public function findAnswersByQuestionId(int $id,DateTimeImmutable $date = null, int $limit = null):array
     {
+        if($date === null){
+            $date = new DateTimeImmutable();
+        }
+
         return $this
             ->createQueryBuilder('a')
             ->join('a.question', 'q')
@@ -32,32 +45,4 @@ class AnswerRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    // /**
-    //  * @return Answer[] Returns an array of Answer objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Answer
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

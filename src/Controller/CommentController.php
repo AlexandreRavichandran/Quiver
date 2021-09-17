@@ -64,6 +64,8 @@ class CommentController extends AbstractController
     {
         if ($date === null) {
             $date = new DateTimeImmutable();
+        }else{
+            $date = new DateTimeImmutable($date);
         }
         $comments = $commentRepository->findCommentByAnswer($id, $date, 2);
         $jsonData = [

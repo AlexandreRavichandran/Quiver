@@ -19,9 +19,20 @@ class QuestionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Question::class);
     }
-
-    public function findAllQuestionsWithAnswers($date = 0, $limit = null)
+    
+    /**
+     * 
+     *
+     * @param DateTimeImmutable $date Find questions earlier than... (default to "now")
+     * @param integer $limit Max of query results
+     * @return array
+     */
+    public function findAllQuestionsWithAnswers($date = null, $limit = null):array
     {
+        if($date === null){
+            $date = new DateTimeImmutable();
+        }
+
         return $this->createQueryBuilder('q')
             ->join('q.answers', 'a')
             ->groupBy('a.question')
@@ -34,14 +45,22 @@ class QuestionRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findAllQuestionsBySpaceNames($spaceNames, $date, $limit = null)
+    /**
+     * 
+     *
+     * @param array $spaceIds list of user's subscribed spaces's ids
+     * @param DateTimeImmutable|null $date Find questions earlier than... (default to "now")
+     * @param integer $limit Max of query results
+     * @return array
+     */
+    public function findAllQuestionsBySpaceNames(array $spaceIds, DateTimeImmutable $date = null, int $limit = null):array
     {
         if($date === null){
             $date = new DateTimeImmutable();
         }
         return $this->createQueryBuilder('q')
             ->join('q.space', 's')
-            ->andWhere('s.id IN (' . implode(',', $spaceNames) . ')')
+            ->andWhere('s.id IN (' . implode(',', $spaceIds) . ')')
             ->andWhere('q.createdAt < :date')
             ->setParameter('date', $date)
             ->orderBy('q.createdAt', 'DESC')
@@ -49,32 +68,4 @@ class QuestionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    // /**
-    //  * @return Question[] Returns an array of Question objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('q')
-            ->andWhere('q.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('q.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Question
-    {
-        return $this->createQueryBuilder('q')
-            ->andWhere('q.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

@@ -57,7 +57,7 @@ class SpaceController extends AbstractController
      */
     public function index(SpaceRepository $spaceRepository): Response
     {
-        $userFollowingSpaces = $spaceRepository->orderUserSpace($this->getUser()->getId(), 'lastVisited');
+        $userFollowingSpaces = $this->getUser()->getSubscribedSpaces();
         $spaces = $spaceRepository->findBy([], null, 6);
 
         return $this->render(
@@ -79,6 +79,7 @@ class SpaceController extends AbstractController
     {
         $date = new DateTime();
         $date = $date->format('Y-m-d');
+        $date = new DateTimeImmutable($date);
         $userFollowingSpaces = $this->getUser()->getSubscribedSpaces()->toArray();
         $userFollowingSpaceNames = [];
         foreach ($userFollowingSpaces as $space) {
@@ -172,6 +173,7 @@ class SpaceController extends AbstractController
      */
     public function addMoreFollowingQuestions(string $date, QuestionRepository $questionRepository): JsonResponse
     {
+        $date = new DateTimeImmutable($date);
         $userFollowingSpaces = $this->getUser()->getSubscribedSpaces()->toArray();
         $userFollowingSpaceNames = [];
         foreach ($userFollowingSpaces as $space) {

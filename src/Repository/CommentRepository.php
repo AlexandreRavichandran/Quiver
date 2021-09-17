@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,8 +20,19 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    public function findCommentByAnswer($answerId, $date = 0, $limit = null): array
+    /**
+     * 
+     *
+     * @param integer $answerId Id of the answer
+     * @param DateTimeImmutable|null $date Find comments earlier than... (default to "now")
+     * @param integer|null $limit Max of query results
+     * @return array
+     */
+    public function findCommentByAnswer(int $answerId, DateTimeImmutable $date = null, int $limit = null): array
     {
+        if($date === null){
+            $date = new DateTimeImmutable();
+        }
         return $this->createQueryBuilder('c')
             ->join('c.answer', 'a')
             ->andWhere('a.id = :id')
@@ -31,32 +43,4 @@ class CommentRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    // /**
-    //  * @return Comment[] Returns an array of Comment objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Comment
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
