@@ -36,4 +36,20 @@ class SpaceRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * 
+     * @param integer $id the id of the question
+     * @return array
+     */
+    public function findSpaceByQuestionId(int $id):array
+    {
+        return $this
+            ->createQueryBuilder('s')
+            ->join('s.questions','q')
+            ->andWhere('q.id = :id')
+            ->setParameter(':id',$id)
+            ->getQuery()
+            ->getResult();
+    }
 }

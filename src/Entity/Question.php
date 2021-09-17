@@ -142,6 +142,14 @@ class Question
         return $this;
     }
 
+    public function removeallSpace():self
+    {
+        foreach($this->space as $space){
+            $this->removeSpace($space);
+        }
+        return $this;
+    }
+
     /**
      * @return Collection|Answer[]
      */

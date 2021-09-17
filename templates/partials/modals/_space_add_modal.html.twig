@@ -1,0 +1,48 @@
+<div class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center">
+	<div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+	<div class="modal-container bg-white w-11/12 md:w-8/12 lg:w-8/12 xl:w-5/12 mx-auto rounded shadow-lg z-50 overflow-y-auto">
+		<div class="modal-close absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
+			<i class="bi bi-x-lg"></i>
+		</div>
+
+
+		<div class="modal-content py-4 text-left px-6">
+
+			<div class="flex justify-start items-center pb-3">
+				<div class="modal-close cursor-pointer z-50 p-2 hover:bg-gray-200">
+					<i class="bi text-xl bi-x-lg"></i>
+				</div>
+			</div>
+
+			<!--Body-->
+			<h1 class="text-xl">Modifier les sujets</h1>
+			<p class="pt-2">Assurez vous que cette question dispose des suejts appropriés :
+			</p>
+			<p class="font-bold">{{question.question}}</p>
+
+            <form action="{{path('app_question_add_space')}}" method="post" class="mt-3">
+				{% if question.space is not same as [] %}
+					<p class="font-bold mt-5"><span class="bg-green-400 text-white px-2 py-1 rounded-full mr-2">1</span>Verifiez que ces sujets décrivent votre question</p>
+				<div class="flex flex-col mt-3">
+					{% for space in question.space %}
+					<div class="flex">
+					<input type="checkbox" class="self-center" checked name="spaces[]" id="{{space.id}}" value="{{space.id}}"> <label class="ml-2 mb-1" for="{{space.id}}">{{space.name}}</label>
+					</div>
+					{% endfor %}
+				</div>
+				{% endif %}
+				<p class="font-bold mt-5"><span class="bg-green-400 text-white px-2 py-1 rounded-full mr-2">2</span>Selectionner les sujets qui décrivent egalement votre question</p>
+
+				<div id="modalSpaceList" class="flex flex-col mt-3">
+				</div>
+				<div class="flex justify-end">
+					<input type="hidden" name="questionId" value="{{question.id}}">
+					<a href="#" class="block modal-close font-bold text-gray-400 self-center mr-3">Annuler</a>
+					<button class="rounded-full bg-indigo-400 px-4 py-2 font-bold text-white">Terminé</button>
+				</div>
+            </form>
+            
+
+		</div>
+	</div>
+</div>

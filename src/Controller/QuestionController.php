@@ -6,6 +6,7 @@ use App\Entity\Question;
 use App\Form\QuestionType;
 use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
+use App\Repository\SpaceRepository;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -57,7 +58,7 @@ class QuestionController extends AbstractController
     /**
      * @Route("/questions/{id}", name="app_question_show",methods="GET",requirements={"id"="\d+"})
      */
-    public function show(Question $question, QuestionRepository $questionRepository, AnswerRepository $answerRepository): Response
+    public function show(Question $question, QuestionRepository $questionRepository, AnswerRepository $answerRepository, SpaceRepository $spaceRepository): Response
     {
         $date = new DateTimeImmutable();
         $alternativeQuestions = $questionRepository->findBy([], null, 5);
@@ -67,6 +68,31 @@ class QuestionController extends AbstractController
             'answers' => $answers,
             'alternative_questions' => $alternativeQuestions
         ]);
+    }
+
+    /**
+     * 
+     * @Route("/question/spaces/add",name="app_question_add_space",methods="POST")
+     * @return Response
+     */
+    public function addSpace(Request $request,SpaceRepository $spaceRepository,QuestionRepository $questionRepository, EntityManagerInterface $em):Response
+    {
+        if($request->isMethod('POST')){
+        $questionId = $request->request->get('questionId');
+        $newSpacesIds = $request->request->all('spaces');
+
+        $question = $questionRepository->find($questionId);
+
+        $question->removeallSpace();
+        foreach ($newSpacesIds as $spaceId) {
+        $space = $spaceRepository->find($spaceId);
+        $question->addSpace($space);
+        $em->persist($question);
+        }
+        $em->flush();
+        }
+        
+        return $this->redirectToRoute('app_question_show',['id'=>$questionId]);
     }
 
     /*****************  API REQUEST METHODS *****************/

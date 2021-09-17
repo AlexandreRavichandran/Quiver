@@ -12,7 +12,8 @@
                         {% for space in question.space %}
                             <li class="bg-gray-200 p-2 m-1 rounded"><a href="{{path('app_space_show',{'id':space.id})}}">{{space.name}}</a></li>
                         {% endfor %}
-                            <li class="bg-gray-200 p-2 m-1"><a href="#"><i class="bi text-xl bi-pencil"></i></a></li>
+                            <a href="#" class="bg-gray-200 p-2 m-1 modal-open addSpaces"><i class="bi text-xl bi-pencil"></i></a>
+                            {% include 'partials/modals/_space_add_modal.html.twig' %}
                         </ul>
                     </div>
                     <h1 class="text-2xl font-black p-3">{{question.question}}</h1>

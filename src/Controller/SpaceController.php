@@ -203,4 +203,29 @@ class SpaceController extends AbstractController
 
         return new JsonResponse($jsonData);
     }
+
+    /**
+     * @Route("/spaces/questions/{id}",name="api_space_get_all_spaces",methods="GET",requirements={"id"="\d+"})
+     * @return JsonResponse
+     */
+    public function getRemainingSpaces(int $id,SpaceRepository $spaceRepository):JsonResponse
+    {
+        $allSpaces = $spaceRepository->findAll();
+        $questionSpace = $spaceRepository->findSpaceByQuestionId($id);
+        $jsonData = [];
+
+        foreach($allSpaces as $space){
+
+            if(!in_array($space,$questionSpace)){
+                $spaceArray = [
+                    'id'=>$space->getId(),
+                    'name'=>$space->getName()
+                ];
+                $jsonData[] = $spaceArray;
+                }
+        }
+        return $this->json($jsonData,200);
+    }
+
+    
 }
