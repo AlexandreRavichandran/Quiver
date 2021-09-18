@@ -50,9 +50,7 @@ class SubCommentController extends AbstractController
                 $message = "Une erreur est survenu lors de la création de votre réponse. Veuillez essayer ulterieurement.";
                 $label = 'errorMessage';
             }
-            $jsonData[] = [
-                'message' => $this->renderView('partials/_alert_message.html.twig', ['message' => $message, 'label' => $label])
-            ];
+            $jsonData['message'] = $this->renderView('partials/_alert_message.html.twig', ['message' => $message, 'label' => $label]);
 
             return new JsonResponse($jsonData, $responseCode);
         }

@@ -232,6 +232,6 @@ class SpaceController extends AbstractController
             }
         }
 
-        return $this->json($jsonData, 200);
+        return $this->json($jsonData);
     }
 }

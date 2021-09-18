@@ -39,26 +39,32 @@ const modal = {
     showSpaces: function (e) {
         const questionId = e.currentTarget.closest('.answerHeader').dataset.questionId;
 
-        fetch('/spaces/questions/' + questionId).then(function (response) { return response.json() }).then(function (responseJson) {
-            const spaceModal = document.querySelector('#modalSpaceList');
-            spaceModal.innerHTML = '';
-            for (const spaceObject of responseJson) {
-                const spaceCheckbox = document.createElement('input');
-                spaceCheckbox.setAttribute('type', 'checkbox');
-                spaceCheckbox.setAttribute('name', "spaces[]");
-                spaceCheckbox.setAttribute('id', spaceObject.id);
-                spaceCheckbox.setAttribute('value', spaceObject.id);
-                spaceCheckbox.classList.add('self-center');
-                const spaceLabel = document.createElement('label')
-                spaceLabel.setAttribute('for', spaceObject.id);
-                spaceLabel.textContent = spaceObject.name;
-                spaceLabel.classList.add('ml-2', 'mb-1');
-                const spaceBox = document.createElement('div');
-                spaceBox.classList.add('flex');
-                spaceBox.append(spaceCheckbox, spaceLabel);
-                spaceModal.appendChild(spaceBox);
-            }
-        })
+        fetch('/spaces/questions/' + questionId)
+            .then(function (response) {
+                if (response.status === 200) {
+                    return response.json();
+                }
+            })
+            .then(function (responseJson) {
+                const spaceModal = document.querySelector('#modalSpaceList');
+                spaceModal.innerHTML = '';
+                for (const spaceObject of responseJson) {
+                    const spaceCheckbox = document.createElement('input');
+                    spaceCheckbox.setAttribute('type', 'checkbox');
+                    spaceCheckbox.setAttribute('name', "spaces[]");
+                    spaceCheckbox.setAttribute('id', spaceObject.id);
+                    spaceCheckbox.setAttribute('value', spaceObject.id);
+                    spaceCheckbox.classList.add('self-center');
+                    const spaceLabel = document.createElement('label')
+                    spaceLabel.setAttribute('for', spaceObject.id);
+                    spaceLabel.textContent = spaceObject.name;
+                    spaceLabel.classList.add('ml-2', 'mb-1');
+                    const spaceBox = document.createElement('div');
+                    spaceBox.classList.add('flex');
+                    spaceBox.append(spaceCheckbox, spaceLabel);
+                    spaceModal.appendChild(spaceBox);
+                }
+            })
     }
 
 }

@@ -116,14 +116,21 @@ const post = {
         const lastCommentDate = comments[comments.length - 1].dataset.commentDate;
         clickedElement.classList.add('hidden');
         commentLoaderSpinner.classList.remove('hidden');
-        fetch('/answer/comments/' + postId + '/' + lastCommentDate).then(function (response) { return response.json() }).then(function (datas) {
-            if (datas.content !== '') {
-                clickedElement.classList.remove('hidden');
-                commentContainer.innerHTML += datas.content;
-                post.init();
-            }
-            commentLoaderSpinner.classList.add('hidden');
-        })
+        fetch('/answer/comments/' + postId + '/' + lastCommentDate)
+            .then(function (response) {
+                if (response.status === 200) {
+                    return response.json();
+                }
+            })
+
+            .then(function (responseJson) {
+                if (responseJson.content !== '') {
+                    clickedElement.classList.remove('hidden');
+                    commentContainer.innerHTML += responseJson.content;
+                    post.init();
+                }
+                commentLoaderSpinner.classList.add('hidden');
+            })
     },
 
     handleCommentDisplay: function (e) {
@@ -142,11 +149,17 @@ const post = {
             commentsNumber.style.display = 'none';
             const loading = postFooter.querySelector('.loadingMoreCommentsSpinner');
             loading.classList.remove('hidden');
-            fetch('/answer/comments/' + postId).then(function (response) { return response.json() }).then(function (jsonResponse) {
-                loading.classList.add('hidden');
-                commentContainer.innerHTML = jsonResponse.content;
-                post.init();
-            })
+            fetch('/answer/comments/' + postId)
+                .then(function (response) {
+                    if (response.status === 200) {
+                        return response.json();
+                    }
+                })
+                .then(function (responseJson) {
+                    loading.classList.add('hidden');
+                    commentContainer.innerHTML = responseJson.content;
+                    post.init();
+                })
 
         } else {
             commentsNumber.style.display = 'block';
@@ -186,12 +199,19 @@ const post = {
 
     },
     handleLikeAction: function (answerId, action) {
-        fetch('/api/answers/' + answerId + '/' + action).then(response => response.json()).then(datas => {
-            const likeNumber = document.querySelector('#answer_' + datas.answerId + '_likeNumber');
-            const dislikeNumber = document.querySelector('#answer_' + datas.answerId + '_dislikeNumber');
-            likeNumber.textContent = datas.likeNumber;
-            dislikeNumber.textContent = datas.dislikeNumber;
-        });
+        fetch('/api/answers/' + answerId + '/' + action)
+            .then(function (response) {
+                if (response.status === 200) {
+                    return response.json();
+
+                }
+            })
+            .then(function (responseJson) {
+                const likeNumber = document.querySelector('#answer_' + responseJson.answerId + '_likeNumber');
+                const dislikeNumber = document.querySelector('#answer_' + responseJson.answerId + '_dislikeNumber');
+                likeNumber.textContent = responseJson.likeNumber;
+                dislikeNumber.textContent = responseJson.dislikeNumber;
+            })
 
 
     },
@@ -213,15 +233,21 @@ const post = {
 
         document.querySelector('.loadingMorePostsSpinner').classList.remove('hidden');
 
-        fetch('/questions/generate/' + lastDate).then(response => response.json()).then(datas => {
-            if (datas.content !== '') {
-                document.querySelector('#content').innerHTML += datas.content;
-                post.init();
-                clickedElement.closest('#generateHome').classList.remove('hidden');
-            }
-            document.querySelector('.loadingMorePostsSpinner').classList.add('hidden');
+        fetch('/questions/generate/' + lastDate)
+            .then(function (response) {
+                if (response.status === 200) {
+                    return response.json();
+                }
+            })
+            .then(function (responseJson) {
+                if (responseJson.content !== '') {
+                    document.querySelector('#content').innerHTML += responseJson.content;
+                    post.init();
+                    clickedElement.closest('#generateHome').classList.remove('hidden');
+                }
+                document.querySelector('.loadingMorePostsSpinner').classList.add('hidden');
 
-        });
+            });
     },
     handleSubCommentFormDisplay: function (e) {
         e.preventDefault();
@@ -247,17 +273,30 @@ const post = {
                 'Content-Type': 'application/json'
             }
         }
-        fetch('/comments/create', config).then(function (response) { return response.json() }).then(function (response) {
-            const template = document.querySelector('#commentTemplate').content.cloneNode(true);
-            template.querySelector('.name').textContent = response.user;
-            template.querySelector('.date').textContent = response.date;
-            const formattedDate = response.date.replaceAll('/', '-');
-            template.querySelector('.commentheader').dataset.commentDate = formattedDate;
-            template.querySelector('.comment').textContent = response.comment;
-            currentTarget.closest('.comments').querySelector('.commentList').prepend(template);
-            post.init();
-            comment.value = '';
+        fetch('/comments/create', config).then(function (response) {
+            if (response.status === 201) {
+                return response.json();
+            } else {
+                const error = response.json();
+                throw error;
+            }
         })
+
+            .then(function (response) {
+                post.showMessage(response.message)
+                const template = document.querySelector('#commentTemplate').content.cloneNode(true);
+                template.querySelector('.name').textContent = response.user;
+                template.querySelector('.date').textContent = response.date;
+                const formattedDate = response.date.replaceAll('/', '-');
+                template.querySelector('.commentheader').dataset.commentDate = formattedDate;
+                template.querySelector('.comment').textContent = response.comment;
+                currentTarget.closest('.comments').querySelector('.commentList').prepend(template);
+                post.init();
+                comment.value = '';
+            })
+            .catch(function (error) {
+                post.showMessage(error.message);
+            })
     },
 
     handleSubCommentForm: function (e) {
@@ -273,16 +312,29 @@ const post = {
                 'Content-Type': 'application/json'
             }
         }
-        fetch('/subComments/create', config).then(function (response) { return response.json() }).then(function (response) {
-            const template = document.querySelector('#subCommentTemplate').content.cloneNode(true);
-            template.querySelector('.subCommentName').textContent = response.user;
-            template.querySelector('.subCommentDate').textContent = response.date;
-            template.querySelector('.subCommentContent').textContent = response.comment;
-            currentTarget.closest('.comment').querySelector('.subComments').prepend(template);
-            currentTarget.classList.add('hidden');
-            post.init();
-            comment.value = '';
-        })
+        fetch('/subComments/create', config)
+            .then(function (response) {
+                if (response.status === 201) {
+                    return response.json();
+                } else {
+                    const error = response.json();
+                    throw error;
+                }
+            })
+            .then(function (response) {
+                post.showMessage(response.message);
+                const template = document.querySelector('#subCommentTemplate').content.cloneNode(true);
+                template.querySelector('.subCommentName').textContent = response.user;
+                template.querySelector('.subCommentDate').textContent = response.date;
+                template.querySelector('.subCommentContent').textContent = response.comment;
+                currentTarget.closest('.comment').querySelector('.subComments').prepend(template);
+                currentTarget.classList.add('hidden');
+                post.init();
+                comment.value = '';
+            })
+            .catch(function (error) {
+                post.showMessage(error.message);
+            })
     },
     generateAnswers: function (e) {
         e.preventDefault();
@@ -292,16 +344,22 @@ const post = {
         const date = lastAnswer.dataset.answerDate;
         clickedElement.closest('#generateAnswers').classList.add('hidden');
         document.querySelector('.loadingMoreAnswersSpinner').classList.remove('hidden');
-        fetch('/questions/' + id + '/generate/' + date).then(function (response) { return response.json() }).then(function (datas) {
-            if (datas.content !== '') {
-                document.querySelector('#content').innerHTML += datas.content;
-                post.init();
-                clickedElement.closest('#generateHome').classList.remove('hidden');
-            } else {
+        fetch('/questions/' + id + '/generate/' + date)
 
-            }
-            document.querySelector('.loadingMoreAnswersSpinner').classList.add('hidden');
-        })
+            .then(function (response) {
+                if (response.status === 200) {
+                    return response.json();
+                }
+            })
+
+            .then(function (responseJson) {
+                if (responseJson.content !== '') {
+                    document.querySelector('#content').innerHTML += responseJson.content;
+                    post.init();
+                    clickedElement.closest('#generateHome').classList.remove('hidden');
+                }
+                document.querySelector('.loadingMoreAnswersSpinner').classList.add('hidden');
+            })
 
     },
     showEditor: function (e) {
@@ -343,30 +401,30 @@ const post = {
             }
         }
         if (editorSpace.textContent.length > 0) {
-            fetch('/answers/create', config).then(function (response) {
-                if (response.status === 201) {
-                    return response.json();
-                } else {
-                    const error = response.json();
-                    throw error;
-                }
-            })
+            fetch('/answers/create', config)
+                .then(function (response) {
+                    if (response.status === 201) {
+                        return response.json();
+                    } else {
+                        const error = response.json();
+                        throw error;
+                    }
+                })
                 .then(function (responseJson) {
-
+                    post.showMessage(responseJson.message);
                     if (document.querySelector('.content')) {
                         document.querySelector('.content').innerHTML += responseJson.content;
                         document.querySelector('#answerNumber').textContent++;
                         document.querySelector('.answerButton').classList.remove('hidden');
                         editorSpace.closest('.ck-editor').remove();
                         document.querySelector('#answerPostButton').classList.add('hidden');
-
                         post.init();
                     } else {
                         window.location.href = ('/questions/' + questionid);
                     }
                 })
                 .catch(function (error) {
-
+                    post.showMessage(error.message)
                 })
         }
     },
@@ -380,19 +438,30 @@ const post = {
 
         document.querySelector('.loadingMoreFollowingPostsSpinner').classList.remove('hidden');
 
-        fetch('/following/generate/' + lastDate).then(response => response.json()).then(datas => {
-            if (datas.content !== '') {
-                document.querySelector('#content').innerHTML += datas.content;
-                post.init();
-                currentTarget.closest('#generateFollowing').classList.remove('hidden');
-            }
-            document.querySelector('.loadingMoreFollowingPostsSpinner').classList.add('hidden');
-        })
+        fetch('/following/generate/' + lastDate)
+            .then(function (response) {
+                if (response.status === 200) {
+                    return response.json();
+                }
+            })
+            .then(function (responseJson) {
+                if (responseJson.content !== '') {
+                    document.querySelector('#content').innerHTML += responseJson.content;
+                    post.init();
+                    currentTarget.closest('#generateFollowing').classList.remove('hidden');
+                }
+                document.querySelector('.loadingMoreFollowingPostsSpinner').classList.add('hidden');
+            })
     },
 
     showMessage: function (message) {
         const messageSpace = document.querySelector('#messagesSpace');
         messageSpace.innerHTML = message;
+        const flashMmessage = document.querySelector('.flashMessage');
+        flashMmessage.animate({ opacity: ['0', '1'] }, 500).onfinish = function () {
+            flashMmessage.style.opacity = "1";
+        }
+        post.init();
     }
 }
 

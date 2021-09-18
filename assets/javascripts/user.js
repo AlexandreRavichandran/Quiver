@@ -88,7 +88,12 @@ const user = {
 
     AJAXSubscriptionHandler: function (id, action) {
 
-        fetch('/profile/' + id + '/subscribers/' + action).then(response => response.json())
+        fetch('/profile/' + id + '/subscribers/' + action)
+            .then(function (response) {
+                if (response.status === 200) {
+                    response.json();
+                }
+            })
     },
 
     filterSubscriptionPage: function (e) {
@@ -109,12 +114,18 @@ const user = {
         const email = document.querySelector('#inputEmail');
         const password = document.querySelector('#inputPassword');
 
-        fetch('/login/user/generate').then(function (response) { return response.json() }).then(function (responseJson) {
+        fetch('/login/user/generate')
+            .then(function (response) {
+                if (response.status === 200) {
+                    return response.json()
+                }
+            })
+            .then(function (responseJson) {
 
-            email.value = responseJson.email;
-            password.value = 'demo';
+                email.value = responseJson.email;
+                password.value = 'demo';
 
-        })
+            })
 
     },
     allowQualificationSetting: function (e) {
@@ -138,18 +149,29 @@ const user = {
                     'Content-Type': 'application/json'
                 }
             }
-            fetch('/profile/qualification/update', config).then(function (response) { return response.json() }).then(function (responseJson) {
-                const userQualification = document.querySelector('#userQualification');
-                userQualification.classList.remove('hidden');
-                userQualification.textContent = newQualification.value;
-                newQualification.classList.add('hidden');
-
-            });
+            fetch('/profile/qualification/update', config)
+                .then(function (response) {
+                    if (response.status === 201) {
+                        return response.json()
+                    } else {
+                        const error = response.json();
+                        throw error;
+                    }
+                })
+                .then(function (responseJson) {
+                    const userQualification = document.querySelector('#userQualification');
+                    userQualification.classList.remove('hidden');
+                    userQualification.textContent = newQualification.value;
+                    newQualification.classList.add('hidden');
+                })
+                .catch(function (error) {
+                    //
+                })
         }
     },
     allowDescriptionSetting: function (e) {
         e.preventDefault();
-       
+
         e.currentTarget.classList.add('hidden');
         const descriptionInput = document.querySelector('.userDescriptionSetting');
         const updateDescriptionButton = document.querySelector('#updateDescription');
@@ -162,7 +184,7 @@ const user = {
     updateDescription: function (e) {
 
         const newDescription = document.querySelector('.userDescriptionSetting');
-        
+
         const data = { 'newDescription': newDescription.value };
         const config = {
             method: 'POST',
@@ -171,16 +193,27 @@ const user = {
                 'Content-Type': 'application/json'
             }
         }
-        fetch('/profile/description/update', config).then(function (response) { return response.json() }).then(function (responseJson) {
-            console.log('ok');
-            const userDescription = document.querySelector('#userDescription');
-            const updateDescriptionButton = document.querySelector('#updateDescription')
-            userDescription.textContent = newDescription.value;
-            newDescription.classList.add('hidden');
-            updateDescriptionButton.classList.add('hidden');
-            userDescription.classList.remove('hidden');
+        fetch('/profile/description/update', config)
+            .then(function (response) {
+                if (response.status === 201) {
+                    return response.json();
+                } else {
+                    const error = response.json();
+                    throw error;
+                }
+            })
+            .then(function (responseJson) {
+                console.log('ok');
+                const userDescription = document.querySelector('#userDescription');
+                const updateDescriptionButton = document.querySelector('#updateDescription')
+                userDescription.textContent = newDescription.value;
+                newDescription.classList.add('hidden');
+                updateDescriptionButton.classList.add('hidden');
+                userDescription.classList.remove('hidden');
+            })
+            .catch(function (error) {
 
-        });
+            })
 
     }
 }

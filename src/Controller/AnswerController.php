@@ -21,6 +21,7 @@ class AnswerController extends AbstractController
 
     /**
      * @Route("/answers", name="app_answer_index",methods="GET")
+     * @return Response
      */
     public function index(QuestionRepository $questionRepository): Response
     {
@@ -52,7 +53,7 @@ class AnswerController extends AbstractController
 
     /**
      * @Route("/answers/create",name="api_answer_create",methods="POST")
-     * @return JsonResponse|Response
+     * @return JsonResponse
      */
     public function create(Request $request, EntityManagerInterface $em, QuestionRepository $questionRepository, ValidatorInterface $validatorInterface): JsonResponse
     {
@@ -90,9 +91,7 @@ class AnswerController extends AbstractController
                 $label = 'errorMessage';
             }
 
-            $jsonData[] = [
-                'message' => $this->renderView('partials/_alert_message.html.twig', ['message' => $message, 'label' => $label])
-            ];
+            $jsonData['message'] = $this->renderView('partials/_alert_message.html.twig', ['message' => $message, 'label' => $label]);
 
             return new JsonResponse($jsonData, $responseCode);
         }
@@ -100,6 +99,7 @@ class AnswerController extends AbstractController
 
     /**
      * @Route("/answer/picture/add",name="api_answer_add_answer_picture",methods="POST")
+     * @return JsonResponse
      */
     public function addAnswerPicture(Request $request): JsonResponse
     {

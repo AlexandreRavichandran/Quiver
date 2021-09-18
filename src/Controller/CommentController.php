@@ -24,8 +24,9 @@ class CommentController extends AbstractController
 
     /**
      * @Route("/comments/create", name="api_comment_create",methods="POST")
+     * @return JsonResponse
      */
-    public function create(AnswerRepository $answerRepository, EntityManagerInterface $em, Request $request, UserRepository $user, ValidatorInterface $validator): Response
+    public function create(AnswerRepository $answerRepository, EntityManagerInterface $em, Request $request, UserRepository $user, ValidatorInterface $validator): JsonResponse
     {
         if ($request->isMethod('POST')) {
             $datas = json_decode($request->getContent());
@@ -60,9 +61,7 @@ class CommentController extends AbstractController
                 $label = 'errorMessage';
             }
 
-            $jsonData[] = [
-                'message' => $this->renderView('partials/_alert_message.html.twig', ['message' => $message, 'label' => $label])
-            ];
+            $jsonData['message'] = $this->renderView('partials/_alert_message.html.twig', ['message' => $message, 'label' => $label]);
 
             return new JsonResponse($jsonData, $responseCode);
         }

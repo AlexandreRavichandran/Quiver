@@ -41,7 +41,7 @@ class AppFixtures extends Fixture
         }
 
         //create fake users
-        for ($i = 0; $i < 21; $i++) {
+        for ($i = 0; $i < 20; $i++) {
 
             $user = new User;
             $user

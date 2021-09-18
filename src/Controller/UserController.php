@@ -153,9 +153,7 @@ class UserController extends AbstractController
             $jsonData = [];
         }
 
-        $jsonData[] = [
-            'message' => $this->renderView('partials/_alert_message.html.twig', ['message' => $message, 'label' => $label])
-        ];
+        $jsonData['message'] = $this->renderView('partials/_alert_message.html.twig', ['message' => $message, 'label' => $label]);
 
         return new JsonResponse($jsonData, $responseCode);
     }
@@ -191,9 +189,7 @@ class UserController extends AbstractController
             $jsonData = [];
         }
 
-        $jsonData[] = [
-            'message' => $this->renderView('partials/_alert_message.html.twig', ['message' => $message, 'label' => $label])
-        ];
+        $jsonData['message'] = $this->renderView('partials/_alert_message.html.twig', ['message' => $message, 'label' => $label]);
 
         return new JsonResponse($jsonData, $responseCode);
     }

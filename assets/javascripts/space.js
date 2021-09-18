@@ -26,17 +26,24 @@ const space = {
         const spaceLoader = document.querySelector('.spaceLoader');
         spaceLoader.classList.remove('hidden');
         const lastSpaceId = document.querySelector('.spaceList').lastElementChild.dataset.id;
-        fetch('/spaces/generate/' + lastSpaceId).then(function (response) { return response.json() }).then(function (responseJson) {
-            if (responseJson.content !== '') {
-                const spaceList = document.querySelector('.spaceList');
-                spaceLoader.classList.add('hidden');
-                spaceList.innerHTML += responseJson.content;
-            } else {
-                spaceLoader.classList.add('hidden');
-                clickedButton.classList.add('hidden');
-            }
+        fetch('/spaces/generate/' + lastSpaceId)
+            .then(function (response) {
+                if (response.status === 200) {
+                    return response.json();
+                }
+            })
 
-        })
+            .then(function (responseJson) {
+                if (responseJson.content !== '') {
+                    const spaceList = document.querySelector('.spaceList');
+                    spaceLoader.classList.add('hidden');
+                    spaceList.innerHTML += responseJson.content;
+                } else {
+                    spaceLoader.classList.add('hidden');
+                    clickedButton.classList.add('hidden');
+                }
+
+            })
     },
     subscribeButtonHandler: function (e) {
         e.preventDefault();
@@ -58,7 +65,13 @@ const space = {
     },
 
     AJAXRequestHandler: function (id, action) {
-        fetch('/spaces/' + id + '/subscribers/' + action).then(response => response.json());
+        fetch('/spaces/' + id + '/subscribers/' + action)
+            .then(function (response) {
+                if (response.status === 200) {
+                    return response.json();
+                }
+            })
+
     }
 
 
