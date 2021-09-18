@@ -41,7 +41,7 @@ class QuestionController extends AbstractController
             if (count($errors) === 0) {
                 $em->persist($question);
                 $em->flush();
-                $this->addFlash('green', 'Votre question a bien été postée. Veuillez lier votre question à des espaces.');
+                $this->addFlash('successMessage', 'Votre question a bien été postée. Veuillez lier votre question à des espaces.');
                 return $this->redirectToRoute('app_question_show', [
                     'id' => $question->getId()
                 ]);
@@ -49,7 +49,7 @@ class QuestionController extends AbstractController
 
             //Display error messages
             foreach ($errors as $error) {
-                $this->addFlash('yellow', $error->getMessage());
+                $this->addFlash('errorMessage', $error->getMessage());
                 return $this->redirectToRoute('app_home_index');
             }
         }
@@ -91,7 +91,7 @@ class QuestionController extends AbstractController
         }
         $em->flush();
         }
-        
+        $this->addFlash('successMessage','Votre modification a été pris en compte.');
         return $this->redirectToRoute('app_question_show',['id'=>$questionId]);
     }
 

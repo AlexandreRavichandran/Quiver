@@ -52,7 +52,7 @@ class AnswerController extends AbstractController
 
     /**
      * @Route("/answers/create",name="api_answer_create",methods="POST")
-     * @return JsonResponse
+     * @return JsonResponse|Response
      */
     public function create(Request $request, EntityManagerInterface $em, QuestionRepository $questionRepository, ValidatorInterface $validatorInterface): JsonResponse
     {
@@ -75,11 +75,8 @@ class AnswerController extends AbstractController
                     'content' => $this->renderView('partials/question_headers/question_header_single_question.html.twig', ['answers' => [$answer]])
                 ];
                 return new JsonResponse($jsonData, 200);
-            }else{
-                foreach ($errors as $error) {
-                    $this->addFlash('yellow', $error->getMessage());
-                }
-                return $this->redirectToRoute('app_question_show', ['question' => $question]);
+            } else {
+
             }
         }
     }

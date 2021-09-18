@@ -46,14 +46,7 @@ class CommentController extends AbstractController
                 ];
                 return new JsonResponse($jsonData, 200);
             }
-
-            //Display error messages
-            foreach ($errors as $error) {
-                $this->addFlash('yellow', $error->getMessage());
-                return $this->redirectToRoute('app_home_index');
-            }
         }
-        return $this->redirectToRoute('app_home_index');
     }
 
     /**

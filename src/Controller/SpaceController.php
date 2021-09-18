@@ -38,14 +38,14 @@ class SpaceController extends AbstractController
             if (count($errors) === 0) {
                 $em->persist($space);
                 $em->flush();
+                $this->addFlash('successMessage','Votre espace a bien été crée. Vous pouvez maintenant lier une question à cet espace.');
                 return $this->redirectToRoute('app_space_show', [
                     'id' => $space->getId()
                 ]);
             }
-
             //Display error messages
             foreach ($errors as $error) {
-                $this->addFlash('yellow', $error->getMessage());
+                $this->addFlash('errorMessage', $error->getMessage());
                 return $this->redirectToRoute('app_home_index');
             }
         }

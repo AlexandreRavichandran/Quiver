@@ -44,6 +44,15 @@
     .link-unsubscribed{
         @apply text-indigo-500
     }
+    
+    .successMessage{
+        @apply bg-green-500
+    }
+
+    .errorMessage{
+        @apply bg-red-500
+    }
+
 }
 
 .loginBackground

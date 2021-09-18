@@ -18,8 +18,8 @@
         {% endif %}
             {% for label,messages in app.flashes %}
                 {% for message in messages %}
-                <div class="block p-2 bg-{{label}}-400 text-center flashMessage">
-                    <button class="flashMessageCloseButton" type="button" class="close" data-dismiss="alert">&times;</button>
+                <div class="block py-5 text-white font-bold text-center {{label}} flashMessage">
+                    <button class="flashMessageCloseButton text-xl" type="button" class="close" data-dismiss="alert">&times;</button>
                     {{message}}
                 </div>
                 {% endfor %}

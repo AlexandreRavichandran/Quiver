@@ -198,9 +198,10 @@ const post = {
 
     handleFlashMessageButton: function (e) {
         e.preventDefault();
-
         const flashMessage = e.currentTarget.closest('.flashMessage');
-        flashMessage.style.display = 'none';
+        flashMessage.animate({ opacity: ['1', '0'] }, 1000).onfinish = function () {
+            flashMessage.style.opacity = "0";
+        }
     },
 
     handleMoreHomePostButton: function (e) {
@@ -348,7 +349,7 @@ const post = {
                     document.querySelector('#answerNumber').textContent++;
                     document.querySelector('.answerButton').classList.remove('hidden');
                     editorSpace.closest('.ck-editor').remove();
-                    document.querySelector('#answerPostButton').remove();
+                    document.querySelector('#answerPostButton').classList.add('hidden');
 
                     post.init();
                 } else {
@@ -360,7 +361,7 @@ const post = {
 
     handleMorePostButton: function (e) {
         e.preventDefault();
-        const currentTarget = e.currentTarget
+        const currentTarget = e.currentTarget;
         const lastElement = document.querySelector('#content').lastElementChild;
         const lastDate = lastElement.dataset.questionsDate;
         currentTarget.closest('#generateFollowing').classList.add('hidden');
