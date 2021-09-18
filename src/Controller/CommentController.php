@@ -35,17 +35,36 @@ class CommentController extends AbstractController
                 ->setComment($datas->comment)
                 ->setCreatedAt(new DateTimeImmutable())
                 ->setAuthor($this->getUser());
+
+            //Check if there is any error on creating answer
             $errors = $validator->validate($comment);
+
             if (count($errors) === 0) {
                 $em->persist($comment);
                 $em->flush();
+                $responseCode = 201;
+
+                //Prepare datas for success alert message
+                $message = 'Votre commentaire a été postée avec succès.';
+                $label = 'successMessage';
                 $jsonData = [
                     'comment' => $comment->getComment(),
                     'user' => $this->getUser()->getPseudonym(),
                     'date' => $comment->getCreatedAt()->format('d/m/Y')
                 ];
-                return new JsonResponse($jsonData, 200);
+            } else {
+                $responseCode = 400;
+
+                //Prepare datas for failure alert message
+                $message = "Une erreur est survenu lors de la création de votre commentaire. Veuillez essayer ulterieurement.";
+                $label = 'errorMessage';
             }
+
+            $jsonData[] = [
+                'message' => $this->renderView('partials/_alert_message.html.twig', ['message' => $message, 'label' => $label])
+            ];
+
+            return new JsonResponse($jsonData, $responseCode);
         }
     }
 
@@ -57,13 +76,14 @@ class CommentController extends AbstractController
     {
         if ($date === null) {
             $date = new DateTimeImmutable();
-        }else{
+        } else {
             $date = new DateTimeImmutable($date);
         }
         $comments = $commentRepository->findCommentByAnswer($id, $date, 2);
         $jsonData = [
             'content' => $this->renderView('partials/_comments_subcomments.html.twig', ['comments' => $comments])
         ];
+
         return new JsonResponse($jsonData);
     }
 }

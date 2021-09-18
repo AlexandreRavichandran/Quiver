@@ -30,30 +30,36 @@ class SpaceController extends AbstractController
             $spaceName = $request->request->get('space_name');
             $spaceDescription = $request->request->get('space_description');
             $space = new Space;
-            $space->setName(htmlspecialchars($spaceName));
-            $space->setDescription(htmlspecialchars($spaceDescription));
+            $space->setName($spaceName);
+            $space->setDescription($spaceDescription);
 
             //Check if created question objet is valid following the entity's contraint
             $errors = $validator->validate($space);
+
             if (count($errors) === 0) {
                 $em->persist($space);
                 $em->flush();
-                $this->addFlash('successMessage','Votre espace a bien été crée. Vous pouvez maintenant lier une question à cet espace.');
-                return $this->redirectToRoute('app_space_show', [
+
+                $this->addFlash('successMessage', 'Votre espace a bien été crée. Vous pouvez maintenant lier une question à cet espace.');
+                $redirectRoute = $this->redirectToRoute('app_space_show', [
                     'id' => $space->getId()
                 ]);
+            } else {
+                //Display error messages
+                foreach ($errors as $error) {
+                    $this->addFlash('errorMessage', $error->getMessage());
+                }
+                $redirectRoute = $this->redirectToRoute('app_home_index');
             }
-            //Display error messages
-            foreach ($errors as $error) {
-                $this->addFlash('errorMessage', $error->getMessage());
-                return $this->redirectToRoute('app_home_index');
-            }
+
+            return $redirectRoute;
         }
     }
 
     /**
      * Create & discover spaces
      * @Route("/spaces", name="app_space_index",methods="GET")
+     * @return Response
      */
     public function index(SpaceRepository $spaceRepository): Response
     {
@@ -87,6 +93,7 @@ class SpaceController extends AbstractController
         }
         $questions = $questionRepository->findAllQuestionsBySpaceNames($userFollowingSpaceNames, $date, 3);
         $spaces = $spaceRepository->findBy([], null, 8);
+
         return $this->render(
             'space/following.html.twig',
             [
@@ -104,8 +111,6 @@ class SpaceController extends AbstractController
      */
     public function show(Space $space, SpaceRepository $spaceRepository, EntityManagerInterface $em): Response
     {
-        $space->setLastVisited(new DateTimeImmutable());
-        $em->flush();
         $spaces = $spaceRepository->findBy([], null, 8);
         $questions = $space->getQuestions();
 
@@ -163,7 +168,8 @@ class SpaceController extends AbstractController
             $space->removeSubscriber($user);
         }
         $em->flush();
-        return new JsonResponse;
+
+        return new JsonResponse();
     }
 
     /**
@@ -185,6 +191,7 @@ class SpaceController extends AbstractController
                 'questions' => $questions
             ])
         ];
+
         return new JsonResponse($jsonData);
     }
 
@@ -193,7 +200,7 @@ class SpaceController extends AbstractController
      * @Route("/spaces/generate/{id}", name="api_space_generate_space",methods="GET",requirements={"id":"\d+"})
      * @return JsonResponse
      */
-    public function generateSpaces(int $id, SpaceRepository $spaceRepository):JsonResponse
+    public function generateSpaces(int $id, SpaceRepository $spaceRepository): JsonResponse
     {
         $spaces = $spaceRepository->findSpaces($id, 6);
 
@@ -208,24 +215,23 @@ class SpaceController extends AbstractController
      * @Route("/spaces/questions/{id}",name="api_space_get_all_spaces",methods="GET",requirements={"id"="\d+"})
      * @return JsonResponse
      */
-    public function getRemainingSpaces(int $id,SpaceRepository $spaceRepository):JsonResponse
+    public function getRemainingSpaces(int $id, SpaceRepository $spaceRepository): JsonResponse
     {
         $allSpaces = $spaceRepository->findAll();
         $questionSpace = $spaceRepository->findSpaceByQuestionId($id);
         $jsonData = [];
 
-        foreach($allSpaces as $space){
+        foreach ($allSpaces as $space) {
 
-            if(!in_array($space,$questionSpace)){
+            if (!in_array($space, $questionSpace)) {
                 $spaceArray = [
-                    'id'=>$space->getId(),
-                    'name'=>$space->getName()
+                    'id' => $space->getId(),
+                    'name' => $space->getName()
                 ];
                 $jsonData[] = $spaceArray;
-                }
+            }
         }
-        return $this->json($jsonData,200);
-    }
 
-    
+        return $this->json($jsonData, 200);
+    }
 }

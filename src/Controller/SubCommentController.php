@@ -34,15 +34,27 @@ class SubCommentController extends AbstractController
             if (count($errors) === 0) {
                 $em->persist($subComment);
                 $em->flush();
+                $responseCode = 201;
+
+                //Prepare datas for success alert message
+                $message = 'Votre commentaire a été postée avec succès.';
+                $label = 'successMessage';
                 $jsonData = [
                     'comment' => $subComment->getSubComment(),
                     'user' => $this->getUser()->getPseudonym(),
                     'date' => $subComment->getCreatedAt()->format('d/m/Y')
                 ];
-                return new JsonResponse($jsonData, 200);
+            } else {
+                $responsecode = 401;
+                //Prepare datas for failure alert message
+                $message = "Une erreur est survenu lors de la création de votre réponse. Veuillez essayer ulterieurement.";
+                $label = 'errorMessage';
             }
+            $jsonData[] = [
+                'message' => $this->renderView('partials/_alert_message.html.twig', ['message' => $message, 'label' => $label])
+            ];
 
+            return new JsonResponse($jsonData, $responseCode);
         }
-
     }
 }

@@ -26,6 +26,7 @@ class SecurityController extends AbstractController
 
         $allUsers = $userRepository->findAll();
         $randomUser = $allUsers[mt_rand(0, count($allUsers) - 1)];
+
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'user' => $randomUser]);
     }
 

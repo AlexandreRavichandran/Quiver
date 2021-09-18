@@ -12,10 +12,10 @@
 
     <body class="bg-gray-100">
         <div class="sticky top-0">
-        
-        {% if app.request.attributes.get('_route') is not same as 'app_login' %}
-            {% include 'partials/_header.html.twig' %}
-        {% endif %}
+            {% if app.request.attributes.get('_route') is not same as 'app_login' %}
+                {% include 'partials/_header.html.twig' %}
+            {% endif %}
+            <div id="messagesSpace">
             {% for label,messages in app.flashes %}
                 {% for message in messages %}
                 <div class="block py-5 text-white font-bold text-center {{label}} flashMessage">
@@ -24,6 +24,7 @@
                 </div>
                 {% endfor %}
             {% endfor %}
+            </div>
         </div>
 
         {% block body %}{% endblock %}  
@@ -34,6 +35,7 @@
         {{ encore_entry_script_tags('space') }}
         {{ encore_entry_script_tags('user') }}
         {{ encore_entry_script_tags('modal') }}
+        
         {% if app.user is not same as null %}
             <script> const user = "{{app.user.pseudonym}}"</script>
         {% endif %}

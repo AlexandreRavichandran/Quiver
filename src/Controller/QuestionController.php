@@ -38,20 +38,24 @@ class QuestionController extends AbstractController
 
             //Check if created question objet is valid following the entity's contraint
             $errors = $validator->validate($question);
+
             if (count($errors) === 0) {
+
                 $em->persist($question);
                 $em->flush();
                 $this->addFlash('successMessage', 'Votre question a bien été postée. Veuillez lier votre question à des espaces.');
-                return $this->redirectToRoute('app_question_show', [
+                $redirectRoute =  $this->redirectToRoute('app_question_show', [
                     'id' => $question->getId()
                 ]);
+            } else {
+                //Display error messages
+                foreach ($errors as $error) {
+                    $this->addFlash('errorMessage', $error->getMessage());
+                    $redirectRoute = $this->redirectToRoute('app_home_index');
+                }
             }
 
-            //Display error messages
-            foreach ($errors as $error) {
-                $this->addFlash('errorMessage', $error->getMessage());
-                return $this->redirectToRoute('app_home_index');
-            }
+            return $redirectRoute;
         }
     }
 
@@ -63,6 +67,7 @@ class QuestionController extends AbstractController
         $date = new DateTimeImmutable();
         $alternativeQuestions = $questionRepository->findBy([], null, 5);
         $answers = $answerRepository->findAnswersByQuestionId($question->getId(), $date, 3);
+
         return $this->render('question/show.html.twig', [
             'question' => $question,
             'answers' => $answers,
@@ -75,24 +80,26 @@ class QuestionController extends AbstractController
      * @Route("/question/spaces/add",name="app_question_add_space",methods="POST")
      * @return Response
      */
-    public function addSpace(Request $request,SpaceRepository $spaceRepository,QuestionRepository $questionRepository, EntityManagerInterface $em):Response
+    public function addSpace(Request $request, SpaceRepository $spaceRepository, QuestionRepository $questionRepository, EntityManagerInterface $em): Response
     {
-        if($request->isMethod('POST')){
-        $questionId = $request->request->get('questionId');
-        $newSpacesIds = $request->request->all('spaces');
+        if ($request->isMethod('POST')) {
+            $questionId = $request->request->get('questionId');
+            $newSpacesIds = $request->request->all('spaces');
 
-        $question = $questionRepository->find($questionId);
+            $question = $questionRepository->find($questionId);
 
-        $question->removeallSpace();
-        foreach ($newSpacesIds as $spaceId) {
-        $space = $spaceRepository->find($spaceId);
-        $question->addSpace($space);
-        $em->persist($question);
+            $question->removeallSpace();
+            foreach ($newSpacesIds as $spaceId) {
+                $space = $spaceRepository->find($spaceId);
+                $question->addSpace($space);
+                $em->persist($question);
+            }
+
+            $em->flush();
+            $this->addFlash('successMessage', 'Votre modification a été pris en compte.');
+
+            return $this->redirectToRoute('app_question_show', ['id' => $questionId]);
         }
-        $em->flush();
-        }
-        $this->addFlash('successMessage','Votre modification a été pris en compte.');
-        return $this->redirectToRoute('app_question_show',['id'=>$questionId]);
     }
 
     /*****************  API REQUEST METHODS *****************/
@@ -108,6 +115,7 @@ class QuestionController extends AbstractController
         $jsonData = [
             'content' => $this->renderView('partials/question_headers/question_header_single_question.html.twig', ['answers' => $answers])
         ];
+
         return new JsonResponse($jsonData);
     }
 
@@ -129,5 +137,4 @@ class QuestionController extends AbstractController
 
         return new JsonResponse($jsonData);
     }
-
 }

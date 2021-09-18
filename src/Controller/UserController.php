@@ -124,23 +124,38 @@ class UserController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function updateQualification(Request $request, EntityManagerInterface $em, ValidatorInterface $validatorInterface):JsonResponse
+    public function updateQualification(Request $request, EntityManagerInterface $em, ValidatorInterface $validatorInterface): JsonResponse
     {
         $datas = json_decode($request->getContent());
         $user = $this->getUser();
         $newQualification = $datas->newQualification;
         $user->setQualification($newQualification);
+
         $errors = $validatorInterface->validate($user);
 
         if (count($errors) === 0) {
             $em->persist($user);
             $em->flush();
-            $responseCode = 200;
-            $jsonData = ['newQualification'=>$newQualification];
+            $responseCode = 201;
+
+            //Prepare datas for success alert message
+            $message = 'Votre commentaire a été postée avec succès.';
+            $label = 'successMessage';
+
+            $jsonData = ['newQualification' => $newQualification];
         } else {
             $responseCode = 401;
+
+            //Prepare datas for failure alert message
+            $message = "Une erreur est survenu lors de la création de votre réponse. Veuillez essayer ulterieurement.";
+            $label = 'errorMessage';
+
             $jsonData = [];
         }
+
+        $jsonData[] = [
+            'message' => $this->renderView('partials/_alert_message.html.twig', ['message' => $message, 'label' => $label])
+        ];
 
         return new JsonResponse($jsonData, $responseCode);
     }
@@ -151,7 +166,7 @@ class UserController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function updateDescription(Request $request, EntityManagerInterface $em, ValidatorInterface $validatorInterface):JsonResponse
+    public function updateDescription(Request $request, EntityManagerInterface $em, ValidatorInterface $validatorInterface): JsonResponse
     {
         $datas = json_decode($request->getContent());
         $user = $this->getUser();
@@ -162,12 +177,23 @@ class UserController extends AbstractController
         if (count($errors) === 0) {
             $em->persist($user);
             $em->flush();
-            $responseCode = 200;
-            $jsonData = ['newQualification'=>$newDescription];
+            $responseCode = 201;
+
+            //Prepare datas for success alert message
+            $message = 'Votre commentaire a été postée avec succès.';
+            $label = 'successMessage';
+            $jsonData = ['newQualification' => $newDescription];
         } else {
-            $responseCode = 401;
+            $responsecode = 401;
+            //Prepare datas for failure alert message
+            $message = "Une erreur est survenu lors de la création de votre réponse. Veuillez essayer ulterieurement.";
+            $label = 'errorMessage';
             $jsonData = [];
         }
+
+        $jsonData[] = [
+            'message' => $this->renderView('partials/_alert_message.html.twig', ['message' => $message, 'label' => $label])
+        ];
 
         return new JsonResponse($jsonData, $responseCode);
     }

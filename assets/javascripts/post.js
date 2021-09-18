@@ -199,7 +199,7 @@ const post = {
     handleFlashMessageButton: function (e) {
         e.preventDefault();
         const flashMessage = e.currentTarget.closest('.flashMessage');
-        flashMessage.animate({ opacity: ['1', '0'] }, 1000).onfinish = function () {
+        flashMessage.animate({ opacity: ['1', '0'] }, 500).onfinish = function () {
             flashMessage.style.opacity = "0";
         }
     },
@@ -343,19 +343,31 @@ const post = {
             }
         }
         if (editorSpace.textContent.length > 0) {
-            fetch('/answers/create', config).then(function (response) { return response.json() }).then(function (responseJson) {
-                if (document.querySelector('.content')) {
-                    document.querySelector('.content').innerHTML += responseJson.content;
-                    document.querySelector('#answerNumber').textContent++;
-                    document.querySelector('.answerButton').classList.remove('hidden');
-                    editorSpace.closest('.ck-editor').remove();
-                    document.querySelector('#answerPostButton').classList.add('hidden');
-
-                    post.init();
+            fetch('/answers/create', config).then(function (response) {
+                if (response.status === 201) {
+                    return response.json();
                 } else {
-                    window.location.href = ('/questions/' + questionid);
+                    const error = response.json();
+                    throw error;
                 }
             })
+                .then(function (responseJson) {
+
+                    if (document.querySelector('.content')) {
+                        document.querySelector('.content').innerHTML += responseJson.content;
+                        document.querySelector('#answerNumber').textContent++;
+                        document.querySelector('.answerButton').classList.remove('hidden');
+                        editorSpace.closest('.ck-editor').remove();
+                        document.querySelector('#answerPostButton').classList.add('hidden');
+
+                        post.init();
+                    } else {
+                        window.location.href = ('/questions/' + questionid);
+                    }
+                })
+                .catch(function (error) {
+
+                })
         }
     },
 
@@ -376,6 +388,11 @@ const post = {
             }
             document.querySelector('.loadingMoreFollowingPostsSpinner').classList.add('hidden');
         })
+    },
+
+    showMessage: function (message) {
+        const messageSpace = document.querySelector('#messagesSpace');
+        messageSpace.innerHTML = message;
     }
 }
 
