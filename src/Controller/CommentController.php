@@ -46,22 +46,23 @@ class CommentController extends AbstractController
                 $responseCode = 201;
 
                 //Prepare datas for success alert message
-                $message = 'Votre commentaire a été postée avec succès.';
                 $label = 'successMessage';
+                $messageText = 'Votre commentaire a été postée avec succès.';
+                $message = $this->renderView('partials/_alert_message.html.twig', ['message' => $messageText, 'label' => $label]);
                 $jsonData = [
                     'comment' => $comment->getComment(),
                     'user' => $this->getUser()->getPseudonym(),
                     'date' => $comment->getCreatedAt()->format('d/m/Y')
                 ];
             } else {
-                $responseCode = 400;
-
-                //Prepare datas for failure alert message
-                $message = "Une erreur est survenu lors de la création de votre commentaire. Veuillez essayer ulterieurement.";
                 $label = 'errorMessage';
+                $responseCode = 400;
+                foreach ($errors as $key => $error) {
+                    $message[$key] = $this->renderView('partials/_alert_message.html.twig', ['message' => $error->getMessage(), 'label' => $label]);
+                }
             }
 
-            $jsonData['message'] = $this->renderView('partials/_alert_message.html.twig', ['message' => $message, 'label' => $label]);
+            $jsonData['message'] = $message;
 
             return new JsonResponse($jsonData, $responseCode);
         }

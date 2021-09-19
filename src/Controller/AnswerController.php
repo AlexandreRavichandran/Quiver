@@ -78,20 +78,21 @@ class AnswerController extends AbstractController
                 $responseCode = 201;
 
                 //Prepare datas for success alert message
-                $message = 'Votre réponse a été postée avec succès.';
                 $label = 'successMessage';
+                $messageText = 'Votre réponse a été postée avec succès.';
+                $message = $this->renderView('partials/_alert_message.html.twig', ['message' => $messageText, 'label' => $label]);
                 $jsonData = [
                     'content' => $this->renderView('partials/question_headers/question_header_single_question.html.twig', ['answers' => [$answer]]),
                 ];
             } else {
                 $responseCode = 400;
-
-                //Prepare datas for failure alert message
-                $message = "Une erreur est survenu lors de la création de votre réponse. Veuillez essayer ulterieurement.";
                 $label = 'errorMessage';
+                foreach ($errors as $key => $error) {
+                    $message[$key] = $this->renderView('partials/_alert_message.html.twig', ['message' => $error->getMessage(), 'label' => $label]);
+                }
             }
 
-            $jsonData['message'] = $this->renderView('partials/_alert_message.html.twig', ['message' => $message, 'label' => $label]);
+            $jsonData['message'] = $message;
 
             return new JsonResponse($jsonData, $responseCode);
         }

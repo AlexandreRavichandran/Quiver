@@ -29,7 +29,7 @@ class SpaceController extends AbstractController
         if ($request->isMethod('POST')) {
             $spaceName = $request->request->get('space_name');
             $spaceDescription = $request->request->get('space_description');
-            $space = new Space;
+            $space = new Space();
             $space->setName($spaceName);
             $space->setDescription($spaceDescription);
 
