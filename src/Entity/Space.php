@@ -23,7 +23,18 @@ class Space
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * 
+     * @Assert\NotBlank(
+     *              message = "Vous devez fournir un nom d'espace valide."
+     * )
+     * @Assert\NotNull(
+     *              message = "Vous devez fournir un nom d'espace."
+     * )
+     * @Assert\Regex(
+     *              pattern="/\w/",
+     *              match=true,
+     *              message="Vous devez fournir un nom d'espace valide."
+     * )
      */
     private $name;
 
@@ -34,7 +45,17 @@ class Space
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotBlank
+     * @Assert\NotBlank(
+     *              message = "Vous devez fournir une description valide de l'espace."
+     * )
+     * @Assert\NotNull(
+     *              message = "Vous devez fournir une description de l'espace."
+     * )
+     * @Assert\Regex(
+     *              pattern = "/\w/",
+     *              match = true,
+     *              message = "Vous devez fournir une description valide de l'espace."
+     * )
      */
     private $description;
 
@@ -42,11 +63,6 @@ class Space
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="subscribedSpaces")
      */
     private $subscribers;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $lastVisited;
 
     public function __construct()
     {
@@ -138,17 +154,5 @@ class Space
     {
         $isSubscribed = $this->getSubscribers()->contains($user);
         return $isSubscribed;
-    }
-
-    public function getLastVisited(): ?\DateTimeInterface
-    {
-        return $this->lastVisited;
-    }
-
-    public function setLastVisited(?\DateTimeInterface $lastVisited): self
-    {
-        $this->lastVisited = $lastVisited;
-
-        return $this;
     }
 }

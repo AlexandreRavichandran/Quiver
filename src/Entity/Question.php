@@ -24,7 +24,18 @@ class Question
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+    
+     * @Assert\NotBlank(
+     *              message = "Vous devez fournir une question valide."
+     * )
+     * @Assert\NotNull(
+     *              message = "Vous devez fournir une question."
+     * )
+     * @Assert\Regex(
+     *              pattern = "/\w/",
+     *              match = true,
+     *              message = "Vous devez fournir une question valide."
+     * )
      */
     private $question;
 

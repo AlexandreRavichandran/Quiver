@@ -24,7 +24,17 @@ class Comment
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotBlank
+     * @Assert\NotBlank(
+     *              message = "Vous devez fournir un commentaire valide."
+     * )
+     * @Assert\NotNull(
+     *              message = "Vous devez fournir un commentaire."
+     * )
+     * @Assert\Regex(
+     *              pattern = "/\w/",
+     *              match = true,
+     *              message = "Vous devez fournir un commentaire valide."
+     * )
      */
     private $comment;
 

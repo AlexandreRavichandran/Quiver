@@ -25,6 +25,17 @@ class Answer
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(
+     *              message = "Vous devez fournir une réponse valide."
+     * )
+     * @Assert\NotNull(
+     *              message = "Vous devez fournir une réponse."
+     * )
+     * @Assert\Regex(
+     *              pattern = "/\w/",
+     *              match = true,
+     *              message = "Vous devez fournir une réponse valide."
+     * )
      */
     private $answer;
 
