@@ -14,8 +14,12 @@ const modal = {
         }
 
         const addSpacesButton = document.querySelector('.addSpaces');
-        addSpacesButton.addEventListener('click', modal.showSpaces);
+        if (addSpacesButton) {
+            addSpacesButton.addEventListener('click', modal.showSpaces);
+        }
 
+        const profilMenu = document.querySelector('#showMenu');
+        profilMenu.addEventListener('click', modal.handleMenu);
 
     },
     openModal: function (e) {
@@ -65,7 +69,15 @@ const modal = {
                     spaceModal.appendChild(spaceBox);
                 }
             })
-    }
+    },
 
+    handleMenu: function () {
+        const menu = document.querySelector('#profileMenu');
+        if (menu.classList.contains('hidden')) {
+            menu.classList.remove('hidden');
+        } else {
+            menu.classList.add('hidden');
+        }
+    },
 }
 document.addEventListener('DOMContentLoaded', modal.init)
