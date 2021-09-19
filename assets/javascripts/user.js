@@ -165,7 +165,7 @@ const user = {
                     newQualification.classList.add('hidden');
                 })
                 .catch(function (error) {
-                    //
+                    console.log(error);
                 })
         }
     },
@@ -203,7 +203,6 @@ const user = {
                 }
             })
             .then(function (responseJson) {
-                console.log('ok');
                 const userDescription = document.querySelector('#userDescription');
                 const updateDescriptionButton = document.querySelector('#updateDescription')
                 userDescription.textContent = newDescription.value;
@@ -212,7 +211,7 @@ const user = {
                 userDescription.classList.remove('hidden');
             })
             .catch(function (error) {
-
+                console.log(error);
             })
 
     }

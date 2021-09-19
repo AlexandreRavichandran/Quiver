@@ -24,15 +24,15 @@ class SubComment
      * @ORM\Column(type="text")
      * 
      * @Assert\NotBlank(
-     *              message = "Vous devez fournir une question valide."
+     *              message = "Vous devez fournir un commentaire valide."
      * )
      * @Assert\NotNull(
-     *              message = "Vous devez fournir une question."
+     *              message = "Vous devez fournir un commentaire question."
      * )
      * @Assert\Regex(
      *              pattern = "/\w/",
      *              match = true,
-     *              message = "Vous devez fournir une question valide."
+     *              message = "Vous devez fournir un commentaire valide."
      * )
      */
     private $subComment;

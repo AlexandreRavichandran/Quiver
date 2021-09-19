@@ -137,7 +137,6 @@ const post = {
         e.preventDefault();
         const clickedPost = e.currentTarget.closest('.questionAnswer')
         const postId = clickedPost.dataset.answerId;
-        console.log(postId);
         const postFooter = clickedPost.querySelector('.postFooter');
         const commentsNumber = postFooter.querySelector('.numberOfComments');
         const commentSection = postFooter.querySelector('.comments');
@@ -221,6 +220,7 @@ const post = {
         const flashMessage = e.currentTarget.closest('.flashMessage');
         flashMessage.animate({ opacity: ['1', '0'] }, 500).onfinish = function () {
             flashMessage.style.opacity = "0";
+            flashMessage.style.display = "none";
         }
     },
 
@@ -295,7 +295,12 @@ const post = {
                 comment.value = '';
             })
             .catch(function (error) {
-                post.showMessage(error.message);
+                return error;
+            })
+            .then(function (errorJson) {
+                for (const error of errorJson.message) {
+                    post.showMessage(error);
+                }
             })
     },
 
@@ -329,11 +334,15 @@ const post = {
                 template.querySelector('.subCommentContent').textContent = response.comment;
                 currentTarget.closest('.comment').querySelector('.subComments').prepend(template);
                 currentTarget.classList.add('hidden');
-                post.init();
                 comment.value = '';
             })
             .catch(function (error) {
-                post.showMessage(error.message);
+                return error;
+            })
+            .then(function (errorJson) {
+                for (const error of errorJson.message) {
+                    post.showMessage(error);
+                }
             })
     },
     generateAnswers: function (e) {
@@ -407,7 +416,7 @@ const post = {
                         return response.json();
                     } else {
                         const error = response.json();
-                        throw error;
+                        throw error.json();
                     }
                 })
                 .then(function (responseJson) {
@@ -422,9 +431,15 @@ const post = {
                     } else {
                         window.location.href = ('/questions/' + questionid);
                     }
+                    return { then: function () { } };
                 })
                 .catch(function (error) {
-                    post.showMessage(error.message)
+                    return error;
+                })
+                .then(function (errorJson) {
+                    for (const error of errorJson.message) {
+                        post.showMessage(error);
+                    }
                 })
         }
     },
