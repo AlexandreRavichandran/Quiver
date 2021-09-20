@@ -59,6 +59,14 @@
                     <p class="p-2"><i class="bi bi-globe mr-3"></i><a href="#">Connaissances: Anglais</a></p>
                     <p class="p-2"><i class="bi bi-calendar mr-3"></i><a href="#">A rejoint en {{user.createdAt|date('F Y')}}</a></p>
                 </div>
+                <div class="flex flex-col">
+                    <h2 class="flex justify-start color-gray-400 font-semibold p-4 border-b-2 mb-4">Qualifications et faits marquants </h2>
+                    <div class="border border-2 p-6">
+                        <a class="modal-open mr-1 text-5xl text-indigo-400 flex justify-center hover:text-indigo-500" href="#"><i class="bi bi-plus-circle"></i></a>
+                        {% include 'partials/modals/_space_create_modal.html.twig' %}
+                        <p class="flex justify-center mt-4 text-xl ">Créer un espace</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

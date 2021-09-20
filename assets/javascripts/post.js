@@ -401,7 +401,9 @@ const post = {
         const currentTarget = e.currentTarget
         const editorSpace = currentTarget.closest('.answerHeader').querySelector('.ck-editor__editable');
         const questionid = currentTarget.closest('.answerHeader').dataset.questionId;
-        const data = { 'answer': editorSpace.innerHTML, 'questionId': questionid, 'user': user };
+        const answer = editorSpace.innerHTML;
+        const filteredAnswer = answer.replaceAll('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 8">', '');
+        const data = { 'answer': filteredAnswer, 'questionId': questionid, 'user': user };
         const config = {
             method: 'POST',
             body: JSON.stringify(data),
