@@ -19,7 +19,7 @@ class QuestionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Question::class);
     }
-    
+
     /**
      * 
      *
@@ -27,9 +27,9 @@ class QuestionRepository extends ServiceEntityRepository
      * @param integer $limit Max of query results
      * @return array
      */
-    public function findAllQuestionsWithAnswers($date = null, $limit = null):array
+    public function findAllQuestionsWithAnswers($date = null, $limit = null): array
     {
-        if($date === null){
+        if ($date === null) {
             $date = new DateTimeImmutable();
         }
 
@@ -53,9 +53,9 @@ class QuestionRepository extends ServiceEntityRepository
      * @param integer $limit Max of query results
      * @return array
      */
-    public function findAllQuestionsBySpaceNames(array $spaceIds, DateTimeImmutable $date = null, int $limit = null):array
+    public function findAllQuestionsBySpaceNames(array $spaceIds, DateTimeImmutable $date = null, int $limit = null): array
     {
-        if($date === null){
+        if ($date === null) {
             $date = new DateTimeImmutable();
         }
         return $this->createQueryBuilder('q')
@@ -65,6 +65,22 @@ class QuestionRepository extends ServiceEntityRepository
             ->setParameter('date', $date)
             ->orderBy('q.createdAt', 'DESC')
             ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Search a piece of word on an answer
+     * @param string $query The piece of word to search
+     * @return array
+     */
+    public function findQuestionsByQuery(string $query): array
+    {
+        return $this
+            ->createQueryBuilder('q')
+            ->andWhere('q.question LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->orderBy('q.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
     }

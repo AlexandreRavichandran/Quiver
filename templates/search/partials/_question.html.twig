@@ -1,0 +1,21 @@
+{% for question in questions %}
+	<div class="answerHeader questions p-2 bg-white border border-b-1 border-l-1 border-r-1 bborder-gray-300" data-question-id={{question.id}}>
+		<a href="{{path('app_question_show',{'id':question.id})}}" class="font-black p-2">{{question.question}}</a>
+		<p class="font-semibold text-gray-400">
+			<a href="{{path('app_question_show',{'id':question.id})}}">{{question.answers|length}}
+				réponses</a>
+			- Question posée le
+			{{question.createdAt|date('d/m/Y')}}</p>
+		<div class="links flex ">
+			<a class="multipleAnswerButton block p-2 rounded hover:bg-gray-200 mr-6" href="#">
+				<i class="bi text-2xl bi-pencil-square"></i>
+			</a>
+		</div>
+		<div>
+			<div id="editor"></div>
+			<div class="multiplePostAnswerButton hidden mt-3">
+				<a href="#" class="text-center px-2 py-1 block bg-indigo-400 font-bold text-xl text-white rounded-full w-28">Poster</a>
+			</div>
+		</div>
+	</div>
+{% endfor %}

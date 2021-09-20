@@ -28,9 +28,9 @@ class AnswerRepository extends ServiceEntityRepository
      * @param integer|null $limit Max of query results
      * @return array
      */
-    public function findAnswersByQuestionId(int $id,DateTimeImmutable $date = null, int $limit = null):array
+    public function findAnswersByQuestionId(int $id, DateTimeImmutable $date = null, int $limit = null): array
     {
-        if($date === null){
+        if ($date === null) {
             $date = new DateTimeImmutable();
         }
 
@@ -42,6 +42,22 @@ class AnswerRepository extends ServiceEntityRepository
             ->setParameters([':id' => $id, ':date' => $date])
             ->orderBy('a.createdAt', 'DESC')
             ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Search a piece of word on an answer
+     * @param string $query The piece of word to search
+     * @return array
+     */
+    public function findAnswersByQuery(string $query): array
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->andWhere('a.answer LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->orderBy('a.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
     }

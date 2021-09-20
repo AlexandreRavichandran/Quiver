@@ -21,6 +21,10 @@ const modal = {
         const profilMenu = document.querySelector('#showMenu');
         profilMenu.addEventListener('click', modal.handleMenu);
 
+        const searchBar = document.querySelector('#search');
+        searchBar.addEventListener('focus',modal.handleSearchBarFocus);
+        searchBar.addEventListener('focusout',modal.handleSearchBarUnFocus);
+
     },
     openModal: function (e) {
 
@@ -79,5 +83,14 @@ const modal = {
             menu.classList.add('hidden');
         }
     },
+
+    handleSearchBarFocus: function(){
+        document.querySelector('#content').style.filter = "blur(4px)"
+    },
+
+    handleSearchBarUnFocus: function(){
+        document.querySelector('#content').style.filter = "blur(0px)"
+    }
+
 }
 document.addEventListener('DOMContentLoaded', modal.init)

@@ -26,8 +26,9 @@
             {% endfor %}
             </div>
         </div>
-
+        <div id="content">
         {% block body %}{% endblock %}  
+        </div>
         {% block javascripts %}
         {% endblock %}
         {{ encore_entry_script_tags('app') }}

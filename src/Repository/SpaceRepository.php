@@ -19,14 +19,14 @@ class SpaceRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Space::class);
     }
-    
+
     /**
      *
      * @param integer $id Id of the previous space (default to 1)
      * @param integer|null $limit Max of query results 
      * @return array
      */
-    public function findSpaces(int $id = 1, int $limit = null):array
+    public function findSpaces(int $id = 1, int $limit = null): array
     {
         return $this
             ->createQueryBuilder('s')
@@ -42,13 +42,29 @@ class SpaceRepository extends ServiceEntityRepository
      * @param integer $id the id of the question
      * @return array
      */
-    public function findSpaceByQuestionId(int $id):array
+    public function findSpaceByQuestionId(int $id): array
     {
         return $this
             ->createQueryBuilder('s')
-            ->join('s.questions','q')
+            ->join('s.questions', 'q')
             ->andWhere('q.id = :id')
-            ->setParameter(':id',$id)
+            ->setParameter(':id', $id)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Search a piece of word on an answer
+     * @param string $query The piece of word to search
+     * @return array
+     */
+    public function findSpacesByQuery(string $query): array
+    {
+        return $this
+            ->createQueryBuilder('s')
+            ->andWhere('s.name LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->orderBy('s.name', 'DESC')
             ->getQuery()
             ->getResult();
     }

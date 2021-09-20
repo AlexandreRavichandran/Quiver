@@ -12,7 +12,9 @@
                 <a class="block pb-2 mr-10" href="#"><i class="bi text-3xl bi-bell"></i></a>
             </div>
             <div class="hidden lg:block lg:col-span-5 xl:col-span-4 flex justify-center">
-                <input type="text" class="p-2" name="search" id="search" placeholder="Rechercher des questions, personnes et sujets" size="45">
+                <form action="{{path('search_all')}}" method="get">
+                    <input id="search" type="text" class="p-2" name="q" id="search" placeholder="Rechercher des questions, personnes et sujets" size="45">
+                </form>
             </div>
             <div class="relative text-center flex col-span-1 sm:col-span-2 md:col-span-2 lg:col-span-1 xl:col-span-1">
                 <a id="showMenu" class="font-semibold whitespace-no-wrap text-gray-600 hover:text-blue-800" href="#">

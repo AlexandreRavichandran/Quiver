@@ -8,6 +8,12 @@
         @apply border-b-4 border-indigo-500 text-indigo-500
     }
 
+    .menuItem{
+        @apply pb-2 p-1 hover:bg-gray-300
+    }
+    .menuItemActive{
+        @apply text-indigo-400 bg-indigo-100 font-bold
+    }
     .profileActive{
         @apply border-b-4 text-indigo-500 border-indigo-500 
     }

@@ -1,0 +1,66 @@
+{% for question in questions %}
+	<div class="answerHeader questions p-2 bg-white border border-b-1 border-l-1 border-r-1 bborder-gray-300" data-question-id={{question.id}}>
+		<a href="{{path('app_question_show',{'id':question.id})}}" class="font-black p-2">{{question.question}}</a>
+		<p class="font-semibold text-gray-400">
+			<a href="{{path('app_question_show',{'id':question.id})}}">{{question.answers|length}}
+				réponses</a>
+			- Question posée le
+			{{question.createdAt|date('d/m/Y')}}</p>
+		<div class="links flex ">
+			<a class="multipleAnswerButton block p-2 rounded hover:bg-gray-200 mr-6" href="#">
+				<i class="bi text-2xl bi-pencil-square"></i>
+			</a>
+		</div>
+		<div>
+			<div id="editor"></div>
+			<div class="multiplePostAnswerButton hidden mt-3">
+				<a href="#" class="text-center px-2 py-1 block bg-indigo-400 font-bold text-xl text-white rounded-full w-28">Poster</a>
+			</div>
+		</div>
+	</div>
+{% endfor %}
+{% for answer in answers %}
+	<div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-question-id={{answer.question.id}} data-questions-date="{{answer.question.createdAt|date('Y-m-d')}}" data-answer-id="{{answer.id}}">
+		<div class="postHeader mb-3">
+			<a href="{{path('app_user_profile',{'pseudonym':answer.author.pseudonym})}}">
+				<p class="text-xl"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/image-{{answer.author.id}}.jpg" alt="" width="40px">{{answer.author.pseudonym}}</p>
+			</a>
+			<a href="#" data-id="{{answer.author.id}}" class="{% if app.user.isSubscribedTo(answer.author) %}link-subscribed{% else %}link-unsubscribed{% endif %} subscribeLink text-base font-semibold ml-2">
+				{% if app.user.isSubscribedTo(answer.author) %}Suivi{% else %}Suivre
+				{% endif %}
+			</a>
+		</p>
+		<p class="text-sm text-gray-400">{{answer.author.qualification}}</p>
+		<a href="{{path('app_question_show',{'id':answer.question.id})}}" class="block text-xl font-black p-2">{{answer.question.question}}</a>
+	</div>
+	{% include 'partials/_answer_comment_subcomment.html.twig' %}
+</div>
+{% endfor %}
+{% for space in spaces %}
+<a href="{{path('app_space_show',{'id':space.id})}}">
+	<div class="subscription space border-b-2 p-4">
+		<h3 class="font-black align-center"><img class="inline mr-2 rounded" src="https://picsum.photos/40/40" alt="">{{space.name}}</h3>
+		<p class="font-semibold text-gray-300">{{space.subscribers|length}}
+			abonnées</p>
+		<p>{{space.description}}</p>
+	</div>
+</a>
+{% endfor %}
+
+{% for user in users %}
+<a href="{{path('app_user_profile',{'pseudonym':user.pseudonym})}}">
+	<div class="border-b-2 flex justify-between p-4">
+		<h3 class="font-black align-center"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/image-{{user.id}}.jpg" alt="" width="40px">
+			{{user.pseudonym}},
+			<span class="font-semibold text-gray-400">{{user.qualification}}</span>
+		</h3>
+		{% if (app.user.isSubscribedTo(user) and user != app.user) %}
+			<a href="#" data-id="{{user.id}}" class="subscribeButton pl-4 pr-4 pt-2 w-32 block text-center rounded-full border subscribed">
+				<i class='bi bi-person-plus-fill mr-3'></i>Suivi</a>
+		{% elseif (user != app.user) %}
+			<a href="#" data-id="{{user.id}}" class="subscribeButton pl-4 pr-4 pt-2 w-32 block text-center rounded-full font-semibold border notSubscribed">
+				<i class='bi bi-person-plus mr-3'></i>Suivre</a>
+		{% endif %}
+	</div>
+</a>
+{% endfor %}
