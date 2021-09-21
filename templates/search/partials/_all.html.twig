@@ -1,34 +1,29 @@
-{% for element in total %}
+{% for element in query_results %}
 	{% if element.name is defined %}
-		<a href="{{path('app_space_show',{'id':element.id})}}">
-        <div class="subscription space border-b-2 p-4">
-            <h3 class="font-black align-center"><img class="inline mr-2 rounded" src="https://picsum.photos/40/40" alt="">{{element.name}}</h3>
-            <p class="font-semibold text-gray-300">{{element.subscribers|length}} abonnées</p>
-            <p>{{element.description}}</p>
-       	 </div>
-    </a>
-	{% endif %}
-{% endfor %}
+		<a href="{{path('app_space_show',{'id':element.id})}}" data-id = {{loop.index0}}>
+            <div class="subscription space border-b-2 p-4">
+                <h3 class="font-black align-center"><img class="inline mr-2 rounded" src="https://picsum.photos/40/40" alt="">{{element.name}}</h3>
+                <p class="font-semibold text-gray-300">{{element.subscribers|length}} abonnées</p>
+                <p>{{element.description}}</p>
+       	    </div>
+        </a>
+    {% endif %}
 
-	<p>user</p>
-{% for element in total %}
 	{% if element.pseudonym is defined %}
-	    <a href="{{path('app_user_profile',{'pseudonym':element.pseudonym})}}">
-        <div class="border-b-2 flex justify-between p-4">
-            <h3 class="font-black align-center"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/image-{{element.id}}.jpg" alt="" width="40px"> {{element.pseudonym}}, <span class="font-semibold text-gray-400">{{element.qualification}}</span></h3>
-            {% if (app.user.isSubscribedTo(element) and element != app.user) %}
-            <a href="#" data-id="{{element.id}}" class="subscribeButton pl-4 pr-4 pt-2 w-32 block text-center rounded-full border subscribed"><i class='bi bi-person-plus-fill mr-3'></i>Suivi</a>
-            {% elseif (element != app.user) %}
-            <a href="#" data-id="{{element.id}}" class="subscribeButton pl-4 pr-4 pt-2 w-32 block text-center rounded-full font-semibold border notSubscribed"><i class='bi bi-person-plus mr-3'></i>Suivre</a>
-            {% endif %}
-        </div>
-    </a>
+	    <a href="{{path('app_user_profile',{'pseudonym':element.pseudonym})}}" data-id = {{loop.index0}}>
+            <div class="border-b-2 flex justify-between p-4">
+                <h3 class="font-black align-center"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/image-{{element.id}}.jpg" alt="" width="40px"> {{element.pseudonym}}, <span class="font-semibold text-gray-400">{{element.qualification}}</span></h3>
+                {% if (app.user.isSubscribedTo(element) and element != app.user) %}
+                <a href="#" data-id="{{element.id}}" class="subscribeButton pl-4 pr-4 pt-2 w-32 block text-center rounded-full border subscribed"><i class='bi bi-person-plus-fill mr-3'></i>Suivi</a>
+                {% elseif (element != app.user) %}
+                <a href="#" data-id="{{element.id}}" class="subscribeButton pl-4 pr-4 pt-2 w-32 block text-center rounded-full font-semibold border notSubscribed"><i class='bi bi-person-plus mr-3'></i>Suivre</a>
+                {% endif %}
+            </div>
+        </a>
 	{% endif %}
-{% endfor %}
-	<p>questions</p>
-{% for element in total %}
+
 	{% if element.question is defined and element.question.question is not defined %}
-	<div class="questions p-2">
+	<div class="questions p-2" data-id = {{loop.index0}}>
 		<h3 class="font-black">{{element.question}}</h3>
 		<p class="font-semibold text-gray-400"><span>{{element.answers|length}}</span> réponses - Question posée le {{element.createdAt|date('d/m/Y')}}</p>
 		<div class="links flex ">
@@ -37,12 +32,9 @@
 		</div>
 	</div>
 	{% endif %}
-{% endfor %}
 
-	<p> reponses </p>
-{% for element in total %}
 	{% if element.answer is defined and element.answer is not iterable %}
-	<div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-question-id = {{element.question.id}} data-questions-date ="{{element.question.createdAt|date('Y-m-d')}}" data-answer-id ="{{element.id}}">
+	<div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-question-id = {{element.question.id}} data-questions-date ="{{element.question.createdAt|date('Y-m-d')}}" data-answer-id ="{{element.id}}" data-id = {{loop.index0}}>
         <div class="postHeader mb-3">
             <a href="{{path('app_user_profile',{'pseudonym':element.author.pseudonym})}}">
                 <p class="text-xl"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/image-{{element.author.id}}.jpg" alt="" width="40px">{{element.author.pseudonym}}

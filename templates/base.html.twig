@@ -11,7 +11,7 @@
     </head>
 
     <body class="bg-gray-100">
-        <div class="sticky top-0">
+        <div class="sticky top-0 z-10">
             {% if app.request.attributes.get('_route') is not same as 'app_login' %}
                 {% include 'partials/_header.html.twig' %}
             {% endif %}

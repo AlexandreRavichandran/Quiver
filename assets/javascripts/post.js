@@ -20,6 +20,7 @@ const post = {
         const postAnswerButton = document.querySelector('#answerPostButton');
         const multiplePostAnswerButton = document.querySelectorAll('.multiplePostAnswerButton')
         const generateFollowingPostButton = document.querySelector('#generateFollowing a');
+        const generateResearchResults = document.querySelector('#generateResearchResults');
 
         for (let index = 0; index < posts.length; index++) {
             posts[index].addEventListener('click', post.handlePostDisplay);
@@ -91,6 +92,10 @@ const post = {
         }
         if (generateFollowingPostButton) {
             generateFollowingPostButton.addEventListener('click', post.handleMorePostButton);
+        }
+
+        if (generateResearchResults) {
+            generateResearchResults.addEventListener('click', post.handleGenerateResearchResults);
         }
 
     },
@@ -479,6 +484,44 @@ const post = {
             flashMmessage.style.opacity = "1";
         }
         post.init();
+    },
+
+    handleGenerateResearchResults: function (e) {
+        e.preventDefault();
+        const id = document.querySelector('#researchContent').lastElementChild.dataset.id;
+
+        let fetchUrl = undefined;
+        link = window.location.href;
+        if (link.includes('question')) {
+            fetchUrl = "/search/question/generate/";
+        } else if (link.includes('answer')) {
+            fetchUrl = "/search/answer/generate/"
+        } else if (link.includes('profile')) {
+            fetchUrl = "/search/profile/generate/"
+        } else if (link.includes('space')) {
+            fetchUrl = "/search/space/generate/"
+        } else {
+            fetchUrl = "/search/all/generate/"
+        }
+
+        const loadingSpinner = document.querySelector('.loadingMoreResearchResults');
+        const generateButton = document.querySelector('#generateResearchResults');
+        loadingSpinner.classList.remove('hidden');
+        generateButton.classList.add('hidden');
+        fetch(fetchUrl + query + '/' + id).then(function (response) {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                throw error;
+            }
+        }).then(function (responseJson) {
+            if (responseJson.content !== undefined) {
+                document.querySelector('#researchContent').innerHTML += responseJson.content;
+                generateButton.classList.remove('hidden');
+            }
+            loadingSpinner.classList.add('hidden');
+
+        })
     }
 }
 

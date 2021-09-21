@@ -1,5 +1,5 @@
-{% for space in spaces %}
-<a href="{{path('app_space_show',{'id':space.id})}}">
+{% for space in query_results %}
+<a href="{{path('app_space_show',{'id':space.id})}}"data-id = {{loop.index0}}>
 	<div class="subscription space border-b-2 p-4">
 		<h3 class="font-black align-center"><img class="inline mr-2 rounded" src="https://picsum.photos/40/40" alt="">{{space.name}}</h3>
 		<p class="font-semibold text-gray-300">{{space.subscribers|length}}

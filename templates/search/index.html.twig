@@ -28,21 +28,22 @@
 			</div>
 			<div class="col-span-12 xl:col-span-6">
 				<div class="bg-white border border-gray-300 mb-2">
-					<h2 class="text-gray-400 p-2">Questions pour vous</h2>
+					<h2 class="text-gray-400 p-2">Resultats de votre recherche :<span class="font-bold"> {{query}}</span></h2>
 				</div>
-				<div id="content" class="bg-white">
+				<div id="researchContent" class="bg-white">
                     {% include 'search/partials/_' ~ type ~ '.html.twig' %}
 				</div>
-				<div class="bg-white flex flex-col p-4 border border-gray-300">
-					<h3 class="text-xl">
-						Ajouter des sujets que vous connaissez</h3>
-					<p class="my-2">L'ajout de sujets nous permettra de trouver des questions auxquelles vous pouvez répondre</p>
-					<a href="{{path('app_space_index')}}" class="hover:bg-blue-200 self-center block text-indigo-600 bg-blue-100 p-2 rounded-xl w-40 text-center font-semibold">Ajouter des sujets</a>
-				</div>
+				<div class="flex justify-center hidden loadingMoreResearchResults">
+                    <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
+                    </div>
+                </div>
+                <div class="flex justify-center" id="generateResearchResults">
+                    <a href="#" class="mt-4 text-center rounded-full w-80 p-3 bg-indigo-500 font-bold text-white text-xl">Voir plus de résultats</a>
+                </div>
 			</div>
 		</div>
 	</div>
 {% endblock %}
 {% block javascripts %}
-
+	<script>const query = '{{query}}' </script>
 {% endblock %}

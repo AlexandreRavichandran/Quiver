@@ -1,5 +1,5 @@
-{% for answer in answers %}
-	<div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-question-id={{answer.question.id}} data-questions-date="{{answer.question.createdAt|date('Y-m-d')}}" data-answer-id="{{answer.id}}">
+{% for answer in query_results %}
+	<div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-question-id={{answer.question.id}} data-questions-date="{{answer.question.createdAt|date('Y-m-d')}}" data-answer-id="{{answer.id}}" data-id = {{loop.index0}}>
 		<div class="postHeader mb-3">
 			<a href="{{path('app_user_profile',{'pseudonym':answer.author.pseudonym})}}">
 				<p class="text-xl"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/image-{{answer.author.id}}.jpg" alt="" width="40px">{{answer.author.pseudonym}}</p>

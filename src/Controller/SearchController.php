@@ -36,11 +36,11 @@ class SearchController extends AbstractController
         $answersByquery = $this->answerRepository->findAnswersByQuery($query);
         $spacesByQuery = $this->spaceRepository->findSpacesByQuery($query);
         $usersByQuery = $this->userRepository->findUsersByQuery($query);
-        $total = array_merge($spacesByQuery, $usersByQuery, $questionsByQuery, $answersByquery);
-        $total = array_slice($total, 0, 10);
+        $queryResults = array_merge($spacesByQuery, $usersByQuery, $questionsByQuery, $answersByquery);
+        $queryResults = array_slice($queryResults, 0, 10);
         return $this->render('search/index.html.twig', [
             'type' => 'all',
-            'total' => $total,
+            'query_results' => $queryResults,
             'query' => $query,
         ]);
     }
@@ -51,12 +51,12 @@ class SearchController extends AbstractController
     public function byQuestion(Request $request): Response
     {
         $query = $request->query->get('q');
-        $questionsByQuery = $this->questionRepository->findQuestionsByQuery($query);
-
+        $queryResults = $this->questionRepository->findQuestionsByQuery($query);
+        $queryResults = array_slice($queryResults, 0, 10);
         return $this->render('search/index.html.twig', [
             'type' => 'question',
             'query' => $query,
-            'questions' => $questionsByQuery,
+            'query_results' => $queryResults,
         ]);
     }
 
@@ -66,11 +66,12 @@ class SearchController extends AbstractController
     public function byAnswer(Request $request): Response
     {
         $query = $request->query->get('q');
-        $answersByquery = $this->answerRepository->findAnswersByQuery($query);
+        $queryResults = $this->answerRepository->findAnswersByQuery($query);
+        $queryResults = array_slice($queryResults, 0, 10);
         return $this->render('search/index.html.twig', [
             'type' => 'answer',
             'query' => $query,
-            'answers' => $answersByquery,
+            'query_results' => $queryResults,
         ]);
     }
 
@@ -80,11 +81,12 @@ class SearchController extends AbstractController
     public function byProfile(Request $request): Response
     {
         $query = $request->query->get('q');
-        $usersByQuery = $this->userRepository->findUsersByQuery($query);
+        $queryResults = $this->userRepository->findUsersByQuery($query);
+        $queryResults = array_slice($queryResults, 0, 10);
         return $this->render('search/index.html.twig', [
             'type' => 'profile',
             'query' => $query,
-            'users' => $usersByQuery,
+            'query_results' => $queryResults,
         ]);
     }
     /**
@@ -93,11 +95,12 @@ class SearchController extends AbstractController
     public function bySpace(Request $request): Response
     {
         $query = $request->query->get('q');
-        $spacesByQuery = $this->spaceRepository->findSpacesByQuery($query);
+        $queryResults = $this->spaceRepository->findSpacesByQuery($query);
+        $queryResults = array_slice($queryResults, 0, 10);
         return $this->render('search/index.html.twig', [
             'type' => 'space',
             'query' => $query,
-            'spaces' => $spacesByQuery,
+            'query_results' => $queryResults,
         ]);
     }
 
@@ -105,59 +108,69 @@ class SearchController extends AbstractController
 
     /**
      * 
-     * @Route("/search/all/generate")
-     * @param string $query
-     * @param integer $id
+     * @Route("/search/all/generate/{q}/{id}", name="api_search_generate_all",methods="GET")
      * @return JsonResponse
      */
-    public function generateAll(string $query, int $id): JsonResponse
+    public function generateAll(string $q, int $id): JsonResponse
     {
-        return new JsonResponse();
+
+        $questionsByQuery = $this->questionRepository->findQuestionsByQuery($q);
+        $answersByquery = $this->answerRepository->findAnswersByQuery($q);
+        $spacesByQuery = $this->spaceRepository->findSpacesByQuery($q);
+        $usersByQuery = $this->userRepository->findUsersByQuery($q);
+        $total = array_merge($spacesByQuery, $usersByQuery, $questionsByQuery, $answersByquery);
+        $total = array_slice($total, $id, $id + 10);
+        
+        $jsonData = [
+            'content' => $this->renderView('search/partials/_all.html.twig', ['query_results' => $total])
+        ];
+        return new JsonResponse($jsonData);
     }
 
     /**
-     *
-     * @Route("/search/question/generate")
-     * @param string $query
-     * @param integer $id
+     * @Route("/search/question/generate/{q}/{id}", name="api_search_generate_by_question",methods="GET")
      * @return JsonResponse
      */
-    public function generateByQuestion(string $query, int $id): JsonResponse
+    public function generateByQuestion(string $q, int $id): JsonResponse
     {
-        return new JsonResponse();
+        $questionsByQuery = $this->questionRepository->findQuestionsByQuery($q);
+        $total = array_slice($questionsByQuery, $id, $id + 10);
+        return new JsonResponse($total);
     }
 
     /**
-     * 
-     * @Route("/search/answer/generate")
-     * @param string $query
-     * @param integer $id
+     * @Route("/search/answer/generate/{q}/{id}", name="api_search_generate_by_answer",methods="GET")
      * @return JsonResponse
      */
-    public function generateByAnswer(string $query, int $id): JsonResponse
+    public function generateByAnswer(string $q, int $id): JsonResponse
     {
-        return new JsonResponse();
+
+        $answersByquery = $this->answerRepository->findAnswersByQuery($q);
+        $total = array_slice($answersByquery, $id, $id + 10);
+        return new JsonResponse($total);
     }
 
     /**
-     * @Route("/search/profile/generate")
-     * @param string $query
-     * @param integer $id
+     * @Route("/search/profile/generate/{q}/{id}", name="api_search_generate_by_profile",methods="GET")
      * @return JsonResponse
      */
-    public function generateByProfile(string $query, int $id): JsonResponse
+    public function generateByProfile(string $q, int $id): JsonResponse
     {
-        return new JsonResponse();
+
+        $usersByQuery = $this->userRepository->findUsersByQuery($q);
+        $total = array_slice($usersByQuery, $id, $id + 10);
+        return new JsonResponse($total);
     }
 
     /**
-     * @Route("/search/space/generate")
-     * @param string $query
-     * @param integer $id
+     * @Route("/search/space/generate/{q}/{id}", name="api_search_generate_by_space",methods="GET")
      * @return JsonResponse
      */
-    public function generateBySpace(string $query, int $id): JsonResponse
+    public function generateBySpace(string $q, int $id): JsonResponse
     {
-        return new JsonResponse();
+
+        $spacesByQuery = $this->spaceRepository->findSpacesByQuery($q);
+        $total = array_slice($spacesByQuery, $id, $id + 10);
+        return new JsonResponse($total);
     }
 }

@@ -1,5 +1,5 @@
-{% for user in users %}
-<a href="{{path('app_user_profile',{'pseudonym':user.pseudonym})}}">
+{% for user in query_results %}
+<a href="{{path('app_user_profile',{'pseudonym':user.pseudonym})}}" data-id = {{loop.index0}}>
 	<div class="border-b-2 flex justify-between p-4">
 		<h3 class="font-black align-center"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/image-{{user.id}}.jpg" alt="" width="40px">
 			{{user.pseudonym}},
