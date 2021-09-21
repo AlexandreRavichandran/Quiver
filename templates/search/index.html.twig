@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ecrire des réponses
+{% block title %}Recherche
 {% endblock %}
 
 {% block body %}
@@ -9,19 +9,19 @@
 			<div class="col-span-12 xl:col-span-3">
 				<h2 class="text-center font-semibold border-b-2 p-1">Par type</h2>
 				<ul class="text-center mt-2">
-					<li class="list-item menuItem">
+					<li class="list-item menuItem {% if type is same as "all" %}menuItemActive{% endif %}">
 						<a href="{{path('search_all')}}?q={{query}}">Tous les types</a>
 					</li>
-					<li class="list-item menuItem">
+					<li class="list-item menuItem {% if type is same as "question" %}menuItemActive{% endif %}">
 						<a href="{{path('search_by_question')}}?q={{query}}">Questions</a>
 					</li>
-					<li class="list-item menuItem">
+					<li class="list-item menuItem {% if type is same as "answer" %}menuItemActive{% endif %}">
 						<a href="{{path('search_by_answer')}}?q={{query}}">Réponses</a>
 					</li>
-					<li class="list-item menuItem menuItemActive">
+					<li class="list-item menuItem {% if type is same as "profile" %}menuItemActive{% endif %}">
 						<a href="{{path('search_by_profile')}}?q={{query}}">Profils</a>
 					</li>
-					<li class="list-item menuItem ">
+					<li class="list-item menuItem {% if type is same as "space" %}menuItemActive{% endif %}">
 						<a href="{{path('search_by_space')}}?q={{query}}">Espaces</a>
 					</li>
 				</ul>
@@ -30,7 +30,7 @@
 				<div class="bg-white border border-gray-300 mb-2">
 					<h2 class="text-gray-400 p-2">Questions pour vous</h2>
 				</div>
-				<div class="bg-white">
+				<div id="content" class="bg-white">
                     {% include 'search/partials/_' ~ type ~ '.html.twig' %}
 				</div>
 				<div class="bg-white flex flex-col p-4 border border-gray-300">
@@ -43,4 +43,6 @@
 		</div>
 	</div>
 {% endblock %}
+{% block javascripts %}
 
+{% endblock %}

@@ -7,6 +7,7 @@ use App\Repository\QuestionRepository;
 use App\Repository\SpaceRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,13 +36,12 @@ class SearchController extends AbstractController
         $answersByquery = $this->answerRepository->findAnswersByQuery($query);
         $spacesByQuery = $this->spaceRepository->findSpacesByQuery($query);
         $usersByQuery = $this->userRepository->findUsersByQuery($query);
+        $total = array_merge($spacesByQuery, $usersByQuery, $questionsByQuery, $answersByquery);
+        $total = array_slice($total, 0, 10);
         return $this->render('search/index.html.twig', [
             'type' => 'all',
+            'total' => $total,
             'query' => $query,
-            'questions' => $questionsByQuery,
-            'answers' => $answersByquery,
-            'spaces' => $spacesByQuery,
-            'users' => $usersByQuery,
         ]);
     }
 
@@ -99,5 +99,65 @@ class SearchController extends AbstractController
             'query' => $query,
             'spaces' => $spacesByQuery,
         ]);
+    }
+
+    /*****************  API REQUEST METHODS *****************/
+
+    /**
+     * 
+     * @Route("/search/all/generate")
+     * @param string $query
+     * @param integer $id
+     * @return JsonResponse
+     */
+    public function generateAll(string $query, int $id): JsonResponse
+    {
+        return new JsonResponse();
+    }
+
+    /**
+     *
+     * @Route("/search/question/generate")
+     * @param string $query
+     * @param integer $id
+     * @return JsonResponse
+     */
+    public function generateByQuestion(string $query, int $id): JsonResponse
+    {
+        return new JsonResponse();
+    }
+
+    /**
+     * 
+     * @Route("/search/answer/generate")
+     * @param string $query
+     * @param integer $id
+     * @return JsonResponse
+     */
+    public function generateByAnswer(string $query, int $id): JsonResponse
+    {
+        return new JsonResponse();
+    }
+
+    /**
+     * @Route("/search/profile/generate")
+     * @param string $query
+     * @param integer $id
+     * @return JsonResponse
+     */
+    public function generateByProfile(string $query, int $id): JsonResponse
+    {
+        return new JsonResponse();
+    }
+
+    /**
+     * @Route("/search/space/generate")
+     * @param string $query
+     * @param integer $id
+     * @return JsonResponse
+     */
+    public function generateBySpace(string $query, int $id): JsonResponse
+    {
+        return new JsonResponse();
     }
 }
