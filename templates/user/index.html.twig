@@ -10,6 +10,9 @@
                     <div class="flex row items-center">
                         <img class="block rounded-full" src="/images/profile_pictures/image-{{user.id}}.jpg" alt="" width="160px">
                     </div>
+                    {{form_start(form)}}
+                    <button>valdier</button>
+                    {{form_end(form)}}
                     <div class="row">
                         <div class="ml-4 self-center">
                             <h1 class="text-3xl font-black">{{user.firstName}} {{user.lastName|upper}}</h1>
@@ -70,4 +73,9 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+
+</script>
 {% endblock %}

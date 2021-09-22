@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserPictureType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,9 +20,11 @@ class UserController extends AbstractController
      */
     public function index(User $user): Response
     {
+        $form = $this->createForm(UserPictureType::class);
         return $this->render('user/index.html.twig', [
             'partial' => 'profile',
-            'user' => $user
+            'user' => $user,
+            'form' => $form->createView()
         ]);
     }
 
@@ -30,9 +33,11 @@ class UserController extends AbstractController
      */
     public function answers(User $user): Response
     {
+        $form = $this->createForm(UserPictureType::class);
         return $this->render('user/index.html.twig', [
             'partial' => 'answer',
-            'user' => $user
+            'user' => $user,
+            'form' => $form->createView()
         ]);
     }
 
@@ -41,9 +46,11 @@ class UserController extends AbstractController
      */
     public function questions(User $user): Response
     {
+        $form = $this->createForm(UserPictureType::class);
         return $this->render('user/index.html.twig', [
             'partial' => 'question',
-            'user' => $user
+            'user' => $user,
+            'form' => $form->createView()
         ]);
     }
 
@@ -52,9 +59,11 @@ class UserController extends AbstractController
      */
     public function subscribers(User $user): Response
     {
+        $form = $this->createForm(UserPictureType::class);
         return $this->render('user/index.html.twig', [
             'partial' => 'subscriber',
-            'user' => $user
+            'user' => $user,
+            'form' => $form->createView()
         ]);
     }
 
@@ -63,9 +72,11 @@ class UserController extends AbstractController
      */
     public function subscriptions(User $user): Response
     {
+        $form = $this->createForm(UserPictureType::class);
         return $this->render('user/index.html.twig', [
             'partial' => 'subscription',
-            'user' => $user
+            'user' => $user,
+            'form' => $form->createView()
         ]);
     }
 
@@ -193,5 +204,21 @@ class UserController extends AbstractController
         $jsonData['message'] = $message;
 
         return new JsonResponse($jsonData, $responseCode);
+    }
+
+    /**
+     * 
+     * @Route("/profile/picture",name="api_user_update_profile_picture",methods="POST")
+     * @param Request $request
+     * @return Response
+     */
+    public function updateProfilePicture(Request $request,EntityManagerInterface $em)
+    {
+        $user = $this->getUser();
+        $file = $request->files->get('user_picture')['picture']['file'];
+        $user->setImageFile($file);
+        $em->persist($user);
+        $em->flush();
+        return $this->redirectToRoute('app_user_profile',['pseudonym'=>$user->getPseudonym()]);
     }
 }

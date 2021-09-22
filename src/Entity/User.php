@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Serializable;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
@@ -19,8 +20,29 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements Serializable, UserInterface, PasswordAuthenticatedUserInterface
 {
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->email,
+            $this->password,
+
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->email,
+            $this->password,
+        ) = unserialize($serialized, array('allowed_classes' => false));
+    }
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -138,7 +160,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $imageFile;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      *
      * @var string|null
      */
@@ -596,7 +618,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
- /**
+    /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
      * of 'UploadedFile' is injected into this setter to trigger the update. If this
      * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter

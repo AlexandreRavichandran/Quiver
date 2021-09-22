@@ -85,11 +85,11 @@ const modal = {
     },
 
     handleSearchBarFocus: function(){
-        document.querySelector('#content').style.filter = "blur(4px)"
+        document.querySelector('#totalContent').style.filter = "blur(4px)"
     },
 
     handleSearchBarUnFocus: function(){
-        document.querySelector('#content').style.filter = "blur(0px)"
+        document.querySelector('#totalContent').style.filter = "blur(0px)"
     }
 
 }
