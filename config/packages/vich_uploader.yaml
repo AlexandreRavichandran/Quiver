@@ -1,0 +1,19 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        profile:
+            uri_prefix: /images/profile_pictures
+            upload_destination: '%kernel.project_dir%/public/images/profile_pictures'
+            namer: App\Service\ImageNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        spaces:
+            uri_prefix: /images/space_pictures
+            upload_destination: '%kernel.project_dir%/public/images/space_pictures'
+            namer: App\Service\ImageNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
