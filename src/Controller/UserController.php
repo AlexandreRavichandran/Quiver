@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UserController extends AbstractController
 {
@@ -208,17 +209,25 @@ class UserController extends AbstractController
 
     /**
      * 
-     * @Route("/profile/picture",name="api_user_update_profile_picture",methods="POST")
+     * @Route("/profile/picture",name="app_user_update_profile_picture",methods="POST")
      * @param Request $request
      * @return Response
      */
-    public function updateProfilePicture(Request $request,EntityManagerInterface $em)
+    public function updateProfilePicture(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-        $file = $request->files->get('user_picture')['picture']['file'];
-        $user->setImageFile($file);
-        $em->persist($user);
-        $em->flush();
-        return $this->redirectToRoute('app_user_profile',['pseudonym'=>$user->getPseudonym()]);
+        $file = $request->files->get('user_picture')['imageFile']['file'];
+        $extension = $file->guessExtension();
+        if ($extension === 'jpg' || $extension === 'png') {
+            $fileName = 'image-' . $user->getId() . '.' . $file->guessExtension();
+            $file->move($this->getParameter('profile_pictures_directory'), $fileName);
+            $user->setImageName($fileName);
+            $em->persist($user);
+            $em->flush();
+            $this->addFlash('successMessage', 'Votre photo de profil a bien été mis à jour');
+        } else {
+            $this->addFlash('errorMessage', 'L\'extension de votre fichier est incorrecte. Veuillez réessayer avec une extension valide (JPG, PNG, JPEG)');
+        }
+        return $this->redirectToRoute('app_user_profile', ['pseudonym' => $user->getPseudonym()]);
     }
 }

@@ -13,7 +13,7 @@ class SpacePictureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('picture', VichImageType::class,[
+            ->add('imageFile', VichImageType::class,[
                 'required' => false,
                 'allow_delete' => true,
                 'download_uri' => true,

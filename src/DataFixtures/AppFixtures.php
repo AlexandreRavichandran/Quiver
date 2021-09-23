@@ -41,7 +41,7 @@ class AppFixtures extends Fixture
         }
 
         //create fake users
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 1; $i < 21; $i++) {
 
             $user = new User;
             $user
@@ -52,6 +52,7 @@ class AppFixtures extends Fixture
                 ->setLastName($faker->lastName())
                 ->setQualification($faker->sentence(2))
                 ->setPseudonym($faker->userName)
+                ->setImageName('image-'.$i . '.jpg')
                 ->setRoles(['ROLE_USER']);
             for ($j = 0; $j < mt_rand(0, count($spaceList)); $j++) {
 

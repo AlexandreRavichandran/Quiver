@@ -43,6 +43,15 @@ const user = {
         if (setDescription) {
             setDescription.addEventListener('click', user.updateDescription);
         }
+
+        const allowProfilePictureUpdate = document.querySelector('#changePicture');
+        if (setDescription) {
+            allowProfilePictureUpdate.addEventListener('click', user.showProfilePictureForm);
+        }
+        const profilePictureInput = document.querySelector('#user_picture_imageFile_file');
+        if (profilePictureInput) {
+            profilePictureInput.addEventListener('change', user.handleProfilePictureUpdate);
+        }
     },
 
     handleSubscription: function (target, classIfAdded, classIfRemoved) {
@@ -214,6 +223,32 @@ const user = {
                 console.log(error);
             })
 
+    },
+
+    showMessage: function (message) {
+        const messageSpace = document.querySelector('#messagesSpace');
+        messageSpace.innerHTML = message;
+        const flashMmessage = document.querySelector('.flashMessage');
+        flashMmessage.animate({ opacity: ['0', '1'] }, 500).onfinish = function () {
+            flashMmessage.style.opacity = "1";
+        }
+    },
+
+    handleFlashMessageButton: function (e) {
+        e.preventDefault();
+        const flashMessage = e.currentTarget.closest('.flashMessage');
+        flashMessage.animate({ opacity: ['1', '0'] }, 500).onfinish = function () {
+            flashMessage.style.opacity = "0";
+            flashMessage.style.display = "none";
+        }
+    },
+
+    showProfilePictureForm: function (e) {
+        e.preventDefault();
+        document.querySelector('#user_picture_imageFile_file').click();
+    },
+    handleProfilePictureUpdate: function (e) {
+        e.currentTarget.closest('form').submit()
     }
 }
 
