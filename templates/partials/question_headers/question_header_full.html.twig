@@ -2,7 +2,7 @@
     <div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-question-id = {{question.id}} data-questions-date ="{{question.createdAt|date('Y-m-d')}}" data-answer-id ="{{question.answers[0].id}}">
         <div class="postHeader mb-3">
             <a href="{{path('app_user_profile',{'pseudonym':question.answers[0].author.pseudonym})}}">
-                <p class="text-xl"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/image-{{question.answers[0].author.id}}.jpg" alt="" width="40px">{{question.answers[0].author.pseudonym}}
+                <p class="text-xl"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/{{question.answers[0].author.imageName}}" alt="" width="40px">{{question.answers[0].author.pseudonym}}
             </a>
             <a href="#" data-id="{{question.answers[0].author.id}}" class="{% if app.user.isSubscribedTo(question.answers[0].author) %}link-subscribed{% else %}link-unsubscribed{% endif %} subscribeLink text-base font-semibold ml-2">{% if app.user.isSubscribedTo(question.answers[0].author) %}Suivi{% else %}Suivre{% endif %}</a></p>
             <p class="text-sm text-gray-400">{{question.answers[0].author.qualification}}</p>

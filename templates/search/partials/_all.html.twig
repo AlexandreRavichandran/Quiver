@@ -12,7 +12,7 @@
 	{% if element.pseudonym is defined %}
 	    <a href="{{path('app_user_profile',{'pseudonym':element.pseudonym})}}" data-id = {{loop.index0}}>
             <div class="border-b-2 flex justify-between p-4">
-                <h3 class="font-black align-center"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/image-{{element.id}}.jpg" alt="" width="40px"> {{element.pseudonym}}, <span class="font-semibold text-gray-400">{{element.qualification}}</span></h3>
+                <h3 class="font-black align-center"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/image-{{element.imageName}}" alt="" width="40px"> {{element.pseudonym}}, <span class="font-semibold text-gray-400">{{element.qualification}}</span></h3>
                 {% if (app.user.isSubscribedTo(element) and element != app.user) %}
                 <a href="#" data-id="{{element.id}}" class="subscribeButton pl-4 pr-4 pt-2 w-32 block text-center rounded-full border subscribed"><i class='bi bi-person-plus-fill mr-3'></i>Suivi</a>
                 {% elseif (element != app.user) %}
@@ -37,7 +37,7 @@
 	<div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-question-id = {{element.question.id}} data-questions-date ="{{element.question.createdAt|date('Y-m-d')}}" data-answer-id ="{{element.id}}" data-id = {{loop.index0}}>
         <div class="postHeader mb-3">
             <a href="{{path('app_user_profile',{'pseudonym':element.author.pseudonym})}}">
-                <p class="text-xl"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/image-{{element.author.id}}.jpg" alt="" width="40px">{{element.author.pseudonym}}
+                <p class="text-xl"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/image-{{element.author.imageName}}" alt="" width="40px">{{element.author.pseudonym}}
             </a>
             <a href="#" data-id="{{element.author.id}}" class="{% if app.user.isSubscribedTo(element.author) %}link-subscribed{% else %}link-unsubscribed{% endif %} subscribeLink text-base font-semibold ml-2">{% if app.user.isSubscribedTo(element.author) %}Suivi{% else %}Suivre{% endif %}</a></p>
             <p class="text-sm text-gray-400">{{element.author.qualification}}</p>

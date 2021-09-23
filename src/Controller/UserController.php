@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UserController extends AbstractController
@@ -213,14 +214,18 @@ class UserController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function updateProfilePicture(Request $request, EntityManagerInterface $em): Response
+    public function updateProfilePicture(Request $request, EntityManagerInterface $em, Filesystem $filesystem): Response
     {
         $user = $this->getUser();
         $file = $request->files->get('user_picture')['imageFile']['file'];
         $extension = $file->guessExtension();
         if ($extension === 'jpg' || $extension === 'png') {
-            $fileName = 'image-' . $user->getId() . '.' . $file->guessExtension();
+            $fileName = uniqid() . 'image-' . $user->getId() . '.' . $file->guessExtension();
             $file->move($this->getParameter('profile_pictures_directory'), $fileName);
+
+            $previousPicture = $user->getImageName();
+            $filesystem->remove($this->getParameter('profile_pictures_directory') . '/' . $previousPicture);
+
             $user->setImageName($fileName);
             $em->persist($user);
             $em->flush();

@@ -24,7 +24,7 @@
                 </ul>
             </div>
             <div class="flex mt-3">
-                <img class="block rounded-full" src="/images/profile_pictures/image-{{app.user.id}}.jpg" alt="" width="45px">
+                <img class="block rounded-full" src="/images/profile_pictures/{{app.user.imageName}}" alt="" width="45px">
                 <p class="p-2 self-center text-gray-500">{{app.user.firstName}} {{app.user.lastName|upper}} a demandé </p>
             </div> 
             <form action="{{path('app_question_create')}}" method="post">
