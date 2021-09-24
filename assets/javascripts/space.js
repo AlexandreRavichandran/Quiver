@@ -14,9 +14,14 @@ const space = {
             generateSpaceButton.addEventListener('click', space.generateSpaces);
         }
 
-        const userOrderSpaceButton = document.querySelector('#orderSpaces');
-        if (userOrderSpaceButton) {
-            userOrderSpaceButton.addEventListener('change', space.handleUserSpaceOrder);
+        const showSpacePictureForm = document.querySelector('#changeSpacePicture');
+        if (showSpacePictureForm) {
+            showSpacePictureForm.addEventListener('click', space.showSpacePictureForm);
+        }
+
+        const spaceInput = document.querySelector('#space_picture_imageFile_file');
+        if (spaceInput) {
+            spaceInput.addEventListener('change', space.handleSpacePictureUpdate);
         }
     },
 
@@ -72,7 +77,16 @@ const space = {
                 }
             })
 
+    },
+
+    showSpacePictureForm: function (e) {
+        e.preventDefault();
+        document.querySelector('#space_picture_imageFile_file').click();
+    },
+    handleSpacePictureUpdate: function (e) {
+        e.currentTarget.closest('form').submit()
     }
+
 
 
 }

@@ -44,8 +44,8 @@ const user = {
             setDescription.addEventListener('click', user.updateDescription);
         }
 
-        const allowProfilePictureUpdate = document.querySelector('#changePicture');
-        if (setDescription) {
+        const allowProfilePictureUpdate = document.querySelector('#changeProfilePicture');
+        if (allowProfilePictureUpdate) {
             allowProfilePictureUpdate.addEventListener('click', user.showProfilePictureForm);
         }
         const profilePictureInput = document.querySelector('#user_picture_imageFile_file');

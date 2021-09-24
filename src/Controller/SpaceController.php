@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Space;
+use App\Form\SpacePictureType;
 use App\Repository\SpaceRepository;
 use App\Repository\QuestionRepository;
 use DateTime;
@@ -14,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SpaceController extends AbstractController
@@ -111,6 +113,7 @@ class SpaceController extends AbstractController
      */
     public function show(Space $space, SpaceRepository $spaceRepository, EntityManagerInterface $em): Response
     {
+        $form = $this->createForm(SpacePictureType::class);
         $spaces = $spaceRepository->findBy([], null, 8);
         $questions = $space->getQuestions();
 
@@ -121,6 +124,7 @@ class SpaceController extends AbstractController
                 'spaces' => $spaces,
                 'space' => $space,
                 'questions' => $questions,
+                'form' => $form->createView()
             ]
         );
     }
@@ -132,6 +136,7 @@ class SpaceController extends AbstractController
      */
     public function showTopQuestions(Space $space, SpaceRepository $spaceRepository): Response
     {
+        $form = $this->createForm(SpacePictureType::class);
         $spaces = $spaceRepository->findBy([], null, 8);
         $questions = $space->getQuestions();
 
@@ -142,8 +147,37 @@ class SpaceController extends AbstractController
                 'spaces' => $spaces,
                 'space' => $space,
                 'questions' => $questions,
+                'form' => $form->createView()
             ]
         );
+    }
+
+    /**
+     * Show one space and its related questions
+     * @Route("/space/picture",name="app_space_update_picture",methods="POST")
+     * @return Response
+     */
+    public function upadatePicture(SpaceRepository $spaceRepository, Request $request, EntityManagerInterface $em, Filesystem $filesystem): Response
+    {
+        $file = $request->files->get('space_picture')['imageFile']['file'];
+        $space = $spaceRepository->find($request->request->get('spaceId'));
+        $extension = $file->guessExtension();
+        if ($extension === 'jpg' || $extension === 'png') {
+            $fileName = uniqid() . 'image-' . $space->getId() . '.' . $file->guessExtension();
+            $file->move($this->getParameter('space_pictures_directory'), $fileName);
+
+            $previousPicture = $space->getImageName();
+            $filesystem->remove($this->getParameter('space_pictures_directory') . '/' . $previousPicture);
+
+            $space->setImageName($fileName);
+            $em->persist($space);
+            $em->flush();
+            $this->addFlash('successMessage', 'Votre photo de profil a bien été mis à jour');
+        } else {
+            $this->addFlash('errorMessage', 'L\'extension de votre fichier est incorrecte. Veuillez réessayer avec une extension valide (JPG, PNG, JPEG)');
+        }
+
+        return $this->redirecttoRoute('app_space_show', ['id' => $space->getId()]);
     }
 
 

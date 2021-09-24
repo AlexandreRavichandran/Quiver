@@ -10,7 +10,13 @@
             </div>
             <div class="col-span-12 xl:col-span-7">
                 <div class="bg-white flex flex-col items-center p-3">
-                    <img class="block" src="https://picsum.photos/300/150" alt="">
+                    {% if 'ROLE_ADMIN' in app.user.roles %}
+                    <a id="changeSpacePicture" class="hover:opacity-50" href="#">
+                        <img class="block" src="https://picsum.photos/300/150" alt="">
+                    </a>
+                    {% else %}
+                        <img class="block" src="https://picsum.photos/300/150" alt="">
+                    {% endif %}
                     <h1 class="mt-2 font-black text-xl">{{space.name}}</h1>
                     <p class="text-gray-400 my-2">{{space.description}}</p>
                     {% if space.hasSubscriber(app.user) %}
@@ -34,5 +40,7 @@
             </div>            
         </div>
     </div>
-
+    {{form_start(form, {'attr': {'class': 'hidden'}}) }}
+    <input type="hidden" name="spaceId" value="{{space.id}}">
+    {{form_end(form)}}
 {% endblock %}
