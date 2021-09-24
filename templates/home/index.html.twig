@@ -18,7 +18,13 @@
                         <div class="bg-white p-4 mb-4 border border-gray-300">
                             <div class="flex">
                                 <img class="block rounded-full" src="/images/profile_pictures/{{app.user.imageName}}" alt="" width="40px">
-                                <p class="text self-center pl-3">{{app.user.firstName}} {{app.user.lastName|upper}}</p>
+                                <p class="text self-center pl-3">
+                                {% if app.user.firstName is not null and app.user.lastName is not null %}
+                                {{app.user.firstName}} {{app.user.lastName|upper}}
+                                {% else %}
+                                {{app.user.pseudonym}}
+                                {% endif %}
+                                </p>
                             </div>
                             <p class="text-2xl font-semibold">Quel est votre question ou quel est votre lien ?</p>
                         </div>

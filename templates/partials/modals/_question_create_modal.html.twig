@@ -25,7 +25,14 @@
             </div>
             <div class="flex mt-3">
                 <img class="block rounded-full" src="/images/profile_pictures/{{app.user.imageName}}" alt="" width="45px">
-                <p class="p-2 self-center text-gray-500">{{app.user.firstName}} {{app.user.lastName|upper}} a demandé </p>
+                <p class="p-2 self-center text-gray-500">
+                    {% if app.user.firstName is not null and app.user.lastName is not null %}
+                    {{app.user.firstName}} {{app.user.lastName|upper}}
+                    {% else %}
+                    {{app.user.pseudonym}}
+                    {% endif %} 
+                a demandé   
+                </p>
             </div> 
             <form action="{{path('app_question_create')}}" method="post">
                 <div class="mb-6">

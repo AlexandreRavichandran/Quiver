@@ -22,7 +22,10 @@
                         {% endif %}
 
                         {% if user == app.user %}
-                        <a id="changeProfilePicture" class="hover:opacity-50" href="#"><img class="block rounded-full" src="/images/profile_pictures/{{image_name}}" alt="" width="160px" height="160px"></a>
+                        <a id="changeProfilePicture" class="hover:opacity-50 block relative" href="#">
+                            <img class="block rounded-full" src="/images/profile_pictures/{{image_name}}" alt="" width="160px" height="160px">
+                            <div class="absolute bg-indigo-400 text-center p-1 w-10 rounded-full bottom-6 right-2"><i class="bi bi-camera-fill text-xl"></i></div>
+                        </a>
                         {% else %}
                         <img class="block rounded-full" src="/images/profile_pictures/{{image_name}}" alt="" width="160px" height="160px">
                         {% endif %}
@@ -58,11 +61,11 @@
                 <div>
                     <nav class="border-b-2 mt-4">
                         <ul class="flex">
-                            <li class="list-item mr-4 mb-0 py-4 {% if partial is same as 'profile' %} profileActive {% endif %}"><a href="{{path('app_user_profile',{'pseudonym':user.pseudonym})}}">Profil</a></li>
-                            <li class="list-item mr-4 mb-0 py-4 {% if partial is same as 'answer' %} profileActive {% endif %}"><a href="{{path('app_user_answer',{'pseudonym':user.pseudonym})}}">{{user.answers|length}} réponses</a></li>
-                            <li class="list-item mr-4 mb-0 py-4 {% if partial is same as 'question' %} profileActive {% endif %}"><a href="{{path('app_user_question',{'pseudonym':user.pseudonym})}}">{{user.questions|length}} questions</a></li>
-                            <li class="list-item mr-4 mb-0 py-4 {% if partial is same as 'subscriber' %} profileActive {% endif %}"><a href="{{path('app_user_subscriber',{'pseudonym':user.pseudonym})}}"><span id="subscriberNumber">{{user.subscribers|length}}</span> abonnés</a></li>
-                            <li class="list-item mr-4 mb-0 py-4 {% if partial is same as 'subscription' %} profileActive {% endif %}"><a href="{{path('app_user_subscription',{'pseudonym':user.pseudonym})}}">{{user.subscriptions|length + user.subscribedSpaces|length}} abonnements</a></li>
+                            <li class="text-center list-item mr-4 mb-0 py-4 {% if partial is same as 'profile' %} profileActive {% endif %}"><a href="{{path('app_user_profile',{'pseudonym':user.pseudonym})}}">Profil</a></li>
+                            <li class="text-center list-item mr-4 mb-0 py-4 {% if partial is same as 'answer' %} profileActive {% endif %}"><a href="{{path('app_user_answer',{'pseudonym':user.pseudonym})}}">{{user.answers|length}} réponses</a></li>
+                            <li class="text-center list-item mr-4 mb-0 py-4 {% if partial is same as 'question' %} profileActive {% endif %}"><a href="{{path('app_user_question',{'pseudonym':user.pseudonym})}}">{{user.questions|length}} questions</a></li>
+                            <li class="text-center list-item mr-4 mb-0 py-4 {% if partial is same as 'subscriber' %} profileActive {% endif %}"><a href="{{path('app_user_subscriber',{'pseudonym':user.pseudonym})}}"><span id="subscriberNumber">{{user.subscribers|length}}</span> abonnés</a></li>
+                            <li class="text-center list-item mr-4 mb-0 py-4 {% if partial is same as 'subscription' %} profileActive {% endif %}"><a href="{{path('app_user_subscription',{'pseudonym':user.pseudonym})}}">{{user.subscriptions|length + user.subscribedSpaces|length}} abonnements</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -95,9 +98,4 @@
     </div>
     {{form_start(form, {'attr': {'class': 'hidden'}}) }}
     {{form_end(form)}}
-{% endblock %}
-{% block javascripts %}
-<script>
-
-</script>
 {% endblock %}
