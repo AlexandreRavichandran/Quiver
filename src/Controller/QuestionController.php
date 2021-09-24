@@ -62,10 +62,20 @@ class QuestionController extends AbstractController
     /**
      * @Route("/questions/{id}", name="app_question_show",methods="GET",requirements={"id"="\d+"})
      */
-    public function show(Question $question, QuestionRepository $questionRepository, AnswerRepository $answerRepository, SpaceRepository $spaceRepository): Response
+    public function show(Question $question, QuestionRepository $questionRepository, AnswerRepository $answerRepository): Response
     {
         $date = new DateTimeImmutable();
-        $alternativeQuestions = $questionRepository->findBy([], null, 5);
+        $questionSpace = $question->getSpace();
+
+        $spaceIds = [];
+        foreach ($questionSpace as $space) {
+            $spaceIds[] = $space->getId();
+        }
+        if (!empty($spaceIds)) {
+            $alternativeQuestions = $questionRepository->findAllQuestionsBySpaceNames($spaceIds, null, 5);
+        } else {
+            $alternativeQuestions = $questionRepository->findBy([], null, 5);
+        }
         $answers = $answerRepository->findAnswersByQuestionId($question->getId(), $date, 3);
 
         return $this->render('question/show.html.twig', [

@@ -33,6 +33,7 @@
 				<div id="researchContent" class="bg-white">
                     {% include 'search/partials/_' ~ type ~ '.html.twig' %}
 				</div>
+				{% if query_results is not empty %}
 				<div class="flex justify-center hidden loadingMoreResearchResults">
                     <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
                     </div>
@@ -40,6 +41,9 @@
                 <div class="flex justify-center" id="generateResearchResults">
                     <a href="#" class="mt-4 text-center rounded-full w-80 p-3 bg-indigo-500 font-bold text-white text-xl">Voir plus de résultats</a>
                 </div>
+				{% else %}
+				<p>Il n'y a aucun résultat à votre recherche.</p>
+				{% endif %}
 			</div>
 		</div>
 	</div>

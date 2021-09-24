@@ -13,7 +13,7 @@ class UserPictureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->setAction('/profile/picture')
+            ->setAction('/profile/picture')
             ->add('imageFile', VichImageType::class,[
                 'required' => true
             ]);

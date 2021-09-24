@@ -14,6 +14,12 @@
                         {% endfor %}
                             <a href="#" class="bg-gray-200 p-2 m-1 modal-open addSpaces"><i class="bi text-xl bi-pencil"></i></a>
                             {% include 'partials/modals/_space_add_modal.html.twig' %}
+                            {% if question.space is empty %}
+                            <div class="flex">
+                                <i class="text-3xl bi bi-arrow-left self-center mr-2"></i>
+                                <p class=" font-semibold m-0 pt-3 px-1 rounded-full">Cliquez ici pour ajouter un espace.</p>
+                            </div>
+                            {% endif %}
                         </ul>
                     </div>
                     <h1 class="text-2xl font-black p-3">{{question.question}}</h1>
@@ -33,6 +39,8 @@
                <div class="content">
                 {% include 'partials/question_headers/question_header_single_question.html.twig' %}
                </div>
+               {% if question.answers is not empty %}
+               
                 <div class="flex justify-center hidden loadingMoreAnswersSpinner">
                     <div style="border-top-color:transparent" class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin">
                     </div>
@@ -40,6 +48,7 @@
                 <div class="flex justify-center" id="generateAnswers">
                     <a href="#" class="mt-4 text-center rounded-full w-80 p-3 bg-indigo-500 font-bold text-white text-xl">Charger plus de réponses </a>
                 </div>
+               {% endif %}
             </div>
             <div class="col-span-12 lg:col-span-4 row-span-2"> 
                 <h3 class="pb-3 border-b-2 text-center">Questions similaires</h3>

@@ -1,4 +1,5 @@
 {% for question in questions %}
+    {% if question.answers is not empty %}
     <div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-question-id = {{question.id}} data-questions-date ="{{question.createdAt|date('Y-m-d')}}" data-answer-id ="{{question.answers[0].id}}">
         <div class="postHeader mb-3">
             <a href="{{path('app_user_profile',{'pseudonym':question.answers[0].author.pseudonym})}}">
@@ -11,4 +12,5 @@
         {% set answer = question.answers[0] %}
         {% include 'partials/_answer_comment_subcomment.html.twig' %}
     </div>
+    {% endif %}
 {% endfor %}

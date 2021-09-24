@@ -1,17 +1,13 @@
 {% for answer in query_results %}
 	<div class="bg-white p-4 mb-3 border border-gray-300 questionAnswer" data-question-id={{answer.question.id}} data-questions-date="{{answer.question.createdAt|date('Y-m-d')}}" data-answer-id="{{answer.id}}" data-id = {{loop.index0}}>
 		<div class="postHeader mb-3">
-			<a href="{{path('app_user_profile',{'pseudonym':answer.author.pseudonym})}}">
-				<p class="text-xl"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/image-{{answer.author.imageName}}" alt="" width="40px">{{answer.author.pseudonym}}</p>
-			</a>
-			<a href="#" data-id="{{answer.author.id}}" class="{% if app.user.isSubscribedTo(answer.author) %}link-subscribed{% else %}link-unsubscribed{% endif %} subscribeLink text-base font-semibold ml-2">
-				{% if app.user.isSubscribedTo(answer.author) %}Suivi{% else %}Suivre
-				{% endif %}
-			</a>
-		</p>
-		<p class="text-sm text-gray-400">{{answer.author.qualification}}</p>
-		<a href="{{path('app_question_show',{'id':answer.question.id})}}" class="block text-xl font-black p-2">{{answer.question.question}}</a>
-	</div>
+            <a href="{{path('app_user_profile',{'pseudonym':answer.author.pseudonym})}}">
+                <p class="text-xl"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/{{answer.author.imageName}}" alt="" width="40px">{{answer.author.pseudonym}}
+            </a>
+            <a href="#" data-id="{{answer.author.id}}" class="{% if app.user.isSubscribedTo(answer.author) %}link-subscribed{% else %}link-unsubscribed{% endif %} subscribeLink text-base font-semibold ml-2">{% if app.user.isSubscribedTo(answer.author) %}Suivi{% else %}Suivre{% endif %}</a></p>
+            <p class="text-sm text-gray-400">{{answer.author.qualification}}</p>
+            <a href="{{path('app_question_show',{'id':answer.question.id})}}" class="block text-xl font-black p-2">{{answer.question.question}}</a>
+        </div>
 	{% include 'partials/_answer_comment_subcomment.html.twig' %}
 </div>
 {% endfor %}
