@@ -22,8 +22,8 @@ const modal = {
         profilMenu.addEventListener('click', modal.handleMenu);
 
         const searchBar = document.querySelector('#search');
-        searchBar.addEventListener('focus',modal.handleSearchBarFocus);
-        searchBar.addEventListener('focusout',modal.handleSearchBarUnFocus);
+        searchBar.addEventListener('focus', modal.handleSearchBarFocus);
+        searchBar.addEventListener('focusout', modal.handleSearchBarUnFocus);
 
     },
     openModal: function (e) {
@@ -75,7 +75,8 @@ const modal = {
             })
     },
 
-    handleMenu: function () {
+    handleMenu: function (e) {
+        e.preventDefault();
         const menu = document.querySelector('#profileMenu');
         if (menu.classList.contains('hidden')) {
             menu.classList.remove('hidden');
@@ -84,11 +85,11 @@ const modal = {
         }
     },
 
-    handleSearchBarFocus: function(){
+    handleSearchBarFocus: function () {
         document.querySelector('#totalContent').style.filter = "blur(4px)"
     },
 
-    handleSearchBarUnFocus: function(){
+    handleSearchBarUnFocus: function () {
         document.querySelector('#totalContent').style.filter = "blur(0px)"
     }
 

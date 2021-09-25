@@ -224,7 +224,9 @@ class UserController extends AbstractController
             $file->move($this->getParameter('profile_pictures_directory'), $fileName);
 
             $previousPicture = $user->getImageName();
-            $filesystem->remove($this->getParameter('profile_pictures_directory') . '/' . $previousPicture);
+            if($previousPicture !== 'image_base.png'){
+                $filesystem->remove($this->getParameter('profile_pictures_directory') . '/' . $previousPicture);
+            }
 
             $user->setImageName($fileName);
             $em->persist($user);

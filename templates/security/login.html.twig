@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Quiver{% endblock %}
+{% block title %}Quiver-Un lieu pour partager le savoir et mieux comprendre le monde{% endblock %}
 
 {% block body %}
 <div class="h-screen pt-6 loginBackground">
@@ -13,9 +13,29 @@
 
 
         <div class="grid grid-cols-12 ">
-            <div class="col-span-12 md:col-span-6 border-r-4 pr-3">
-                <h2 class="border-b-4 text-xl font-bold"> S'inscrire </h2>
-                <p class="text-4xl">TODO//FORM FOR REGISTRATION</p>
+            <div class="col-span-12 mb-4 md:mb-0 md:col-span-6 md:border-r-4 pr-3">
+                <h2 class="border-b-4 text-xl font-bold mb-3"> S'inscrire </h2>
+                <div id="googleForm">
+                    <a href="" class="flex justify-center text-xl border p-3 hover:bg-gray-200">
+                        <i class="bi bi-google"></i>
+                        <p class="ml-2">Connexion avec Google</p>
+                    </a>
+                    <a id="displayEmailForm" class="block text-center mt-3" href="#">S'inscrire avec votre adresse e-mail</a>
+                </div>
+                <div class="emailForm hidden">
+                        {{ form_start(registration_form) }}
+                        {{ form_row(registration_form.firstName) }}
+                        {{ form_row(registration_form.lastName) }}
+                        {{ form_row(registration_form.email) }}
+                        {{ form_row(registration_form.pseudonym ) }}
+                        {{ form_row(registration_form.plainPassword, {
+                            label: 'Password'
+                        }) }}
+                        <div class="flex justify-end">
+                            <button class="p-2 bg-indigo-400 text-white font-semibold rounded" type="submit">S'inscrire</button>
+                        </div>
+                        {{ form_end(registration_form) }}
+                </div>
             </div>
 
             <div class="col-span-12 md:col-span-6 ml-2 pl-3">
@@ -24,16 +44,15 @@
                     <div class="flex flex-col">
                         <div class="mb-6 flex flex-col">
                             <label for="inputEmail" class="font-bold mb-3">Email: </label>
-                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Votre e-mail" autocomplete="email" required autofocus>
                         </div>
                         <div class="mb-6 flex flex-col mt-4">
                             <label for="inputPassword" class="font-bold mb-3">Mot de passe: </label>
-                            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Votre mot de passe" autocomplete="current-password" required>
                         </div>
                     </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                    <div class="flex justify-between">
-                        <a href="#" class="text-gray-400">Mot de passe oublié</a>
+                    <div class="flex justify-end">
                         <button class="p-2 bg-indigo-400 text-white font-semibold rounded" type="submit">Se connecter</button>
                     </div>
                     {% if error %}
@@ -56,4 +75,13 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+    document.querySelector('#displayEmailForm').addEventListener('click',function(e){
+        e.preventDefault();
+        document.querySelector('#googleForm').classList.add('hidden');
+        document.querySelector('.emailForm').classList.remove('hidden');
+    })
+</script>
 {% endblock %}

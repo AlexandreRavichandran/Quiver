@@ -43,9 +43,17 @@
                             <p class="my-3 bg-gray-200 text-gray-500 rounded w-24 px-2">VOUS SUIT</p>
                             {% endif %}
                             {% if user == app.user %}
+                                {% if user.qualification is null %}
+                            <a href="#" id="userQualification" class="block font-semibold text-gray-400 mt-2 mb-2">Veuillez entrer une qualification</a>
+                                {% else %}
                             <a href="#" id="userQualification" class="block font-semibold text-gray-400 mt-2 mb-2">{{user.qualification}}</a>
+                                {% endif %}
                             <input type="text" class="hidden userQualificationSetting">
+                                {% if user.description is null %}
+                            <a href="#" id="userDescription" class="mt-3 block text-gray-400">Veuillez entrer une description</a>
+                                {% else %}
                             <a href="#" id="userDescription" class="mt-3 block text-gray-400">{{user.description}}</a>
+                                {% endif %}
                             <textarea style="max-height:200px" class="hidden userDescriptionSetting w-full sm:w-50" cols="80" rows="2"></textarea>
                             <a href="#" id="updateDescription" class="hidden flex justify-center p-2 bg-indigo-400 rounded text-white mt-2 w-20">Modifier</a>
                             <p
