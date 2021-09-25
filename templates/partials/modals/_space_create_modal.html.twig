@@ -30,6 +30,7 @@
                 </div>
                 <!--Footer-->
                 <div class="flex justify-end pt-2">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('create_space') }}">
                     <button class="px-5 bg-indigo-400 p-3 rounded-lg text-white hover:bg-indigo-600">Créer</button>
                 </div>
             </form>

@@ -28,6 +28,7 @@
                             <textarea required="required" class="commentSpace w-1/2 xl:w-full" name="comment" id="comment_answer_{{answer.id}}"></textarea>
                         </div>
                         <input type="hidden" name="answerId" value="{{answer.id}}">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('create_comment') }}">
                         <div class="col-span-3 lg:col-span-2 ml-3 flex justify-end self-center">
                             <button type="submit" class="p-2 bg-indigo-400 text-white rounded">Commenter ce contenu</button>
                         </div>   

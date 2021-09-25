@@ -18,6 +18,7 @@
                     <div class="col-span-11">
                         <textarea required="required" class="form-textarea commentSpace" name="subComment" id="subComment_comment_{{comment.id}}" class="w-full"></textarea>
                     </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('create_subComment') }}">
                     <input type="hidden" name="commentId" value="{{comment.id}}">
                     <div class="col-span-1 ml-2 self-center">
                         <button type="submit" class="p-2 bg-indigo-400 text text-white rounded">Répondre</button>
@@ -67,6 +68,7 @@
                         </div>
                         <input type="hidden" name="commentId" value="">
                         <div class="col-span-2 ml-3 flex justify-end self-center">
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('create_subComment') }}">
                             <button type="submit" class="p-2 bg-indigo-400 text text-white rounded">Répondre</button>
                         </div>   
                     </div>

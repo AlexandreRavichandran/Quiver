@@ -54,46 +54,47 @@ class SecurityController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $passwordEncoder, ValidatorInterface $validator)
     {
         $data = $request->request->all()['registration_form'];
-        if ($data['firstName'] === '') {
-            $firstName = null;
+        if (!$this->isCsrfTokenValid('registration_form[_token]', $data['_token'])) {
+            $this->addFlash('errorMessage', 'Jeton CSRF invalide.');
         } else {
-            $firstName = $data['firstName'];
-        }
-        if ($data['lastName'] === '') {
-            $lastName = null;
-        } else {
-            $lastName = $data['lastName'];
-        }
+            if ($data['firstName'] === '') {
+                $firstName = null;
+            } else {
+                $firstName = $data['firstName'];
+            }
+            if ($data['lastName'] === '') {
+                $lastName = null;
+            } else {
+                $lastName = $data['lastName'];
+            }
 
-        // encode the plain password
-        $user = new User();
-        $user
-            ->setFirstName($firstName)
-            ->setLastName($lastName)
-            ->setPassword(
-                $passwordEncoder->hashPassword(
-                    $user,
-                    $data['plainPassword']
+            // encode the plain password
+            $user = new User();
+            $user
+                ->setFirstName($firstName)
+                ->setLastName($lastName)
+                ->setPassword(
+                    $passwordEncoder->hashPassword(
+                        $user,
+                        $data['plainPassword']
+                    )
                 )
-            )
-            ->setPseudonym($data['pseudonym'])
-            ->setRoles(['ROLE_USER'])
-            ->setEmail($data['email'])
-            ->setImageName('image_base.png');
-        $errors = $validator->validate($user);
-        if (count($errors) === 0) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-            $this->addFlash('successMessage','Vous vous êtes inscrit avec succès. Veuillez vous connecter.');
-        } else {
-            foreach ($errors as $error) {
-                $this->addFlash('errorMessage', $error->getMessage());
+                ->setPseudonym($data['pseudonym'])
+                ->setRoles(['ROLE_USER'])
+                ->setEmail($data['email'])
+                ->setImageName('image_base.png');
+            $errors = $validator->validate($user);
+            if (count($errors) === 0) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+                $this->addFlash('successMessage', 'Vous vous êtes inscrit avec succès. Veuillez vous connecter.');
+            } else {
+                foreach ($errors as $error) {
+                    $this->addFlash('errorMessage', $error->getMessage());
+                }
             }
         }
-
-        
-        
         return $this->redirectToRoute('app_home_index');
     }
 }

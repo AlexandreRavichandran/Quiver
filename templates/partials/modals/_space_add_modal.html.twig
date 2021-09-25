@@ -36,6 +36,7 @@
 				<div id="modalSpaceList" class="flex flex-col mt-3">
 				</div>
 				<div class="flex justify-end">
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('add_space') }}">
 					<input type="hidden" name="questionId" value="{{question.id}}">
 					<a href="#" class="block modal-close font-bold text-gray-400 self-center mr-3">Annuler</a>
 					<button class="rounded-full bg-indigo-400 px-4 py-2 font-bold text-white">Terminé</button>

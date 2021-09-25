@@ -270,7 +270,8 @@ const post = {
         const currentTarget = e.currentTarget;
         const comment = currentTarget.querySelector('.commentSpace');
         const answerId = currentTarget.closest('.questionAnswer').dataset.answerId;
-        const data = { 'comment': comment.value, 'answerId': answerId };
+        const csrfToken = currentTarget.querySelector('input[name="_csrf_token"]');
+        const data = { 'comment': comment.value, 'answerId': answerId, 'csrf': csrfToken.value };
         const config = {
             method: 'POST',
             body: JSON.stringify(data),
@@ -303,8 +304,12 @@ const post = {
                 return error;
             })
             .then(function (errorJson) {
-                for (const error of errorJson.message) {
-                    post.showMessage(error);
+                if (Array.isArray(errorJson.message)) {
+                    for (const error of errorJson.message) {
+                        post.showMessage(error);
+                    }
+                } else {
+                    post.showMessage(error)
                 }
             })
     },
@@ -314,7 +319,8 @@ const post = {
         const currentTarget = e.currentTarget;
         const comment = currentTarget.querySelector('.commentSpace');
         const commentId = currentTarget.closest('.comment').dataset.commentId;
-        const data = { 'subComment': comment.value, 'commentId': commentId };
+        const csrf = currentTarget.querySelector('input[name="_csrf_token"]');
+        const data = { 'subComment': comment.value, 'commentId': commentId, 'csrf': csrf.value };
         const config = {
             method: 'POST',
             body: JSON.stringify(data),
@@ -345,8 +351,12 @@ const post = {
                 return error;
             })
             .then(function (errorJson) {
-                for (const error of errorJson.message) {
-                    post.showMessage(error);
+                if (Array.isArray(errorJson.message)) {
+                    for (const error of errorJson.message) {
+                        post.showMessage(error);
+                    }
+                } else {
+                    post.showMessage(errorJson.message);
                 }
             })
     },
@@ -444,8 +454,12 @@ const post = {
                     return error;
                 })
                 .then(function (errorJson) {
-                    for (const error of errorJson.message) {
-                        post.showMessage(error);
+                    if (Array.isArray(errorJson.message)) {
+                        for (const error of errorJson.message) {
+                            post.showMessage(error);
+                        }
+                    } else {
+                        post.showMessage(errorJson.message);
                     }
                 })
         }
@@ -479,9 +493,9 @@ const post = {
     showMessage: function (message) {
         const messageSpace = document.querySelector('#messagesSpace');
         messageSpace.innerHTML = message;
-        const flashMmessage = document.querySelector('.flashMessage');
-        flashMmessage.animate({ opacity: ['0', '1'] }, 500).onfinish = function () {
-            flashMmessage.style.opacity = "1";
+        const flashMessage = document.querySelector('.flashMessage');
+        flashMessage.animate({ opacity: ['0', '1'] }, 500).onfinish = function () {
+            flashMessage.style.opacity = "1";
         }
         post.init();
     },

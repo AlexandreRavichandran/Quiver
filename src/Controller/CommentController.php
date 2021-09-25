@@ -30,35 +30,43 @@ class CommentController extends AbstractController
     {
         if ($request->isMethod('POST')) {
             $datas = json_decode($request->getContent());
-            $comment = new Comment;
-            $comment
-                ->setAnswer($answerRepository->find($datas->answerId))
-                ->setComment($datas->comment)
-                ->setCreatedAt(new DateTimeImmutable())
-                ->setAuthor($this->getUser());
-
-            //Check if there is any error on creating answer
-            $errors = $validator->validate($comment);
-
-            if (count($errors) === 0) {
-                $em->persist($comment);
-                $em->flush();
-                $responseCode = 201;
-
-                //Prepare datas for success alert message
-                $label = 'successMessage';
-                $messageText = 'Votre commentaire a été postée avec succès.';
-                $message = $this->renderView('partials/_alert_message.html.twig', ['message' => $messageText, 'label' => $label]);
-                $jsonData = [
-                    'comment' => $comment->getComment(),
-                    'user' => $this->getUser()->getPseudonym(),
-                    'date' => $comment->getCreatedAt()->format('d/m/Y')
-                ];
-            } else {
+            $csrfToken = $datas->csrf;
+            if (!$this->isCsrfTokenValid('create_comment', $csrfToken)) {
                 $label = 'errorMessage';
-                $responseCode = 400;
-                foreach ($errors as $key => $error) {
-                    $message[$key] = $this->renderView('partials/_alert_message.html.twig', ['message' => $error->getMessage(), 'label' => $label]);
+                $responseCode = 403;
+                $messageText = 'le serveur a détecté une attaque CSRF et l\'operation a été abandonnée.';
+                $message = $this->renderView('partials/_alert_message.html.twig', ['message' => $messageText, 'label' => $label]);
+            } else {
+                $comment = new Comment;
+                $comment
+                    ->setAnswer($answerRepository->find($datas->answerId))
+                    ->setComment($datas->comment)
+                    ->setCreatedAt(new DateTimeImmutable())
+                    ->setAuthor($this->getUser());
+
+                //Check if there is any error on creating answer
+                $errors = $validator->validate($comment);
+
+                if (count($errors) === 0) {
+                    $em->persist($comment);
+                    $em->flush();
+                    $responseCode = 201;
+
+                    //Prepare datas for success alert message
+                    $label = 'successMessage';
+                    $messageText = 'Votre commentaire a été postée avec succès.';
+                    $message = $this->renderView('partials/_alert_message.html.twig', ['message' => $messageText, 'label' => $label]);
+                    $jsonData = [
+                        'comment' => $comment->getComment(),
+                        'user' => $this->getUser()->getPseudonym(),
+                        'date' => $comment->getCreatedAt()->format('d/m/Y')
+                    ];
+                } else {
+                    $label = 'errorMessage';
+                    $responseCode = 400;
+                    foreach ($errors as $key => $error) {
+                        $message[$key] = $this->renderView('partials/_alert_message.html.twig', ['message' => $error->getMessage(), 'label' => $label]);
+                    }
                 }
             }
 

@@ -120,7 +120,7 @@ class SearchController extends AbstractController
         $usersByQuery = $this->userRepository->findUsersByQuery($q);
         $total = array_merge($spacesByQuery, $usersByQuery, $questionsByQuery, $answersByquery);
         $total = array_slice($total, $id, $id + 10);
-        
+
         $jsonData = [
             'content' => $this->renderView('search/partials/_all.html.twig', ['query_results' => $total])
         ];

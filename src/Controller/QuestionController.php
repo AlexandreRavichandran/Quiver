@@ -30,31 +30,36 @@ class QuestionController extends AbstractController
     public function create(EntityManagerInterface $em, Request $request, ValidatorInterface $validator, UserRepository $user): Response
     {
         if ($request->isMethod('POST')) {
-            $questionSentence = $request->request->get('question');
-            $question = new Question;
-            $question->setQuestion(htmlspecialchars($questionSentence));
-            $question->setAuthor($this->getUser())
-                ->setCreatedAt(new DateTimeImmutable());
-
-            //Check if created question objet is valid following the entity's contraint
-            $errors = $validator->validate($question);
-
-            if (count($errors) === 0) {
-
-                $em->persist($question);
-                $em->flush();
-                $this->addFlash('successMessage', 'Votre question a bien été postée. Veuillez lier votre question à des espaces.');
-                $redirectRoute =  $this->redirectToRoute('app_question_show', [
-                    'id' => $question->getId()
-                ]);
+            $csrfToken = $request->request->get('_csrf_token');
+            if (!$this->isCsrfTokenValid('create_question', $csrfToken)) {
+                $this->addFlash('errorMessage', 'le serveur a détecté une attaque CSRF et l\'operation a été abandonnée.');
+                $redirectRoute = $this->redirectToRoute('app_home_index');
             } else {
-                //Display error messages
-                foreach ($errors as $error) {
-                    $this->addFlash('errorMessage', $error->getMessage());
-                    $redirectRoute = $this->redirectToRoute('app_home_index');
+                $questionSentence = $request->request->get('question');
+                $question = new Question;
+                $question->setQuestion(htmlspecialchars($questionSentence));
+                $question->setAuthor($this->getUser())
+                    ->setCreatedAt(new DateTimeImmutable());
+
+                //Check if created question objet is valid following the entity's contraint
+                $errors = $validator->validate($question);
+
+                if (count($errors) === 0) {
+
+                    $em->persist($question);
+                    $em->flush();
+                    $this->addFlash('successMessage', 'Votre question a bien été postée. Veuillez lier votre question à des espaces.');
+                    $redirectRoute =  $this->redirectToRoute('app_question_show', [
+                        'id' => $question->getId()
+                    ]);
+                } else {
+                    //Display error messages
+                    foreach ($errors as $error) {
+                        $this->addFlash('errorMessage', $error->getMessage());
+                        $redirectRoute = $this->redirectToRoute('app_home_index');
+                    }
                 }
             }
-
             return $redirectRoute;
         }
     }
@@ -93,22 +98,31 @@ class QuestionController extends AbstractController
     public function addSpace(Request $request, SpaceRepository $spaceRepository, QuestionRepository $questionRepository, EntityManagerInterface $em): Response
     {
         if ($request->isMethod('POST')) {
-            $questionId = $request->request->get('questionId');
-            $newSpacesIds = $request->request->all('spaces');
+            $csrfToken = $request->request->get('_csrf_token');
+            if (!$this->isCsrfTokenValid('add_space', $csrfToken)) {
+                $this->addFlash('errorMessage', 'le serveur a détecté une attaque CSRF et l\'operation a été abandonnée.');
+                $redirectRoute = $this->redirectToRoute('app_home_index');
+            } else {
+                $questionId = $request->request->get('questionId');
+                $newSpacesIds = $request->request->all('spaces');
 
-            $question = $questionRepository->find($questionId);
+                $question = $questionRepository->find($questionId);
 
-            $question->removeallSpace();
-            foreach ($newSpacesIds as $spaceId) {
-                $space = $spaceRepository->find($spaceId);
-                $question->addSpace($space);
-                $em->persist($question);
+                $question->removeallSpace();
+                foreach ($newSpacesIds as $spaceId) {
+                    $space = $spaceRepository->find($spaceId);
+                    $question->addSpace($space);
+                    $em->persist($question);
+                }
+
+                $em->flush();
+
+                $this->addFlash('successMessage', 'Votre modification a été pris en compte.');
+
+                $redirectRoute = $this->redirectToRoute('app_question_show', ['id' => $questionId]);
             }
 
-            $em->flush();
-            $this->addFlash('successMessage', 'Votre modification a été pris en compte.');
-
-            return $this->redirectToRoute('app_question_show', ['id' => $questionId]);
+            return $redirectRoute;
         }
     }
 

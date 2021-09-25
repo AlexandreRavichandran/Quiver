@@ -29,31 +29,37 @@ class SpaceController extends AbstractController
     public function create(Request $request, ValidatorInterface $validator, EntityManagerInterface $em): Response
     {
         if ($request->isMethod('POST')) {
-            $spaceName = $request->request->get('space_name');
-            $spaceDescription = $request->request->get('space_description');
-            $space = new Space();
-            $space->setName($spaceName);
-            $space->setDescription($spaceDescription);
-
-            //Check if created question objet is valid following the entity's contraint
-            $errors = $validator->validate($space);
-
-            if (count($errors) === 0) {
-                $em->persist($space);
-                $em->flush();
-
-                $this->addFlash('successMessage', 'Votre espace a bien été crée. Vous pouvez maintenant lier une question à cet espace.');
-                $redirectRoute = $this->redirectToRoute('app_space_show', [
-                    'id' => $space->getId()
-                ]);
-            } else {
-                //Display error messages
-                foreach ($errors as $error) {
-                    $this->addFlash('errorMessage', $error->getMessage());
-                }
+            $csrfToken = $request->request->get('_csrf_token');
+            if (!$this->isCsrfTokenValid('create_space', $csrfToken)) {
+                $this->addFlash('errorMessage', 'le serveur a détecté une attaque CSRF et l\'operation a été abandonnée.');
                 $redirectRoute = $this->redirectToRoute('app_home_index');
-            }
+            } else {
+                $spaceName = $request->request->get('space_name');
+                $spaceDescription = $request->request->get('space_description');
+                $space = new Space();
+                $space->setName($spaceName);
+                $space->setDescription($spaceDescription);
 
+                //Check if created question objet is valid following the entity's contraint
+                $errors = $validator->validate($space);
+
+                if (count($errors) === 0) {
+                    $em->persist($space);
+                    $em->flush();
+
+                    $this->addFlash('successMessage', 'Votre espace a bien été crée. Vous pouvez maintenant lier une question à cet espace.');
+                    $redirectRoute = $this->redirectToRoute('app_space_show', [
+                        'id' => $space->getId()
+                    ]);
+                } else {
+                    //Display error messages
+                    foreach ($errors as $error) {
+                        $this->addFlash('errorMessage', $error->getMessage());
+                    }
+                    $redirectRoute = $this->redirectToRoute('app_home_index');
+                }
+
+            }
             return $redirectRoute;
         }
     }
@@ -157,7 +163,7 @@ class SpaceController extends AbstractController
      * @Route("/space/picture",name="app_space_update_picture",methods="POST")
      * @return Response
      */
-    public function upadatePicture(SpaceRepository $spaceRepository, Request $request, EntityManagerInterface $em, Filesystem $filesystem): Response
+    public function updatePicture(SpaceRepository $spaceRepository, Request $request, EntityManagerInterface $em, Filesystem $filesystem): Response
     {
         $file = $request->files->get('space_picture')['imageFile']['file'];
         $space = $spaceRepository->find($request->request->get('spaceId'));
