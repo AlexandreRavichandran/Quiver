@@ -527,4 +527,4 @@ const post = {
 
 
 
-document.addEventListener('DOMContentLoaded', post.init)
+document.addEventListener('DOMContentLoaded', post.init);

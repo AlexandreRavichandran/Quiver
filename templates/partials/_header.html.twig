@@ -9,18 +9,16 @@
                 <a class="block pb-2 mr-10 {% if page is defined and page is same as 'following' %} active {% endif %}" href="{{path('app_space_following')}}"><i class="bi text-3xl bi-card-list"></i></a>
                 <a class="block pb-2 mr-10 {% if page is defined and page is same as 'answer' %} active {% endif %}" href="{{path('app_answer_index')}}"><i class="bi text-3xl bi-pencil-square"></i></a>
                 <a class="block pb-2 mr-10 {% if page is defined and page is same as 'space' %} active {% endif %}" href="{{path('app_space_index')}}"><i class="bi text-3xl bi-collection"></i></a>
-                <a class="block pb-2 mr-10" href="#"><i class="bi text-3xl bi-bell"></i></a>
             </div>
             <div class="hidden lg:block lg:col-span-5 xl:col-span-4 flex justify-center">
                 <form action="{{path('search_all')}}" method="get">
-                    <input id="search" type="text" class="p-2" name="q" id="search" placeholder="Rechercher des questions, personnes et sujets" size="45">
+                    <input id="search" type="text" class="p-2" name="q" id="search" placeholder="Rechercher des questions, personnes et sujets" size="50">
                 </form>
             </div>
             <div class="relative text-center flex col-span-1 sm:col-span-2 md:col-span-2 lg:col-span-1 xl:col-span-1">
                 <a id="showMenu" class="font-semibold whitespace-no-wrap text-gray-600 hover:text-blue-800" href="#">
-                    <span class="firstlevel"> <img class="inline mr-2 rounded-full" src="/images/profile_pictures/{{app.user.imageName}}" alt="" width="40px"></span>
+                    <span class="firstlevel"> <img class="inline rounded-full" src="/images/profile_pictures/{{app.user.imageName}}" alt="" width="40px"></span>
                 </a>
-                <a class="hidden sm:block" href="#"><i class="text-3xl bi bi-globe"></i></a>
                 <ul id="profileMenu" class="hidden absolute right-0 top-12 p-2 rounded-lg shadow-lg bg-white z-10 group-hover:block">
                     <li class="p-1 whitespace-no-wrap rounded-full text-sm md:text-base text-gray-600 hover:text-gray-800 hover:bg-gray-100">
                         <a class="px-2 py-1" href="{{path('app_user_profile',{'pseudonym':app.user.pseudonym})}}">

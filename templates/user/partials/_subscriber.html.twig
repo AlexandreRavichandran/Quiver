@@ -5,7 +5,7 @@
     {% for subscriber in user.subscribers %}
     <a href="{{path('app_user_profile',{'pseudonym':subscriber.pseudonym})}}">
         <div class="border-b-2 flex justify-between p-4">
-            <h3 class="font-black align-center"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/image-{{subscriber.imageName}}.jpg" alt="" width="40px"> {{subscriber.pseudonym}}, <span class="font-semibold text-gray-400">{{subscriber.qualification}}</span></h3>
+            <h3 class="font-black align-center"><img class="inline mr-2 rounded-full" src="/images/profile_pictures/{{subscriber.imageName}}" alt="" width="40px"> {{subscriber.pseudonym}}, <span class="font-semibold text-gray-400">{{subscriber.qualification}}</span></h3>
             {% if (app.user.isSubscribedTo(subscriber) and subscriber != app.user) %}
             <a href="#" data-id="{{subscriber.id}}" class="subscribeButton pl-4 pr-4 pt-2 w-32 block text-center rounded-full border subscribed"><i class='bi bi-person-plus-fill mr-3'></i>Suivi</a>
             {% elseif (subscriber != app.user) %}

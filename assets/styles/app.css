@@ -52,11 +52,11 @@
     }
     
     .successMessage{
-        @apply bg-green-500
+        @apply bg-green-100 border-green-500 text-green-700
     }
 
     .errorMessage{
-        @apply bg-red-500
+        @apply bg-red-100 border-red-500 text-red-700
     }
 
 }
@@ -70,6 +70,12 @@
 .commentSpace
 {
     width: 100% ;
+    min-height: 57px ;
+    max-height: 300px ;
+}
+
+.spaceDescription
+{
     min-height: 57px ;
     max-height: 300px ;
 }
