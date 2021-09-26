@@ -45,7 +45,9 @@
         "symfony/yaml": "5.3.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0",
-        "vich/uploader-bundle": "^1.18"
+        "vich/uploader-bundle": "^1.18",
+        "liip/imagine-bundle": "^2.6",
+        "symfony/apache-pack": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.15",
