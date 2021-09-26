@@ -29,7 +29,7 @@ class QuestionRepository extends ServiceEntityRepository
      */
     public function findAllQuestionsWithAnswers($date = null, $limit = null): array
     {
-        if ($date === null) {
+        if (null === $date) {
             $date = new DateTimeImmutable();
         }
 
@@ -55,7 +55,7 @@ class QuestionRepository extends ServiceEntityRepository
      */
     public function findAllQuestionsBySpaceNames(array $spaceIds, DateTimeImmutable $date = null, int $limit = null): array
     {
-        if ($date === null) {
+        if (null === $date) {
             $date = new DateTimeImmutable();
         }
         return $this->createQueryBuilder('q')

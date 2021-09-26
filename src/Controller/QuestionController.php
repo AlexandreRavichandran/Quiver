@@ -175,7 +175,7 @@ class QuestionController extends AbstractController
      */
     public function generateMoreAnswer(Question $question, string $date = null, AnswerRepository $answerRepository): Response
     {
-        if ($date === null) {
+        if (null === $date) {
             $date = new DateTimeImmutable();
         } else {
             $date = new DateTimeImmutable($date);
@@ -200,7 +200,7 @@ class QuestionController extends AbstractController
     public function generateMoreQuestionsAndAnswers(string $date = null): JsonResponse
     {
 
-        if ($date === null) {
+        if (null === $date) {
             $date = new DateTimeImmutable();
         } else {
             $date = new DateTimeImmutable($date);

@@ -30,7 +30,7 @@ class AnswerRepository extends ServiceEntityRepository
      */
     public function findAnswersByQuestionId(int $id, DateTimeImmutable $date = null, int $limit = null): array
     {
-        if ($date === null) {
+        if (null === $date) {
             $date = new DateTimeImmutable();
         }
 

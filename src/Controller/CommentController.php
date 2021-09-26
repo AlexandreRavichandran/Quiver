@@ -125,7 +125,7 @@ class CommentController extends AbstractController
      */
     public function generate(int $id, string $date = null):JsonResponse
     {
-        if ($date === null) {
+        if (null === $date) {
             $date = new DateTimeImmutable();
         } else {
             $date = new DateTimeImmutable($date);

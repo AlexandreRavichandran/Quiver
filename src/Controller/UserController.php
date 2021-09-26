@@ -142,7 +142,7 @@ class UserController extends AbstractController
 
         //If user already had a picture (except basic picture) remove the previous picture
         $previousPicture = $user->getImageName();
-        if ($previousPicture !== 'image_base.png') {
+        if ('image_base.png' !== $previousPicture) {
             $filesystem->remove($this->getParameter('profile_pictures_directory') . '/' . $previousPicture);
         }
 
@@ -192,7 +192,7 @@ class UserController extends AbstractController
         /**
          * Following if the user has already subscibed to another user, an action will be made
          */
-        if ($action === 'add') {
+        if ('add' === $action) {
             if ($isSubscribed) {
                 $user->removeSubscriber($userToSubcribeWith);
             } else {

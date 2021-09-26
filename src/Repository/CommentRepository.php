@@ -30,7 +30,7 @@ class CommentRepository extends ServiceEntityRepository
      */
     public function findCommentByAnswer(int $answerId, DateTimeImmutable $date = null, int $limit = null): array
     {
-        if ($date === null) {
+        if (null === $date) {
             $date = new DateTimeImmutable();
         }
         return $this->createQueryBuilder('c')
@@ -43,5 +43,4 @@ class CommentRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
 }

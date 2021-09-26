@@ -174,7 +174,7 @@ class AnswerController extends AbstractController
         /**
          * Following if the user has already liked or disliked the answer, an action will be made
          */
-        if ($action === 'liked') {
+        if ('liked' === $action) {
             if ($hasLiked) {
                 $answer->removeLikedUser($user);
             } else {

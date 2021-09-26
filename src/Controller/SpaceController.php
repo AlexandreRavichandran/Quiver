@@ -214,7 +214,7 @@ class SpaceController extends AbstractController
 
         //Check if new picture extension is correct
         $extension = $file->guessExtension();
-        if ($extension !== 'jpg' && $extension !== 'png') {
+        if ('jpg' !== $extension && 'png' !== $extension) {
             $this->addFlash('errorMessage', 'L\'extension de votre fichier est incorrecte. Veuillez réessayer avec une extension valide (JPG, PNG, JPEG)');
 
             return $this->redirecttoRoute('app_space_show', ['id' => $space->getId()]);
@@ -274,7 +274,7 @@ class SpaceController extends AbstractController
         /**
          * Following if the user has already subscribed the space, an action will be made
          */
-        if ($action === 'add') {
+        if ('add' === $action) {
             if ($isSubscribedTo) {
                 $space->removeSubscriber($user);
             } else {
