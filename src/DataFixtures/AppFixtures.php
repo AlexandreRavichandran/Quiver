@@ -73,10 +73,10 @@ class AppFixtures extends Fixture
             $question = new Question;
             $question
                 ->setQuestion($faker->sentence . '?')
-                ->setAuthor($userList[mt_rand(0, 15)])
+                ->setAuthor($userList[mt_rand(0,count($userList) - 1)])
                 ->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeAD()));
             for ($b = 0; $b < mt_rand(1, 4); $b++) {
-                $question->addSpace($spaceList[mt_rand(0, 10)]);
+                $question->addSpace($spaceList[mt_rand(0, count($userList) - 1)]);
             }
             $manager->persist($question);
 
@@ -86,14 +86,14 @@ class AppFixtures extends Fixture
                 $answer
                     ->setViewsNumber(mt_rand(1000, 200000))
                     ->setQuestion($question)
-                    ->setAuthor($userList[mt_rand(0, 15)])
+                    ->setAuthor($userList[mt_rand(0, count($userList) - 1)])
                     ->setAnswer('<img src="https://picsum.photos/900/320">' . '<p>' . implode('</p><p>', $faker->paragraphs(15)));
 
                 for ($c = 0; $c < mt_rand(0, 15); $c++) {
                     if (mt_rand(0, 1)) {
-                        $answer->addLikedUser($userList[mt_rand(0, 15)]);
+                        $answer->addLikedUser($userList[mt_rand(0, count($userList) - 1)]);
                     } else {
-                        $answer->addDislikedUser($userList[mt_rand(0, 15)]);
+                        $answer->addDislikedUser($userList[mt_rand(0, count($userList) - 1)]);
                     }
                 }
                 $manager->persist($answer);
@@ -105,7 +105,7 @@ class AppFixtures extends Fixture
                         ->setAnswer($answer)
                         ->setComment('<p>' . implode('</p><p>', $faker->paragraphs(mt_rand(4, 8))))
                         ->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeAD()))
-                        ->setAuthor($userList[mt_rand(0, 15)]);
+                        ->setAuthor($userList[mt_rand(0, count($userList) - 1)]);
 
                     $manager->persist($comment);
 
@@ -113,7 +113,7 @@ class AppFixtures extends Fixture
                     for ($d = 0; $d < mt_rand(0, 4); $d++) {
                         $subComment = new SubComment;
                         $subComment
-                            ->setAuthor($userList[mt_rand(0, 15)])
+                            ->setAuthor($userList[mt_rand(0, count($userList) - 1)])
                             ->setComment($comment)
                             ->setSubComment('<p>' . implode('</p><p>', $faker->paragraphs(mt_rand(4, 8))));
                         $manager->persist($subComment);
