@@ -41,7 +41,7 @@ class AppFixtures extends Fixture
         }
 
         //create fake users
-        for ($i = 1; $i < 21; $i++) {
+        for ($i = 1; $i < 15; $i++) {
 
             $user = new User;
             $user
@@ -52,7 +52,7 @@ class AppFixtures extends Fixture
                 ->setLastName($faker->lastName())
                 ->setQualification($faker->sentence(2))
                 ->setPseudonym($faker->userName)
-                ->setImageName('image-'.$i . '.jpg')
+                ->setImageName('image-' . $i . '.jpg')
                 ->setRoles(['ROLE_USER']);
             for ($j = 0; $j < mt_rand(0, count($spaceList)); $j++) {
 
@@ -69,7 +69,7 @@ class AppFixtures extends Fixture
             $manager->persist($user);
         }
         //create fake questions
-        for ($a = 0; $a < 21; $a++) {
+        for ($a = 0; $a < 15; $a++) {
             $question = new Question;
             $question
                 ->setQuestion($faker->sentence . '?')
