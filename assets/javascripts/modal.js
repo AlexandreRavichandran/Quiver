@@ -47,7 +47,7 @@ const modal = {
     showSpaces: function (e) {
         const questionId = e.currentTarget.closest('.answerHeader').dataset.questionId;
 
-        fetch('/spaces/questions/' + questionId)
+        fetch('/api/spaces/questions/' + questionId)
             .then(function (response) {
                 if (response.status === 200) {
                     return response.json();

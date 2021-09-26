@@ -121,7 +121,7 @@ const post = {
         const lastCommentDate = comments[comments.length - 1].dataset.commentDate;
         clickedElement.classList.add('hidden');
         commentLoaderSpinner.classList.remove('hidden');
-        fetch('/answer/comments/' + postId + '/' + lastCommentDate)
+        fetch('/api/answer/comments/' + postId + '/' + lastCommentDate)
             .then(function (response) {
                 if (response.status === 200) {
                     return response.json();
@@ -153,7 +153,7 @@ const post = {
             commentsNumber.style.display = 'none';
             const loading = postFooter.querySelector('.loadingMoreCommentsSpinner');
             loading.classList.remove('hidden');
-            fetch('/answer/comments/' + postId)
+            fetch('/api/answer/comments/' + postId)
                 .then(function (response) {
                     if (response.status === 200) {
                         return response.json();
@@ -238,7 +238,7 @@ const post = {
 
         document.querySelector('.loadingMorePostsSpinner').classList.remove('hidden');
 
-        fetch('/questions/generate/' + lastDate)
+        fetch('/api/questions/generate/' + lastDate)
             .then(function (response) {
                 if (response.status === 200) {
                     return response.json();
@@ -279,7 +279,7 @@ const post = {
                 'Content-Type': 'application/json'
             }
         }
-        fetch('/comments/create', config).then(function (response) {
+        fetch('api/comments/create', config).then(function (response) {
             if (response.status === 201) {
                 return response.json();
             } else {
@@ -309,7 +309,7 @@ const post = {
                         post.showMessage(error);
                     }
                 } else {
-                    post.showMessage(error)
+                    post.showMessage(errorJson.message)
                 }
             })
     },
@@ -328,7 +328,7 @@ const post = {
                 'Content-Type': 'application/json'
             }
         }
-        fetch('/subComments/create', config)
+        fetch('/api/subComments/create', config)
             .then(function (response) {
                 if (response.status === 201) {
                     return response.json();
@@ -368,7 +368,7 @@ const post = {
         const date = lastAnswer.dataset.answerDate;
         clickedElement.closest('#generateAnswers').classList.add('hidden');
         document.querySelector('.loadingMoreAnswersSpinner').classList.remove('hidden');
-        fetch('/questions/' + id + '/generate/' + date)
+        fetch('/api/questions/' + id + '/generate/' + date)
 
             .then(function (response) {
                 if (response.status === 200) {
@@ -394,7 +394,7 @@ const post = {
         ClassicEditor
             .create(editorSpace, {
                 ckfinder: {
-                    uploadUrl: '/answer/picture/add',
+                    uploadUrl: '/api/answer/picture/add',
                 },
                 removePlugins: ['Heading'],
                 toolbar: ['imageUpload', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
@@ -427,7 +427,7 @@ const post = {
             }
         }
         if (editorSpace.textContent.length > 0) {
-            fetch('/answers/create', config)
+            fetch('/api/answers/create', config)
                 .then(function (response) {
                     if (response.status === 201) {
                         return response.json();
@@ -474,7 +474,7 @@ const post = {
 
         document.querySelector('.loadingMoreFollowingPostsSpinner').classList.remove('hidden');
 
-        fetch('/following/generate/' + lastDate)
+        fetch('/api/following/generate/' + lastDate)
             .then(function (response) {
                 if (response.status === 200) {
                     return response.json();
@@ -507,15 +507,15 @@ const post = {
         let fetchUrl = undefined;
         link = window.location.href;
         if (link.includes('question')) {
-            fetchUrl = "/search/question/generate/";
+            fetchUrl = "/api/search/question/generate/";
         } else if (link.includes('answer')) {
-            fetchUrl = "/search/answer/generate/"
+            fetchUrl = "/api/search/answer/generate/"
         } else if (link.includes('profile')) {
-            fetchUrl = "/search/profile/generate/"
+            fetchUrl = "/api/search/profile/generate/"
         } else if (link.includes('space')) {
-            fetchUrl = "/search/space/generate/"
+            fetchUrl = "/api/search/space/generate/"
         } else {
-            fetchUrl = "/search/all/generate/"
+            fetchUrl = "/api/search/all/generate/"
         }
 
         const loadingSpinner = document.querySelector('.loadingMoreResearchResults');

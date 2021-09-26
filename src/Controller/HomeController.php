@@ -17,10 +17,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class HomeController extends AbstractController
 {
     /**
+     * 
      * @Route("/", name="app_home_index",methods="GET")
+     * @param SpaceRepository $spaceRepository Repository of space entity
+     * @param QuestionRepository $questionRepository Repository of question entity
      * @return Response
      */
-    public function index(SpaceRepository $spaceRepository, QuestionRepository $questionRepository, Request $request, EntityManagerInterface $em): Response
+    public function index(SpaceRepository $spaceRepository, QuestionRepository $questionRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Veuillez vous connecter');
         $date = new DateTime();

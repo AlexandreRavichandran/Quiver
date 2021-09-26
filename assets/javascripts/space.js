@@ -31,7 +31,7 @@ const space = {
         const spaceLoader = document.querySelector('.spaceLoader');
         spaceLoader.classList.remove('hidden');
         const lastSpaceId = document.querySelector('.spaceList').lastElementChild.dataset.id;
-        fetch('/spaces/generate/' + lastSpaceId)
+        fetch('/api/spaces/generate/' + lastSpaceId)
             .then(function (response) {
                 if (response.status === 200) {
                     return response.json();
@@ -70,7 +70,7 @@ const space = {
     },
 
     AJAXRequestHandler: function (id, action) {
-        fetch('/spaces/' + id + '/subscribers/' + action)
+        fetch('/api/spaces/' + id + '/subscribers/' + action)
             .then(function (response) {
                 if (response.status === 200) {
                     return response.json();

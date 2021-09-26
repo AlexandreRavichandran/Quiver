@@ -97,7 +97,7 @@ const user = {
 
     AJAXSubscriptionHandler: function (id, action) {
 
-        fetch('/profile/' + id + '/subscribers/' + action)
+        fetch('/api/profile/' + id + '/subscribers/' + action)
             .then(function (response) {
                 if (response.status === 200) {
                     response.json();
@@ -123,7 +123,7 @@ const user = {
         const email = document.querySelector('#inputEmail');
         const password = document.querySelector('#inputPassword');
 
-        fetch('/login/user/generate')
+        fetch('/api/login/user/generate')
             .then(function (response) {
                 if (response.status === 200) {
                     return response.json()
@@ -158,7 +158,7 @@ const user = {
                     'Content-Type': 'application/json'
                 }
             }
-            fetch('/profile/qualification/update', config)
+            fetch('/api/profile/qualification/update', config)
                 .then(function (response) {
                     if (response.status === 201) {
                         return response.json()
@@ -202,7 +202,7 @@ const user = {
                 'Content-Type': 'application/json'
             }
         }
-        fetch('/profile/description/update', config)
+        fetch('/api/profile/description/update', config)
             .then(function (response) {
                 if (response.status === 201) {
                     return response.json();

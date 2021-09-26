@@ -28,7 +28,7 @@
                 <nav class="border-b-4 mb-4">
                     <ul class="flex">
                         <li class="item-list p-3 {% if partial is defined and partial is same as 'index' %}active{% endif %}"><a href="{{path('app_space_show',{'id':space.id})}}">Lire</a></li>
-                        <li class="item-list p-3 {% if partial is defined and partial is same as 'topQuestions' %}active{% endif %}"><a href="{{path('app_space_show_top_question',{'id':space.id})}}">Repondre</a></li>
+                        <li class="item-list p-3 {% if partial is defined and partial is same as 'top_questions' %}active{% endif %}"><a href="{{path('app_space_show_top_question',{'id':space.id})}}">Repondre</a></li>
                     </ul>
                 </nav>
                 <div class="questionList">

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,47 +55,59 @@ class SecurityController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $passwordEncoder, ValidatorInterface $validator)
     {
         $data = $request->request->all()['registration_form'];
-        if (!$this->isCsrfTokenValid('registration_form[_token]', $data['_token'])) {
-            $this->addFlash('errorMessage', 'Jeton CSRF invalide.');
-        } else {
-            if ($data['firstName'] === '') {
-                $firstName = null;
-            } else {
-                $firstName = $data['firstName'];
-            }
-            if ($data['lastName'] === '') {
-                $lastName = null;
-            } else {
-                $lastName = $data['lastName'];
-            }
 
-            // encode the plain password
-            $user = new User();
-            $user
-                ->setFirstName($firstName)
-                ->setLastName($lastName)
-                ->setPassword(
-                    $passwordEncoder->hashPassword(
-                        $user,
-                        $data['plainPassword']
-                    )
-                )
-                ->setPseudonym($data['pseudonym'])
-                ->setRoles(['ROLE_USER'])
-                ->setEmail($data['email'])
-                ->setImageName('image_base.png');
-            $errors = $validator->validate($user);
-            if (count($errors) === 0) {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($user);
-                $entityManager->flush();
-                $this->addFlash('successMessage', 'Vous vous êtes inscrit avec succès. Veuillez vous connecter.');
-            } else {
-                foreach ($errors as $error) {
-                    $this->addFlash('errorMessage', $error->getMessage());
-                }
-            }
+        //Check csrf
+        if (!$this->isCsrfTokenValid('register', $data['_csrf_token'])) {
+            $this->addFlash('errorMessage', 'Jeton CSRF invalide.');
+            return $this->redirectToRoute('app_login');
         }
+
+        if ('' === $data['firstName']) {
+            $firstName = null;
+        } else {
+            $firstName = $data['firstName'];
+        }
+        if ('' === $data['lastName']) {
+            $lastName = null;
+        } else {
+            $lastName = $data['lastName'];
+        }
+
+        // encode the plain password
+        $user = new User();
+        $user
+            ->setFirstName($firstName)
+            ->setLastName($lastName)
+            ->setPassword(
+                $passwordEncoder->hashPassword(
+                    $user,
+                    $data['plainPassword']
+                )
+            )
+            ->setPseudonym($data['pseudonym'])
+            ->setRoles(['ROLE_USER'])
+            ->setEmail($data['email'])
+            ->setImageName('image_base.png');
+
+        $errors = $validator->validate($user);
+
+        //Check if created question objet is valid following the entity's contraint
+        if (0 !== count($errors)) {
+            foreach ($errors as $error) {
+                $this->addFlash('errorMessage', $error->getMessage());
+            }
+            return $this->redirectToRoute('app_login');
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        try {
+            $entityManager->persist($user);
+            $entityManager->flush();
+            $this->addFlash('successMessage', 'Vous vous êtes inscrit avec succès. Veuillez vous connecter.');
+        } catch (UniqueConstraintViolationException $e) {
+            $this->addFlash('errorMessage', 'Un compte avec cet email existe déjà.');
+        }
+
         return $this->redirectToRoute('app_home_index');
     }
 }

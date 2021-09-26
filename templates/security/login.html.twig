@@ -31,7 +31,7 @@
                         {{ form_row(registration_form.plainPassword, {
                             label: 'Password'
                         }) }}
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('register') }}">
+                        <input type="hidden" name="registration_form[_csrf_token]" value="{{ csrf_token('register') }}">
                         <div class="flex justify-end">
                             <button class="p-2 bg-indigo-400 text-white font-semibold rounded" type="submit">S'inscrire</button>
                         </div>

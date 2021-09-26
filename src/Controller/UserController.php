@@ -17,12 +17,24 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UserController extends AbstractController
 {
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
     /**
+     * 
      * @Route("/profile/{pseudonym}", name="app_user_profile",methods="GET")
+     * 
+     * @param User $user User objet which has the url given pseudonym
+     * 
+     * @return Response
      */
     public function index(User $user): Response
     {
         $form = $this->createForm(UserPictureType::class);
+
         return $this->render('user/index.html.twig', [
             'partial' => 'profile',
             'user' => $user,
@@ -32,10 +44,15 @@ class UserController extends AbstractController
 
     /**
      * @Route("/profile/{pseudonym}/answers", name="app_user_answer",methods="GET")
+     * 
+     * @param User $user User objet which has the url given pseudonym
+     * 
+     * @return Response
      */
     public function answers(User $user): Response
     {
         $form = $this->createForm(UserPictureType::class);
+
         return $this->render('user/index.html.twig', [
             'partial' => 'answer',
             'user' => $user,
@@ -45,10 +62,15 @@ class UserController extends AbstractController
 
     /**
      * @Route("/profile/{pseudonym}/questions", name="app_user_question",methods="GET")
+     * 
+     * @param User $user User objet which has the url given pseudonym
+     * 
+     * @return Response
      */
     public function questions(User $user): Response
     {
         $form = $this->createForm(UserPictureType::class);
+
         return $this->render('user/index.html.twig', [
             'partial' => 'question',
             'user' => $user,
@@ -58,10 +80,15 @@ class UserController extends AbstractController
 
     /**
      * @Route("/profile/{pseudonym}/subscribers", name="app_user_subscriber",methods="GET")
+     * 
+     * @param User $user User objet which has the url given pseudonym
+     * 
+     * @return Response
      */
     public function subscribers(User $user): Response
     {
         $form = $this->createForm(UserPictureType::class);
+
         return $this->render('user/index.html.twig', [
             'partial' => 'subscriber',
             'user' => $user,
@@ -71,10 +98,15 @@ class UserController extends AbstractController
 
     /**
      * @Route("/profile/{pseudonym}/subscriptions", name="app_user_subscription",methods="GET")
+     * 
+     * @param User $user User objet which has the url given pseudonym
+     * 
+     * @return Response
      */
     public function subscriptions(User $user): Response
     {
         $form = $this->createForm(UserPictureType::class);
+
         return $this->render('user/index.html.twig', [
             'partial' => 'subscription',
             'user' => $user,
@@ -82,42 +114,110 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+
+     * @Route("/profile/picture",name="app_user_update_profile_picture",methods="POST")
+     * 
+     * @param Request $request Request sent to this method
+     * @param Filesystem $filesystem
+     * 
+     * @return Response
+     */
+    public function updateProfilePicture(Request $request, Filesystem $filesystem): Response
+    {
+        $user = $this->getUser();
+
+        $file = $request->files->get('user_picture')['imageFile']['file'];
+
+        $extension = $file->guessExtension();
+
+        if ('jpg' !== $extension && 'png' !== $extension) {
+            $this->addFlash('errorMessage', 'L\'extension de votre fichier est incorrecte. Veuillez réessayer avec une extension valide (JPG, PNG, JPEG)');
+
+            return $this->redirectToRoute('app_user_profile', ['pseudonym' => $user->getPseudonym()]);
+        }
+
+        $fileName = uniqid() . 'image-' . $user->getId() . '.' . $file->guessExtension();
+        $file->move($this->getParameter('profile_pictures_directory'), $fileName);
+
+        //If user already had a picture (except basic picture) remove the previous picture
+        $previousPicture = $user->getImageName();
+        if ($previousPicture !== 'image_base.png') {
+            $filesystem->remove($this->getParameter('profile_pictures_directory') . '/' . $previousPicture);
+        }
+
+        $user->setImageName($fileName);
+        $this->em->persist($user);
+        $this->em->flush();
+
+        $this->addFlash('successMessage', 'Votre photo de profil a bien été mis à jour');
+
+        return $this->redirectToRoute('app_user_profile', ['pseudonym' => $user->getPseudonym()]);
+    }
 
     /*****************  API REQUEST METHODS *****************/
 
 
     /**
-     *
-     * @Route("/profile/{id}/subscribers/{action}",name="api_user_handle_subscriber",methods="GET",requirements={"id"="\d+","action"="\b(add)\b|\b(remove)\b"})
+     * 
+     * @Route("/api/profile/{id}/subscribers/{action}",name="api_user_handle_subscriber",methods="GET",requirements={"id"="\d+","action"="\b(add)\b|\b(remove)\b"})
+     * 
+     * @param User $user User objet which has the url given id
+     * @param string $action Action to do with this user (Only 2 values : 'add' and 'remove')
+     * @param UserRepository $userRepository
+     * 
      * @return JsonResponse
      */
-    public function handleSubsriber(User $user, string $action, UserRepository $userRepository, EntityManagerInterface $em): JsonResponse
+    public function handleSubsriber(User $user, string $action, UserRepository $userRepository): JsonResponse
     {
-        $userToSubcribeWith = $this->getUser();
-        $userToSubscribe = $userRepository->findOneBy(['id' => $user->getId()]);
 
-        $isSubscribed = in_array($userToSubcribeWith, $userToSubscribe->getSubscribers()->toArray());
-        if ($action === 'add') {
-            if ($isSubscribed) {
-                $userToSubscribe->removeSubscriber($userToSubcribeWith);
-            } else {
-                $userToSubscribe->addSubscriber($userToSubcribeWith);
-            }
-        } else {
-            $userToSubscribe->removeSubscriber($userToSubcribeWith);
+        //Check if action is correct
+        $actions = ['add', 'remove'];
+        if (!in_array($action, $actions)) {
+
+            $responseCode = 401;
+            $label = 'errorMessage';
+            $messageText = "Une erreur s'est produite.";
+            $jsonData = [
+                'content' => $this->renderView('partials/_alert_message.html.twig', ['message' => $messageText, 'label' => $label])
+            ];
+
+            return new JsonResponse($jsonData, $responseCode);
         }
 
-        $em->flush();
+        $userToSubcribeWith = $this->getUser();
+
+        $isSubscribed = in_array($userToSubcribeWith, $user->getSubscribers()->toArray());
+
+        /**
+         * Following if the user has already subscibed to another user, an action will be made
+         */
+        if ($action === 'add') {
+            if ($isSubscribed) {
+                $user->removeSubscriber($userToSubcribeWith);
+            } else {
+                $user->addSubscriber($userToSubcribeWith);
+            }
+        } else {
+            $user->removeSubscriber($userToSubcribeWith);
+        }
+
+        $this->em->flush();
 
         $jsonData = [
-            'subscriberNumber' => count($userToSubscribe->getSubscribers()),
+            'subscriberNumber' => count($user->getSubscribers()),
             'subscriptionNumber' => count($userToSubcribeWith->getSubscriptions()),
         ];
+
         return new JsonResponse($jsonData);
     }
 
     /**
-     * @Route("/login/user/generate",name="api_user_generate",methods="GET")
+     * 
+     * @Route("/api/login/user/generate",name="api_user_generate",methods="GET")
+     * 
+     * @param UserRepository $userRepository Repository of the user entity
+     * 
      * @return JsonResponse
      */
     public function generateUser(UserRepository $userRepository): JsonResponse
@@ -128,43 +228,63 @@ class UserController extends AbstractController
         $jsonData = [
             'email' => $randomUser->getEmail()
         ];
+
         return new JsonResponse($jsonData);
     }
 
     /**
-     *
-     * @Route("/profile/qualification/update",name="api_user_update_qualification",methods="POST")
-     * @param Request $request
+     * 
+     * @Route("/api/profile/qualification/update",name="api_user_update_qualification",methods="POST")
+     * 
+     * @param Request $request Request sent to the method
+     * @param ValidatorInterface $validatorInterface Validator to check if entity is correctly filled
+     * 
      * @return JsonResponse
      */
-    public function updateQualification(Request $request, EntityManagerInterface $em, ValidatorInterface $validatorInterface): JsonResponse
+    public function updateQualification(Request $request, ValidatorInterface $validatorInterface): JsonResponse
     {
+        //Check if request method is correct
+        if (!$request->isMethod('POST')) {
+
+            $label = 'errorMessage';
+            $responseCode = 405;
+            $messageText = "Une erreur s'est produite";
+            $message = $this->renderView('partials/_alert_message.html.twig', ['message' => $messageText, 'label' => $label]);
+            $jsonData['message'] = $message;
+
+            return new JsonResponse($jsonData, $responseCode);
+        }
+
         $datas = json_decode($request->getContent());
         $user = $this->getUser();
+
         $newQualification = $datas->newQualification;
         $user->setQualification($newQualification);
 
         $errors = $validatorInterface->validate($user);
 
-        if (count($errors) === 0) {
-            $em->persist($user);
-            $em->flush();
-            $responseCode = 201;
-
-            //Prepare datas for success alert message
-            $messageText = 'Votre commentaire a été postée avec succès.';
-            $label = 'successMessage';
-            $message =  $this->renderView('partials/_alert_message.html.twig', ['message' => $messageText, 'label' => $label]);
-            $jsonData = ['newQualification' => $newQualification];
-        } else {
+        //Check if created question objet is valid following the entity's contraint
+        if (0 !== count($errors)) {
             $label = 'errorMessage';
             $responseCode = 400;
             foreach ($errors as $key => $error) {
                 $message[$key] = $this->renderView('partials/_alert_message.html.twig', ['message' => $error->getMessage(), 'label' => $label]);
             }
-            $jsonData = [];
+
+            $jsonData['message'] = $message;
+
+            return new JsonResponse($jsonData, $responseCode);
         }
 
+        $this->em->persist($user);
+        $this->em->flush();
+        $responseCode = 201;
+
+        //Prepare datas for success alert message
+        $messageText = 'Votre commentaire a été postée avec succès.';
+        $label = 'successMessage';
+        $message =  $this->renderView('partials/_alert_message.html.twig', ['message' => $messageText, 'label' => $label]);
+        $jsonData = ['newQualification' => $newQualification];
         $jsonData['message'] = $message;
 
         return new JsonResponse($jsonData, $responseCode);
@@ -172,69 +292,59 @@ class UserController extends AbstractController
 
     /**
      *
-     * @Route("/profile/description/update",name="api_user_update_description",methods="POST")
+     * @Route("/api/profile/description/update",name="api_user_update_description",methods="POST")
      * @param Request $request
      * @return JsonResponse
      */
-    public function updateDescription(Request $request, EntityManagerInterface $em, ValidatorInterface $validatorInterface): JsonResponse
+    public function updateDescription(Request $request, ValidatorInterface $validatorInterface): JsonResponse
     {
+
+        //Check if request method is correct
+        if (!$request->isMethod('POST')) {
+
+            $label = 'errorMessage';
+            $responseCode = 405;
+            $messageText = "Une erreur s'est produite";
+            $message = $this->renderView('partials/_alert_message.html.twig', ['message' => $messageText, 'label' => $label]);
+            $jsonData['message'] = $message;
+
+            return new JsonResponse($jsonData, $responseCode);
+        }
+
         $datas = json_decode($request->getContent());
         $user = $this->getUser();
         $newDescription = $datas->newDescription;
         $user->setDescription($newDescription);
         $errors = $validatorInterface->validate($user);
 
-        if (count($errors) === 0) {
-            $em->persist($user);
-            $em->flush();
-            $responseCode = 201;
+        //Check if created question objet is valid following the entity's contraint
+        if (0 !== count($errors)) {
 
-            //Prepare datas for success alert message
-            $messageText = 'Votre commentaire a été postée avec succès.';
-            $label = 'successMessage';
-            $message = $this->renderView('partials/_alert_message.html.twig', ['message' => $messageText, 'label' => $label]);
-            $jsonData = ['newQualification' => $newDescription];
-        } else {
 
             $label = 'errorMessage';
             $responseCode = 400;
             foreach ($errors as $key => $error) {
                 $message[$key] = $this->renderView('partials/_alert_message.html.twig', ['message' => $error->getMessage(), 'label' => $label]);
             }
+
+            $jsonData['message'] = $message;
+
+            return new JsonResponse($jsonData, $responseCode);
         }
+
+        $this->em->persist($user);
+        $this->em->flush();
+        $responseCode = 201;
+
+        //Prepare datas for success alert message
+        $messageText = 'Votre commentaire a été postée avec succès.';
+        $label = 'successMessage';
+        $message = $this->renderView('partials/_alert_message.html.twig', ['message' => $messageText, 'label' => $label]);
+        $jsonData = ['newQualification' => $newDescription];
+
 
         $jsonData['message'] = $message;
 
         return new JsonResponse($jsonData, $responseCode);
-    }
-
-    /**
-     * 
-     * @Route("/profile/picture",name="app_user_update_profile_picture",methods="POST")
-     * @param Request $request
-     * @return Response
-     */
-    public function updateProfilePicture(Request $request, EntityManagerInterface $em, Filesystem $filesystem): Response
-    {
-        $user = $this->getUser();
-        $file = $request->files->get('user_picture')['imageFile']['file'];
-        $extension = $file->guessExtension();
-        if ($extension === 'jpg' || $extension === 'png') {
-            $fileName = uniqid() . 'image-' . $user->getId() . '.' . $file->guessExtension();
-            $file->move($this->getParameter('profile_pictures_directory'), $fileName);
-
-            $previousPicture = $user->getImageName();
-            if($previousPicture !== 'image_base.png'){
-                $filesystem->remove($this->getParameter('profile_pictures_directory') . '/' . $previousPicture);
-            }
-
-            $user->setImageName($fileName);
-            $em->persist($user);
-            $em->flush();
-            $this->addFlash('successMessage', 'Votre photo de profil a bien été mis à jour');
-        } else {
-            $this->addFlash('errorMessage', 'L\'extension de votre fichier est incorrecte. Veuillez réessayer avec une extension valide (JPG, PNG, JPEG)');
-        }
-        return $this->redirectToRoute('app_user_profile', ['pseudonym' => $user->getPseudonym()]);
     }
 }

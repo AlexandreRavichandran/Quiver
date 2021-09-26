@@ -3,13 +3,9 @@
 </div>
 <div class="questions mt-3">
 {% for question in user.questions %}
-    <div class="questions p-2">
+    <div class="answerHeader questions p-2" data-question-id={{question.id}}>
         <a href="{{path('app_question_show',{'id':question.id})}}"><h3 class="font-black">{{question.question}}</h3></a>
         <p class="font-semibold text-gray-400"><span>{{question.answers|length}}</span> réponses - Question posée le {{question.createdAt|date('d/m/Y')}}</p>
-        <div class="links flex ">
-            <a class="block p-2 rounded hover:bg-gray-200 mr-6" href="#"><i class="bi text-2xl bi-pencil-square"></i></a>
-            <a href="#" class="block"></a>
-        </div>
     </div>
     {% endfor %}
 </div>
