@@ -160,6 +160,11 @@ class User implements Serializable, UserInterface, PasswordAuthenticatedUserInte
      */
     private $imageName;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $googleId;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -621,5 +626,17 @@ class User implements Serializable, UserInterface, PasswordAuthenticatedUserInte
     public function getImageName(): ?string
     {
         return $this->imageName;
+    }
+
+    public function getGoogleId(): ?int
+    {
+        return $this->googleId;
+    }
+
+    public function setGoogleId(?int $googleId): self
+    {
+        $this->googleId = $googleId;
+
+        return $this;
     }
 }
