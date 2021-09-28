@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserPictureType;
+use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
@@ -21,6 +23,7 @@ class UserController extends AbstractController
 
     public function __construct(EntityManagerInterface $em)
     {
+
         $this->em = $em;
     }
     /**
@@ -33,12 +36,16 @@ class UserController extends AbstractController
      */
     public function index(User $user): Response
     {
+        if ($this->getUser()->getPassword() === "") {
+            $this->addFlash('errorMessage', 'Vous devez fournir un mot de passe afin de vous connecter prochainement.');
+        }
         $form = $this->createForm(UserPictureType::class);
-
+        $userForm = $this->createForm(UserType::class, $this->getUser());
         return $this->render('user/index.html.twig', [
             'partial' => 'profile',
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'user_form' => $userForm->createView(),
         ]);
     }
 
@@ -52,11 +59,13 @@ class UserController extends AbstractController
     public function answers(User $user): Response
     {
         $form = $this->createForm(UserPictureType::class);
+        $userForm = $this->createForm(UserType::class, $this->getUser());
 
         return $this->render('user/index.html.twig', [
             'partial' => 'answer',
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'user_form' => $userForm->createView(),
         ]);
     }
 
@@ -70,11 +79,13 @@ class UserController extends AbstractController
     public function questions(User $user): Response
     {
         $form = $this->createForm(UserPictureType::class);
+        $userForm = $this->createForm(UserType::class, $this->getUser());
 
         return $this->render('user/index.html.twig', [
             'partial' => 'question',
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'user_form' => $userForm->createView(),
         ]);
     }
 
@@ -88,11 +99,13 @@ class UserController extends AbstractController
     public function subscribers(User $user): Response
     {
         $form = $this->createForm(UserPictureType::class);
+        $userForm = $this->createForm(UserType::class, $this->getUser());
 
         return $this->render('user/index.html.twig', [
             'partial' => 'subscriber',
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'user_form' => $userForm->createView(),
         ]);
     }
 
@@ -106,11 +119,13 @@ class UserController extends AbstractController
     public function subscriptions(User $user): Response
     {
         $form = $this->createForm(UserPictureType::class);
+        $userForm = $this->createForm(UserType::class, $this->getUser());
 
         return $this->render('user/index.html.twig', [
             'partial' => 'subscription',
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'user_form' => $userForm->createView(),
         ]);
     }
 
@@ -155,8 +170,52 @@ class UserController extends AbstractController
         return $this->redirectToRoute('app_user_profile', ['pseudonym' => $user->getPseudonym()]);
     }
 
-    /*****************  API REQUEST METHODS *****************/
+    /**
+     * @Route("/profile/update",name="app_user_update_profile_data",methods="POST")
+     * @return Response
+     */
+    public function updateProfileData(Request $request, UserPasswordHasherInterface $passwordEncoder, ValidatorInterface $validator): Response
+    {
+        if (!$request->isMethod('POST')) {
+            $this->addFlash("errorMessage", "Une erreur s'est produite");
+            return $this->redirectToRoute('app_home_index');
+        }
+        $datas = $request->request->all()['user'];
 
+        if (!$this->isCsrfTokenValid('user', $datas['_token'])) {
+            $this->addFlash("errorMessage", 'le serveur a détecté une attaque CSRF et l\'operation a été abandonnée.');
+            $this->redirectToRoute('app_home_index');
+        }
+        $user = $this->getUser();
+        $user
+            ->setLastName($datas['lastName'])
+            ->setFirstName($datas['firstName'])
+            ->setPseudonym($datas['pseudonym'])
+            ->setEmail($datas['email'])
+            ->setPassword($passwordEncoder->hashPassword($user, $datas['password']))
+            ->setQualification($datas['qualification'])
+            ->setDescription($datas['description']);
+
+        $errors = $validator->validate($user);
+
+        //Check if created question objet is valid following the entity's contraint
+        if (0 !== count($errors)) {
+
+            foreach ($errors as $error) {
+                $this->addFlash('errorMessage', $error->getMessage());
+            }
+
+            return $this->redirectToRoute('app_home_index');
+        }
+
+        $this->em->persist($user);
+        $this->em->flush();
+
+        $this->addFlash('successMessage', 'Votre profil a bien été mis à jour.');
+
+        return $this->redirectToRoute('app_user_profile', ['pseudonym' => $user->getPseudonym()]);
+    }
+    /*****************  API REQUEST METHODS *****************/
 
     /**
      * 
@@ -168,7 +227,7 @@ class UserController extends AbstractController
      * 
      * @return JsonResponse
      */
-    public function handleSubsriber(User $user, string $action, UserRepository $userRepository): JsonResponse
+    public function handleSubsriber(User $user, string $action): JsonResponse
     {
 
         //Check if action is correct

@@ -1,0 +1,52 @@
+<div class="modal opacity-0 pointer-events-none fixed w-full h-screen top-0 left-0 flex items-center justify-center ">
+    <div class="modal-overlay absolute w-full h-screen bg-gray-900 opacity-50"></div>
+        <div class="mt-5 modal-container bg-white w-11/12 md:w-8/12 lg:w-8/12 xl:w-5/12 mx-auto rounded shadow-lg z-50 overflow-y-scroll"> 
+            <div class="modal-close absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
+                <i class="bi bi-x-lg"></i>
+            </div>
+
+           
+            <div class="modal-content py-4 text-left px-6">
+           
+            <div class="flex justify-start items-center pb-3">
+                <div class="modal-close cursor-pointer z-50 p-2 hover:bg-gray-200">
+                    <i class="bi text-xl bi-x-lg"></i>
+                </div>
+            </div>
+
+            <!--Body-->
+            <h1 class="text-xl">Modification du profil</h1>
+            {{form_start(user_form)}}
+     	    <div class="grid grid-cols-12 gap-4">
+                <div class="col-span-12 lg:col-span-6 userProfileField">
+                    {{form_row(user_form.lastName)}}
+                </div>
+                <div class="col-span-12 lg:col-span-6 userProfileField">
+                {{form_row(user_form.firstName)}}
+                </div>
+                <div class="col-span-12 lg:col-span-6 userProfileField">
+                {{form_row(user_form.pseudonym)}}
+                </div>
+                <div class="col-span-12 lg:col-span-6 userProfileField">
+                {{form_row(user_form.email)}}
+                </div>
+                <div class="col-span-12 flex justify-center">
+                    <div class="flex justify-center userProfileField">
+                        {{form_row(user_form.password)}}
+                    </div>
+                </div>
+                <div class="col-span-12 userProfileField">
+                    
+                {{form_row(user_form.qualification)}}
+                </div>
+                <div class="col-span-12 userProfileField">
+                {{form_row(user_form.description)}}
+                </div>
+            </div>
+                <div class="flex justify-end">
+                    <button class="p-2 rounded bg-indigo-400 text-white font-semibold">Mettre à jour</button>
+                </div>
+            {{form_end(user_form)}}
+        </div>
+    </div>
+</div>

@@ -73,7 +73,7 @@ class GoogleAuthenticator extends OAuth2Authenticator
                     ->setEmail($googleClient['email'])
                     ->setPseudonym($googleClient['name'])
                     ->setImageName('image_base.png')
-                    ->setPassword($this->passwordEncoder->hashPassword($user, 'demo'))
+                    ->setPassword("")
                     ->setRoles(['ROLE_USER']);
 
                 $this->entityManager->persist($user);
