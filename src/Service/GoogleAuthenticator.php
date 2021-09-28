@@ -9,6 +9,7 @@ use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -21,12 +22,14 @@ class GoogleAuthenticator extends OAuth2Authenticator
     private $clientRegistry;
     private $entityManager;
     private $router;
+    private $passwordEncoder;
 
-    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $entityManager, RouterInterface $router)
+    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $entityManager, RouterInterface $router, UserPasswordHasherInterface $passwordEncoder)
     {
         $this->clientRegistry = $clientRegistry;
         $this->entityManager = $entityManager;
         $this->router = $router;
+        $this->passwordEncoder = $passwordEncoder;
     }
 
     public function supports(Request $request): ?bool
@@ -40,29 +43,39 @@ class GoogleAuthenticator extends OAuth2Authenticator
         $accessToken = $this->fetchAccessToken($client);
 
         return new SelfValidatingPassport(
-            new UserBadge($accessToken->getToken(), function() use ($accessToken, $client) {
+            new UserBadge($accessToken->getToken(), function () use ($accessToken, $client) {
                 /** @var GoogleClient $googleClient */
-                $googleClient = $client->fetchUserFromToken($accessToken);
-
-                $email = $googleClient->getEmail();
+                $googleClient = $client->fetchUserFromToken($accessToken)->toArray();
 
                 // 1) have they logged in with Facebook before? Easy!
-                $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['googleId' => $googleClient->getId()]);
+                $existingUserById = $this->entityManager->getRepository(User::class)->findOneBy(['googleId' => $googleClient['sub']]);
 
-                if ($existingUser) {
-                    return $existingUser;
+                if ($existingUserById) {
+                    return $existingUserById;
                 }
 
+                $email = $googleClient['email'];
                 // 2) do we have a matching user by email?
-                $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+                $existingUserByEmail = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+
+                if ($existingUserByEmail) {
+                    return $existingUserByEmail;
+                }
 
                 // 3) Maybe you just want to "register" them by creating
                 // a User object
+
+                $user = new User();
                 $user
-                    ->setGoogleId($googleClient->getId())
-                    ->setFirstName($googleClient->getFirstName())
-                    ->setLastName($googleClient->getLastName())
-                    ->setEmail($googleClient->getEmail());
+                    ->setGoogleId(intval($googleClient['sub']))
+                    ->setFirstName($googleClient['given_name'])
+                    ->setLastName($googleClient['family_name'])
+                    ->setEmail($googleClient['email'])
+                    ->setPseudonym($googleClient['name'])
+                    ->setImageName('image_base.png')
+                    ->setPassword($this->passwordEncoder->hashPassword($user, 'demo'))
+                    ->setRoles(['ROLE_USER']);
+
                 $this->entityManager->persist($user);
                 $this->entityManager->flush();
 
@@ -77,7 +90,7 @@ class GoogleAuthenticator extends OAuth2Authenticator
         $targetUrl = $this->router->generate('app_home_index');
 
         return new RedirectResponse($targetUrl);
-    
+
         // or, on success, let the request continue to be handled by the controller
         //return null;
     }
