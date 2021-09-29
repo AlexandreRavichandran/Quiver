@@ -45,7 +45,7 @@ class Space
      * @ORM\ManyToMany(targetEntity=Question::class, mappedBy="space")
      */
     private $questions;
-
+        
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank(

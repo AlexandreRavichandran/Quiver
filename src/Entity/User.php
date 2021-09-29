@@ -55,6 +55,17 @@ class User implements Serializable, UserInterface, PasswordAuthenticatedUserInte
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(
+     *              message = "Vous devez fournir un Email valide."
+     * )
+     * @Assert\NotNull(
+     *              message = "Vous devez fournir un Email."
+     * )
+     * @Assert\Regex(
+     *              pattern = "/\w/",
+     *              match = true,
+     *              message = "Vous devez fournir un email valide."
+     * )
      */
     private $email;
 
@@ -66,11 +77,34 @@ class User implements Serializable, UserInterface, PasswordAuthenticatedUserInte
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * 
+     * @Assert\NotBlank(
+     *              message = "Vous devez fournir un mot de passe valide."
+     * )
+     * @Assert\NotNull(
+     *              message = "Vous devez fournir un mot de passe."
+     * )
+     * @Assert\Regex(
+     *              pattern = "/\w/",
+     *              match = true,
+     *              message = "Vous devez fournir un mot de passe valide (Sans espaces)."
+     * )
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(
+     *              message = "Vous devez fournir un pseudonyme valide."
+     * )
+     * @Assert\NotNull(
+     *              message = "Vous devez fournir un pseudonyme."
+     * )
+     * @Assert\Regex(
+     *              pattern = "/\w/",
+     *              match = true,
+     *              message = "Vous devez fournir un pseudonyme valide."
+     * )
      */
     private $pseudonym;
 

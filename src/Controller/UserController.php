@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
@@ -39,8 +38,10 @@ class UserController extends AbstractController
         if ($this->getUser()->getPassword() === "") {
             $this->addFlash('errorMessage', 'Vous devez fournir un mot de passe afin de vous connecter prochainement.');
         }
+
         $form = $this->createForm(UserPictureType::class);
         $userForm = $this->createForm(UserType::class, $this->getUser());
+
         return $this->render('user/index.html.twig', [
             'partial' => 'profile',
             'user' => $user,
@@ -58,6 +59,7 @@ class UserController extends AbstractController
      */
     public function answers(User $user): Response
     {
+
         $form = $this->createForm(UserPictureType::class);
         $userForm = $this->createForm(UserType::class, $this->getUser());
 
@@ -78,6 +80,7 @@ class UserController extends AbstractController
      */
     public function questions(User $user): Response
     {
+
         $form = $this->createForm(UserPictureType::class);
         $userForm = $this->createForm(UserType::class, $this->getUser());
 
@@ -98,6 +101,7 @@ class UserController extends AbstractController
      */
     public function subscribers(User $user): Response
     {
+
         $form = $this->createForm(UserPictureType::class);
         $userForm = $this->createForm(UserType::class, $this->getUser());
 
@@ -118,6 +122,7 @@ class UserController extends AbstractController
      */
     public function subscriptions(User $user): Response
     {
+
         $form = $this->createForm(UserPictureType::class);
         $userForm = $this->createForm(UserType::class, $this->getUser());
 
@@ -140,6 +145,7 @@ class UserController extends AbstractController
      */
     public function updateProfilePicture(Request $request, Filesystem $filesystem): Response
     {
+
         $user = $this->getUser();
 
         $file = $request->files->get('user_picture')['imageFile']['file'];
@@ -192,7 +198,7 @@ class UserController extends AbstractController
             ->setFirstName($datas['firstName'])
             ->setPseudonym($datas['pseudonym'])
             ->setEmail($datas['email'])
-            ->setPassword($passwordEncoder->hashPassword($user, $datas['password']))
+            ->setPassword($datas['password'])
             ->setQualification($datas['qualification'])
             ->setDescription($datas['description']);
 
@@ -207,7 +213,8 @@ class UserController extends AbstractController
 
             return $this->redirectToRoute('app_home_index');
         }
-
+        
+        $user->setPassword($passwordEncoder->hashPassword($user, $datas['password']));
         $this->em->persist($user);
         $this->em->flush();
 

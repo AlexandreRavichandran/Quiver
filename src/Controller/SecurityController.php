@@ -74,16 +74,13 @@ class SecurityController extends AbstractController
             $lastName = $data['lastName'];
         }
 
-        // encode the plain password
+        
         $user = new User();
         $user
             ->setFirstName($firstName)
             ->setLastName($lastName)
             ->setPassword(
-                $passwordEncoder->hashPassword(
-                    $user,
-                    $data['plainPassword']
-                )
+                $data['plainPassword']
             )
             ->setPseudonym($data['pseudonym'])
             ->setRoles(['ROLE_USER'])
@@ -102,6 +99,13 @@ class SecurityController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
         try {
+            //If the password is correct (without spaces), then we encode it
+            $user->setPassword(
+                $passwordEncoder->hashPassword(
+                    $user,
+                    $data['plainPassword']
+                )
+            );
             $entityManager->persist($user);
             $entityManager->flush();
             $this->addFlash('successMessage', 'Vous vous êtes inscrit avec succès. Veuillez vous connecter.');

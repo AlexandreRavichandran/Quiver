@@ -14,23 +14,32 @@
 
         <div class="grid grid-cols-12 ">
             <div class="col-span-12 mb-4 md:mb-0 lg:col-span-6 md:border-r-4 pr-3">
-                <h2 class="border-b-4 text-xl font-bold mb-3"> S'inscrire </h2>
+            <h2 class="border-b-4 text-xl font-bold mb-3"> S'inscrire </h2>
                 <div id="googleForm">
-                    <a href="{{path('app_login_with_google')}}" class="flex justify-center text-xl border p-3 hover:bg-gray-200">
+                    <a href="{{path('app_login_with_google')}}" class="mt-14 flex justify-center text-xl border p-3 hover:bg-gray-200">
                         <i class="bi bi-google"></i>
                         <p class="ml-2">Connexion avec Google</p>
                     </a>
-                    <a id="displayEmailForm" class="block text-center mt-3" href="#">S'inscrire avec votre adresse e-mail</a>
+                    <a id="displayEmailForm" class="block text-center mt-14" href="#">S'inscrire avec votre adresse e-mail</a>
                 </div>
                 <div class="emailForm hidden">
                         {{ form_start(registration_form) }}
-                        {{ form_row(registration_form.firstName) }}
+                        <div class="font-bold">
+                            {{ form_row(registration_form.firstName) }}
+                        </div>
+                        <div class="font-bold">
                         {{ form_row(registration_form.lastName) }}
+                        </div>
+                        <div class="font-bold">
                         {{ form_row(registration_form.email) }}
+                        </div>
+                        <div class="font-bold">
                         {{ form_row(registration_form.pseudonym ) }}
-                        {{ form_row(registration_form.plainPassword, {
-                            label: 'Password'
-                        }) }}
+                        </div>
+                        <div class="font-bold">
+                        {{ form_row(registration_form.plainPassword)}}
+                        </div>
+
                         <input type="hidden" name="registration_form[_csrf_token]" value="{{ csrf_token('register') }}">
                         <div class="flex justify-end">
                             <button class="p-2 bg-indigo-400 text-white font-semibold rounded" type="submit">S'inscrire</button>
