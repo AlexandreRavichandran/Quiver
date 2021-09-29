@@ -76,7 +76,7 @@ class AppFixtures extends Fixture
                 ->setAuthor($userList[mt_rand(0,count($userList) - 1)])
                 ->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTimeAD()));
             for ($b = 0; $b < mt_rand(1, 4); $b++) {
-                $question->addSpace($spaceList[mt_rand(0, count($userList) - 1)]);
+                $question->addSpace($spaceList[mt_rand(0, count($spaceList) - 1)]);
             }
             $manager->persist($question);
 
