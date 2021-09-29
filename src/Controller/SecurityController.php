@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -109,5 +110,25 @@ class SecurityController extends AbstractController
         }
 
         return $this->redirectToRoute('app_home_index');
+    }
+
+    /**
+     * Undocumented function
+     * @Route("/login/google", name="app_login_with_google")
+     * @param ClientRegistry $clientRegistry
+     */
+    public function connectWithGoogle(ClientRegistry $clientRegistry): Response
+    {
+        /** @var GoogleClient $client */
+        $client = $clientRegistry->getClient('google');
+        return $client->redirect(['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile']);
+    }
+
+    /**
+     * Undocumented function
+     * @Route("/oauth/check/google", name="connect_google_check")
+     */
+    public function googleRedirection()
+    {
     }
 }

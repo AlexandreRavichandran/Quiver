@@ -30,7 +30,7 @@ class AppFixtures extends Fixture
         $userList = [];
 
         //create fake Spaces
-        for ($i = 0; $i < 15; $i++) {
+        for ($i = 0; $i < 10; $i++) {
 
             $space = new Space;
             $space
@@ -89,7 +89,7 @@ class AppFixtures extends Fixture
                     ->setAuthor($userList[mt_rand(0, count($userList) - 1)])
                     ->setAnswer('<img src="https://picsum.photos/900/320">' . '<p>' . implode('</p><p>', $faker->paragraphs(15)));
 
-                for ($c = 0; $c < mt_rand(0, 15); $c++) {
+                for ($c = 0; $c < mt_rand(0, 5); $c++) {
                     if (mt_rand(0, 1)) {
                         $answer->addLikedUser($userList[mt_rand(0, count($userList) - 1)]);
                     } else {
@@ -99,7 +99,7 @@ class AppFixtures extends Fixture
                 $manager->persist($answer);
 
                 //create fake Comments
-                for ($c = 0; $c < mt_rand(4, 8); $c++) {
+                for ($c = 0; $c < mt_rand(4, 6); $c++) {
                     $comment = new Comment;
                     $comment
                         ->setAnswer($answer)
@@ -110,7 +110,7 @@ class AppFixtures extends Fixture
                     $manager->persist($comment);
 
                     //create fake sub_comments
-                    for ($d = 0; $d < mt_rand(0, 4); $d++) {
+                    for ($d = 0; $d < mt_rand(0,2); $d++) {
                         $subComment = new SubComment;
                         $subComment
                             ->setAuthor($userList[mt_rand(0, count($userList) - 1)])

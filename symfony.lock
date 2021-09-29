@@ -112,8 +112,23 @@
     "jms/metadata": {
         "version": "2.5.1"
     },
+    "knpuniversity/oauth2-client-bundle": {
+        "version": "1.20",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.20",
+            "ref": "1ff300d8c030f55c99219cc55050b97a695af3f6"
+        },
+        "files": [
+            "./config/packages/knpu_oauth2_client.yaml"
+        ]
+    },
     "laminas/laminas-code": {
         "version": "4.4.2"
+    },
+    "league/oauth2-google": {
+        "version": "4.0.0"
     },
     "liip/imagine-bundle": {
         "version": "1.8",

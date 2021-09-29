@@ -43,7 +43,7 @@ class CommentController extends AbstractController
     {
         // Check if request method is correct
         if (!$request->isMethod('POST')) {
-
+            
             $responseCode = 405;
 
             //Prepare datas for success alert message
@@ -139,3 +139,4 @@ class CommentController extends AbstractController
         return new JsonResponse($jsonData);
     }
 }
+
