@@ -93,6 +93,7 @@ class SpaceController extends AbstractController
      */
     public function index(): Response
     {
+
         $userFollowingSpaces = $this->getUser()->getSubscribedSpaces();
         $spaces = $this->spaceRepository->findBy([], null, 6);
 
@@ -117,6 +118,7 @@ class SpaceController extends AbstractController
      */
     public function following(QuestionRepository $questionRepository): Response
     {
+
         $date = new DateTime();
         $date = $date->format('Y-m-d');
         $date = new DateTimeImmutable($date);
@@ -141,7 +143,7 @@ class SpaceController extends AbstractController
             ]
         );
     }
-
+    
     /**
      * Show one space and its related questions
      * 

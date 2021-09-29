@@ -20,33 +20,35 @@ class RegistrationFormType extends AbstractType
             ->setAction('/register')
             ->add('email', EmailType::class, [
                 'required' => true,
+                'label' => 'Email:',
                 'attr' => [
                     'placeholder' => 'Votre email'
                 ]
             ])
             ->add('firstName', TextType::class, [
                 'required' => false,
-                'label' => 'Prénom (optionnel)',
+                'label' => 'Prénom:',
                 'attr' => [
                     'placeholder' => 'Votre prénom'
                 ]
             ])
             ->add('lastName', TextType::class, [
                 'required' => false,
-                'label' => 'Nom (optionnel)',
+                'label' => 'Nom:',
                 'attr' => [
                     'placeholder' => 'Votre nom'
                 ]
             ])
             ->add('pseudonym', TextType::class, [
                 'required' => true,
-                'label' => 'Pseudonyme',
+                'label' => 'Pseudonyme:',
                 'attr' => [
                     'placeholder' => 'Comment aimeriez-vous être appelé ?'
                 ]
             ])
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
+                'label'=>'Mot de passe:',
 
                 'attr' => [
                     'autocomplete' => 'new-password',
