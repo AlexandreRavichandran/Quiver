@@ -1,0 +1,22 @@
+CAN HAVE2, 11 COMMENT, 0N ANSWER
+ANSWER: answer_code, views_number, answer, created_at, updated_at
+HAVE, 0N QUESTION, 11 ANSWER
+::
+
+COMMENT: comment_code, comment, created_at, updated_at
+CAN LIKE, 0N AUTHOR, 0N ANSWER
+CAN DISLIKE, 0N AUTHOR, 0N ANSWER
+CAN POST, 0N AUTHOR, 11 ANSWER
+QUESTION: question_code,question, created_at, updated_at
+
+CAN HAVE, 0N COMMENT, 11 SUBCOMMENT
+CAN WRITE, 11 COMMENT, 0N AUTHOR
+AUTHOR: author_code, email, roles, password, pseudonym, first_name, last_name, description, qualification, created_at, updated_at
+CAN BE ASKED BY, 0N AUTHOR, 11 QUESTION
+CAN BE ASSIGNED TO, 0N SPACE, 0N QUESTION
+
+SUBCOMMENT: subcomment_code, subcomment, created_at, updated_at
+CAN WRITE2, 11 SUBCOMMENT, 0N AUTHOR
+CAN SUBSCRIBE TO, 0N AUTHOR, 0N AUTHOR
+CAN SUBSCRIBE TO2, 0N AUTHOR, 0N SPACE
+SPACE: space_code, name, description
